@@ -87,10 +87,10 @@
               Kaspi & Supplier Hub
             </h1>
             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-[#f14635] border border-rose-200">
-              Pro v2.0
+              Enterprise
             </span>
           </div>
-          <p class="text-xs text-slate-500">Автоматизация прайсов, мульти-фиды и Kaspi Bot Repricer</p>
+          <p class="text-xs text-slate-500">Авто-репрайсер, термоэтикетки и мульти-фиды</p>
         </div>
       </div>
 
@@ -103,7 +103,7 @@
             <option value="">Загрузка магазинов...</option>
           </select>
         </div>
-        <button onclick="openNewShopModal()" title="Добавить еще один магазин Kaspi (ИП / ТОО)" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
+        <button onclick="openNewShopModal()" title="Добавить магазин Kaspi (ИП / ТОО)" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
         </button>
         <button onclick="openKaspiSettingsModal()" title="Настройки API токена и ссылки на XML-фид" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
@@ -113,6 +113,10 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center space-x-2">
+        <button onclick="openTelegramModal()" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5 text-sky-500"></i> Telegram
+        </button>
+
         <a href="/api/v1/orders/export/excel" download class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm hover:shadow transition flex items-center gap-1.5 active:scale-95">
           <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> Excel
         </a>
@@ -121,12 +125,12 @@
           <i data-lucide="upload" class="w-3.5 h-3.5"></i> Загрузить прайс
         </button>
 
-        <button onclick="openDbGuideModal()" title="Статус базы данных и руководство по PostgreSQL" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-medium px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1.5">
+        <button onclick="openDbGuideModal()" title="Статус базы данных и руководство по PostgreSQL" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-medium px-2.5 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1">
           <i data-lucide="database" class="w-3.5 h-3.5 text-sky-600"></i> БД
         </button>
 
         <a href="/docs" target="_blank" class="text-xs bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 px-2.5 py-2 rounded-xl border border-slate-200/70 transition flex items-center gap-1">
-          <i data-lucide="code" class="w-3.5 h-3.5"></i> Swagger
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> API
         </a>
       </div>
     </div>
@@ -186,13 +190,13 @@
         </div>
         <div id="kpi-profit" class="text-2xl font-extrabold text-[#f14635] tracking-tight">...</div>
         <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
-          Средняя маржинальность: <span id="kpi-margin" class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">...</span>
+          Средняя маржа: <span id="kpi-margin" class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">...</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Quick Actions & Repricer Glass Banner -->
+    <!-- Quick Actions & Smart Repricer Glass Banner -->
     <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
       <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -200,18 +204,23 @@
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-[#f14635] animate-ping"></span>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            Kaspi Bot Repricer & Авто-выбор оптимального поставщика
+            Kaspi Smart Repricer & Стратегии удержания 1-го места
           </h2>
         </div>
         <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
-          Сканирует остатки всех подключенных поставщиков, фильтрует нулевой остаток, выбирает минимальную себестоимость, рассчитывает Floor Price Guard (защита от торговли в минус) и удерживает 1-е место на Kaspi.
+          Перебивает конкурентов на 10 ₸, защищен Floor Price Guard от демпинга в минус, автоматически подтягивает цены вверх при уходе конкурентов и поддерживает ночной режим максимизации маржи.
         </p>
+        <div class="flex items-center gap-3 pt-1 text-[11px] text-slate-500">
+          <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Floor Guard: Активен</span>
+          <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Step-Up Recovery: Включен</span>
+          <span class="flex items-center gap-1 text-amber-700 font-semibold"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Ночной режим (+3%): 01:00-06:00</span>
+        </div>
       </div>
 
       <div class="flex items-center gap-2.5 shrink-0 z-10">
         <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-rose-500/25">
           <i data-lucide="zap" class="w-4 h-4"></i>
-          Запустить пересчет цен
+          Пересчитать цены
         </button>
         <button onclick="openKaspiSettingsModal()" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
           <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
@@ -224,6 +233,9 @@
     <div class="flex items-center gap-2 border-b border-slate-200/80 pb-3 flex-wrap">
       <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn active px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-[#f14635] text-white shadow-md shadow-rose-500/20">
         <i data-lucide="layers" class="w-4 h-4"></i> Каталог Master SKU (<span id="tab-catalog-badge">5</span>)
+      </button>
+      <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-4 h-4"></i> Заказы & Этикетки (<span id="tab-orders-badge">0</span>)
       </button>
       <button onclick="switchTab('review')" id="tab-btn-review" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="user-check" class="w-4 h-4"></i> Очередь модерации (<span id="tab-review-badge">0</span>)
@@ -277,7 +289,50 @@
       </div>
     </div>
 
-    <!-- TAB 2: Human Review Queue Section -->
+    <!-- TAB 2: Orders & Thermal Labels Section -->
+    <div id="tab-pane-orders" class="tab-pane hidden kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4.5 border-b border-slate-100 flex items-center justify-between bg-white/40">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Заказы Kaspi & Печать термоэтикеток</h3>
+            <p class="text-[11px] text-slate-500">Генерация маркировочных этикеток Kaspi Доставки (58x40 мм и 75x120 мм)</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="/api/v1/orders/export/excel" download class="text-xs bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> Скачать Excel
+          </a>
+          <button onclick="loadOrders()" class="text-xs bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-slate-600 flex items-center gap-1.5 transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Обновить
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-3.5 px-6">№ Заказа Kaspi</th>
+              <th class="py-3.5 px-6">Дата</th>
+              <th class="py-3.5 px-6">Покупатель</th>
+              <th class="py-3.5 px-6">Статус</th>
+              <th class="py-3.5 px-6">Сумма продажи</th>
+              <th class="py-3.5 px-6">Чистая прибыль</th>
+              <th class="py-3.5 px-6">Рентабельность</th>
+              <th class="py-3.5 px-6">Термоэтикетка</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
+            <tr><td colspan="8" class="text-center py-8 text-slate-400">Загрузка заказов...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: Human Review Queue Section -->
     <div id="tab-pane-review" class="tab-pane hidden kaspi-glass rounded-3xl overflow-hidden shadow-sm">
       <div class="px-6 py-4.5 border-b border-slate-100 flex items-center justify-between bg-white/40">
         <div class="flex items-center gap-2.5">
@@ -314,7 +369,7 @@
       </div>
     </div>
 
-    <!-- TAB 3: Suppliers & Auto-URL Sync (Task 4) -->
+    <!-- TAB 4: Suppliers & Auto-URL Sync -->
     <div id="tab-pane-suppliers" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
@@ -333,16 +388,24 @@
       </div>
     </div>
 
-    <!-- TAB 4: Alerts Section -->
+    <!-- TAB 5: Alerts Section -->
     <div id="tab-pane-alerts" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
           <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f14635] flex items-center justify-center">
             <i data-lucide="bell-ring" class="w-4 h-4"></i>
           </div>
-          <h3 class="font-bold text-sm text-slate-900">Уведомления и алерты (Telegram Live Feed)</h3>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Уведомления и алерты (Telegram Live Feed)</h3>
+            <p class="text-[11px] text-slate-500">Критические события: Out-of-Stock, скачки цен закупки и новые заказы</p>
+          </div>
         </div>
-        <span class="text-xs bg-rose-50 text-[#f14635] font-semibold px-2.5 py-1 rounded-xl border border-rose-200" id="alerts-count">0 событий</span>
+        <div class="flex items-center gap-2">
+          <button onclick="openTelegramModal()" class="text-xs bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="send" class="w-3.5 h-3.5 text-sky-500"></i> Настроить Telegram-бота
+          </button>
+          <span class="text-xs bg-rose-50 text-[#f14635] font-semibold px-2.5 py-1 rounded-xl border border-rose-200" id="alerts-count">0 событий</span>
+        </div>
       </div>
       
       <div class="space-y-3 max-h-96 overflow-y-auto pr-1" id="alerts-list">
@@ -350,7 +413,7 @@
       </div>
     </div>
 
-    <!-- TAB 5: Background Tasks Section -->
+    <!-- TAB 6: Background Tasks Section -->
     <div id="tab-pane-tasks" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
@@ -374,7 +437,58 @@
 
   </main>
 
-  <!-- MODAL: Kaspi Shop Settings & XML Feed Links (Task 3) -->
+  <!-- MODAL: Telegram Bot Configuration -->
+  <div id="telegram-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-lg shadow-sm">
+            <i data-lucide="send" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Подключение Telegram-бота</h3>
+            <p class="text-[11px] text-slate-500">Мгновенные push-уведомления на ваш смартфон</p>
+          </div>
+        </div>
+        <button onclick="closeTelegramModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Telegram Bot Token (из @BotFather)</label>
+          <input type="password" id="tg-bot-token" placeholder="123456789:ABCdefGHIjklMNOpqrs..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-sky-500">
+          <p class="text-[10px] text-slate-400 mt-0.5">Создайте бота за 30 сек в @BotFather командой /newbot</p>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Ваш Chat ID (или ID группы)</label>
+          <input type="text" id="tg-chat-id" placeholder="Например: 987654321 или -100123456" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-sky-500">
+          <p class="text-[10px] text-slate-400 mt-0.5">Узнать свой ID можно в боте @userinfobot</p>
+        </div>
+
+        <div id="tg-test-result" class="hidden p-3 rounded-xl text-[11px]"></div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="sendTestTelegramMessage()" id="btn-tg-test" class="px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold transition flex items-center gap-1.5 border border-sky-200">
+            <i data-lucide="bell" class="w-3.5 h-3.5"></i> Тест отправки
+          </button>
+          <div class="flex gap-2">
+            <button onclick="closeTelegramModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition">
+              Закрыть
+            </button>
+            <button onclick="saveTelegramConfig()" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition flex items-center gap-1.5 shadow-md shadow-sky-600/25">
+              <i data-lucide="check" class="w-4 h-4"></i> Сохранить
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Kaspi Shop Settings & XML Feed Links -->
   <div id="kaspi-settings-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-5 transform transition-transform scale-95 duration-200">
       
@@ -465,7 +579,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Add New Kaspi Shop (Task 5) -->
+  <!-- MODAL: Add New Kaspi Shop -->
   <div id="new-shop-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
       
@@ -527,7 +641,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Upload Feed with Dual Tab: File & URL (Task 4) -->
+  <!-- MODAL: Upload Feed with Dual Tab: File & URL -->
   <div id="upload-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200" id="upload-modal-content">
       
@@ -577,7 +691,7 @@
           </div>
         </div>
 
-        <!-- Mode 2: URL / Google Sheets (Task 4) -->
+        <!-- Mode 2: URL / Google Sheets -->
         <div id="upload-panel-url" class="hidden space-y-3">
           <div>
             <label class="block text-slate-700 font-semibold mb-1.5">Ссылка на прайс (URL или Google Таблицы)</label>
@@ -615,7 +729,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Database Guide (Task 1) -->
+  <!-- MODAL: Database Guide -->
   <div id="db-guide-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
       
@@ -639,21 +753,16 @@
           <i data-lucide="info" class="w-4 h-4 text-sky-600 shrink-0 mt-0.5"></i>
           <div>
             <span class="font-bold text-sky-900">Текущий режим: </span>
-            <span id="db-mode-label" class="font-semibold text-slate-800">Авто-определение (Поддержка PostgreSQL + SQLite)</span>
-            <div class="text-[11px] text-sky-800 mt-0.5">При перезапуске контейнера Render данные будут сохраняться навсегда при подключении PostgreSQL.</div>
+            <span class="font-semibold text-slate-800">PostgreSQL (Облако Render / Supabase)</span>
+            <div class="text-[11px] text-sky-800 mt-0.5">При любых перезапусках сервера все товары, цены и заказы сохраняются надежно.</div>
           </div>
         </div>
 
-        <h4 class="font-bold text-slate-900">Как подключить бесплатный PostgreSQL на Render:</h4>
-        <ol class="list-decimal list-inside space-y-2 text-slate-600 text-[11px]">
-          <li>В панели <strong>Render.com</strong> нажмите <strong>New + ➔ PostgreSQL</strong>.</li>
-          <li>Укажите любое имя (например: <code>kaspi-db</code>) и нажмите <strong>Create Database</strong>.</li>
-          <li>Скопируйте строку <strong>Internal Database URL</strong> (или External).</li>
-          <li>Откройте ваш Web Service <code>kaspi-ecommerce-saas</code> ➔ раздел <strong>Environment</strong> ➔ добавьте переменную:
-            <div class="font-mono bg-slate-100 p-2 rounded-xl mt-1 text-slate-800 select-all">DATABASE_URL = postgres://...</div>
-          </li>
-          <li>Сервис автоматически применит драйвер <code>postgresql+asyncpg</code> и создаст все таблицы!</li>
-        </ol>
+        <h4 class="font-bold text-slate-900">Как добавить переменную DATABASE_URL:</h4>
+        <div class="bg-slate-100 p-3 rounded-2xl font-mono text-[11px] text-slate-800 select-all">
+          KEY: DATABASE_URL<br>
+          VALUE: postgresql://kaspi_db_user:...@host/db
+        </div>
 
         <div class="flex justify-end pt-2">
           <button onclick="closeDbGuideModal()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition">
@@ -664,7 +773,7 @@
     </div>
   </div>
 
-  <!-- Price History Modal (Glass Modal) -->
+  <!-- MODAL: Price History -->
   <div id="history-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
       
@@ -711,7 +820,7 @@
 
     let allShops = [];
     let currentShop = null;
-    let uploadMode = 'file'; // 'file' or 'url'
+    let uploadMode = 'file';
 
     // Tab switching logic
     function switchTab(tab) {
@@ -750,6 +859,145 @@
       const text = document.getElementById(elementId).innerText;
       navigator.clipboard.writeText(text);
       showToast("Ссылка скопирована в буфер обмена!");
+    }
+
+    // Print Thermal Shipping Label
+    function printShippingLabel(orderId, format) {
+      const url = `/api/v1/orders/${orderId}/shipping-label-html?format=${format}&autoprint=true`;
+      window.open(url, '_blank', 'width=450,height=600');
+    }
+
+    // Load Orders List
+    async function loadOrders() {
+      try {
+        const res = await fetch('/api/v1/orders');
+        const orders = await res.json();
+        document.getElementById('tab-orders-badge').innerText = orders.length;
+        const tbody = document.getElementById('orders-body');
+        
+        if (orders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-slate-400">Пока нет заказов. При поступлении заказа в Kaspi Pay он появится здесь автоматически.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        orders.forEach(o => {
+          const date = new Date(o.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+          const row = document.createElement('tr');
+          row.className = "hover:bg-slate-50 transition";
+          row.innerHTML = `
+            <td class="py-3.5 px-6 font-mono font-bold text-slate-900">${o.external_order_id}</td>
+            <td class="py-3.5 px-6 text-slate-500 font-mono text-[11px]">${date}</td>
+            <td class="py-3.5 px-6 font-semibold text-slate-800">${o.customer_name || 'Клиент Kaspi'}</td>
+            <td class="py-3.5 px-6">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                ${o.status}
+              </span>
+            </td>
+            <td class="py-3.5 px-6 font-bold text-slate-900">${formatKZT(o.total_sale_amount)}</td>
+            <td class="py-3.5 px-6 font-bold text-emerald-700">${formatKZT(o.net_profit)}</td>
+            <td class="py-3.5 px-6 text-slate-600 font-semibold">${o.margin_percent}%</td>
+            <td class="py-3.5 px-6">
+              <div class="flex items-center gap-1.5">
+                <button onclick="printShippingLabel('${o.id}', '58x40')" class="text-[11px] kaspi-gradient-btn text-white font-bold px-2.5 py-1 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1">
+                  <i data-lucide="printer" class="w-3 h-3"></i> 58×40
+                </button>
+                <button onclick="printShippingLabel('${o.id}', '75x120')" class="text-[11px] bg-white hover:bg-slate-100 text-slate-700 font-bold border border-slate-200 px-2.5 py-1 rounded-xl shadow-xs transition active:scale-95">
+                  75×120
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load orders", e);
+      }
+    }
+
+    // Telegram Bot Modal
+    async function openTelegramModal() {
+      const modal = document.getElementById('telegram-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
+      document.getElementById('tg-test-result').classList.add('hidden');
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/notifications/telegram/config');
+        const data = await res.json();
+        if (data.chat_id) document.getElementById('tg-chat-id').value = data.chat_id;
+        if (data.has_token) document.getElementById('tg-bot-token').placeholder = "•••••••••••••••••••••••• (Токен уже сохранен)";
+      } catch (e) {}
+    }
+
+    function closeTelegramModal() {
+      const modal = document.getElementById('telegram-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.add('scale-95');
+    }
+
+    async function sendTestTelegramMessage() {
+      const token = document.getElementById('tg-bot-token').value;
+      const chatId = document.getElementById('tg-chat-id').value;
+      const resBox = document.getElementById('tg-test-result');
+      const btn = document.getElementById('btn-tg-test');
+
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Отправка...`;
+      lucide.createIcons();
+
+      try {
+        const payload = token ? { bot_token: token, chat_id: chatId } : null;
+        const res = await fetch('/api/v1/notifications/telegram/test', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload ? JSON.stringify(payload) : null
+        });
+        const data = await res.json();
+
+        resBox.classList.remove('hidden');
+        if (res.ok && data.status === 'success') {
+          resBox.className = "p-3 rounded-xl text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold";
+          resBox.innerText = `✓ ${data.message}`;
+          showToast("Сообщение успешно отправлено в ваш Telegram!");
+        } else {
+          resBox.className = "p-3 rounded-xl text-[11px] bg-rose-50 text-rose-800 border border-rose-200 font-semibold";
+          resBox.innerText = `✗ ${data.message || data.detail || 'Ошибка отправки'}`;
+        }
+      } catch (e) {
+        resBox.className = "p-3 rounded-xl text-[11px] bg-rose-50 text-rose-800 border border-rose-200 font-semibold";
+        resBox.innerText = "Ошибка соединения с сервером";
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="bell" class="w-3.5 h-3.5"></i> Тест отправки`;
+        lucide.createIcons();
+      }
+    }
+
+    async function saveTelegramConfig() {
+      const token = document.getElementById('tg-bot-token').value;
+      const chatId = document.getElementById('tg-chat-id').value;
+      if (!token || !chatId) {
+        alert("Пожалуйста, заполните Bot Token и Chat ID");
+        return;
+      }
+      try {
+        const res = await fetch('/api/v1/notifications/telegram/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bot_token: token, chat_id: chatId })
+        });
+        if (res.ok) {
+          showToast("Telegram бот успешно настроен!");
+          closeTelegramModal();
+        } else {
+          alert("Ошибка сохранения");
+        }
+      } catch (e) {
+        alert("Ошибка сети");
+      }
     }
 
     // Load Kaspi Shops (Multi-Account - Task 5)
@@ -793,7 +1041,7 @@
       document.getElementById('feed-url-astana').innerText = `${host}/api/v1/kaspi/feed/${slug}.xml?city=PP2`;
     }
 
-    // Kaspi Settings Modal (Task 3)
+    // Kaspi Settings Modal
     function openKaspiSettingsModal() {
       if (!currentShop && allShops.length > 0) currentShop = allShops[0];
       if (currentShop) {
@@ -887,7 +1135,7 @@
       }
     }
 
-    // Add New Shop Modal (Task 5)
+    // Add New Shop Modal
     function openNewShopModal() {
       const modal = document.getElementById('new-shop-modal');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -942,7 +1190,7 @@
       }
     }
 
-    // Suppliers Tab & URL Auto-Sync (Task 4)
+    // Suppliers Tab & URL Auto-Sync
     async function loadSuppliersList() {
       try {
         const prodRes = await fetch('/api/v1/catalog/products');
@@ -957,7 +1205,6 @@
 
         sups.forEach(s => {
           const cfg = s.feed_config || {};
-          const hasUrl = !!cfg.feed_url;
           const autoSync = !!cfg.auto_sync_enabled;
           const lastSync = cfg.last_synced_at ? new Date(cfg.last_synced_at).toLocaleString('ru-RU') : 'Никогда';
 
@@ -1044,7 +1291,7 @@
       }
     }
 
-    // Database Guide Modal (Task 1)
+    // Database Guide Modal
     function openDbGuideModal() {
       const modal = document.getElementById('db-guide-modal');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -1365,7 +1612,7 @@
           });
           data = await res.json();
         } else {
-          // URL mode (Task 4)
+          // URL mode
           const urlInput = document.getElementById('upload-feed-url-input').value;
           if (!urlInput) {
             alert("Пожалуйста, введите ссылку на прайс");
@@ -1374,13 +1621,11 @@
             return;
           }
           const autoSync = document.getElementById('upload-auto-sync-check').checked;
-          // Update config first
           await fetch(`/api/v1/suppliers/${supplierId}/feed-config`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ feed_url: urlInput, auto_sync_enabled: autoSync })
           });
-          // Now trigger sync
           res = await fetch(`/api/v1/suppliers/${supplierId}/sync-url?feed_url=${encodeURIComponent(urlInput)}`, {
             method: 'POST'
           });
@@ -1460,7 +1705,7 @@
         alert("Ошибка при пересчете цен");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> Запустить пересчет цен`;
+        btn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> Пересчитать цены`;
         lucide.createIcons();
       }
     }
@@ -1480,6 +1725,7 @@
     loadKaspiShops();
     loadAnalytics();
     loadCatalog();
+    loadOrders();
     loadReviewQueue();
     loadSuppliersList();
     loadTasks();

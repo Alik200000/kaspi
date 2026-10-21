@@ -36,44 +36,68 @@ class KaspiRepricerEngine:
         competitors: List[Dict[str, Any]], # e.g. [{"merchant": "Technodom", "price": 395000}]
         floor_price: Decimal,
         ceiling_price: Optional[Decimal] = None,
-        strategy: str = "competitor_minus_1"
+        strategy: str = "competitor_minus_1",
+        blacklisted_merchants: Optional[List[str]] = None,
+        night_mode_enabled: bool = False,
+        night_markup_percent: Decimal = Decimal("3.0")
     ) -> Tuple[Decimal, str, Optional[Dict[str, Any]]]:
         """
         Calculates optimal target price based on competitor landscape.
-        Returns: (target_price, action_reason, top_competitor)
+        Supports:
+        - Floor Price Guard (prevents loss)
+        - Competitor undercutting (-10 KZT)
+        - Upward price pull (steps up if competitor raises price or goes OOS)
+        - Blacklist filter (ignores rogue/fake dumping merchants)
+        - Night Mode (boosts margin during low-activity night hours)
         """
-        if not competitors or strategy == "disabled":
-            return (current_our_price, "no_competitors_or_disabled", None)
+        if strategy == "disabled":
+            return (current_our_price, "strategy_disabled", None)
+
+        # 1. Filter out blacklisted merchants (fake dumpers)
+        blacklist = set(m.lower().strip() for m in (blacklisted_merchants or []))
+        filtered_comps = [
+            c for c in competitors
+            if c.get("price") and Decimal(str(c["price"])) > 0
+            and c.get("merchant", "").lower().strip() not in blacklist
+        ]
+
+        if not filtered_comps:
+            # If no valid competitors remain, pull price up to ceiling or keep current
+            target = ceiling_price if ceiling_price else current_our_price
+            return (target, "no_valid_competitors_ceiling_applied", None)
 
         # Sort competitors by price ascending
         valid_competitors = sorted(
-            [c for c in competitors if c.get("price") and Decimal(str(c["price"])) > 0],
+            filtered_comps,
             key=lambda c: Decimal(str(c["price"]))
         )
-
-        if not valid_competitors:
-            return (current_our_price, "no_valid_competitors", None)
 
         top_competitor = valid_competitors[0]
         top_comp_price = Decimal(str(top_competitor["price"]))
 
         if strategy == "competitor_minus_1":
-            # Undercut competitor by 1 KZT (or 10 KZT) to win Top-1 position
+            # Undercut competitor by 10 KZT to capture Top-1 position
             target = top_comp_price - Decimal("10")
 
-            # Check if competitor is severely dumping below our floor price
+            # Check if competitor is dumping below our floor price
             if target < floor_price:
-                # Fall back to floor price to prevent selling at a loss
                 return (floor_price, "floor_price_guard_activated", top_competitor)
 
             # Check price ceiling if configured
             if ceiling_price and target > ceiling_price:
                 target = ceiling_price
 
-            # If our current price is already lower and competitor #2 is far higher,
-            # we can optimize upwards while still beating top competitor:
+            # Night Mode: during night hours, boost margin slightly (+3%)
+            if night_mode_enabled:
+                night_target = target * (Decimal("1") + (night_markup_percent / Decimal("100")))
+                if ceiling_price:
+                    night_target = min(night_target, ceiling_price)
+                return (night_target.quantize(Decimal("1"), rounding=ROUND_HALF_UP), "night_mode_margin_boost", top_competitor)
+
+            # Upward recovery: if our current price was dumped lower but competitor raised price,
+            # we pull our price up to target
             if current_our_price < target:
-                return (target, "undercut_competitor_to_win_top_1", top_competitor)
+                return (target, "pulled_price_upward_to_maximize_profit", top_competitor)
             elif current_our_price == target:
                 return (target, "holding_top_1_position", top_competitor)
             else:
