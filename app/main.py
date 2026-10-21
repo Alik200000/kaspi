@@ -71,6 +71,7 @@ from pathlib import Path
 TEMPLATES_DIR = Path(__file__).resolve().parent / "templates"
 
 
+@app.get("/", response_class=HTMLResponse, tags=["Dashboard UI"])
 @app.get("/ui", response_class=HTMLResponse, tags=["Dashboard UI"])
 async def dashboard_ui():
     index_file = TEMPLATES_DIR / "index.html"
@@ -88,7 +89,7 @@ async def health_check():
     }
 
 
-@app.get("/", tags=["Root"])
+@app.get("/api", tags=["Root"])
 async def root():
     return {
         "message": f"Welcome to {settings.PROJECT_NAME}",
