@@ -42,6 +42,9 @@ class Settings(BaseSettings):
                 url = url.replace("postgres://", "postgresql+asyncpg://", 1)
             elif url.startswith("postgresql://") and not url.startswith("postgresql+asyncpg://"):
                 url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+            # Render managed postgres supplies ?sslmode=require which asyncpg does not accept as a query param
+            if "sslmode=require" in url:
+                url = url.replace("sslmode=require", "ssl=require")
             return url
         # Default to local SQLite for seamless local running
         return "sqlite+aiosqlite:///./ecommerce_saas.db"

@@ -21,6 +21,26 @@ class KaspiClient:
             "User-Agent": "KaspiSaaSPlatform/1.0"
         }
 
+    async def test_connection(self) -> Dict[str, Any]:
+        """
+        Tests the API token against Kaspi API and returns human-friendly diagnosis.
+        """
+        url = f"{self.base_url}/orders"
+        params = {"page[number]": 0, "page[size]": 1}
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            try:
+                response = await client.get(url, headers=self.headers, params=params)
+                if response.status_code == 200:
+                    return {"valid": True, "status_code": 200, "message": "Подключение успешно! Токен Kaspi API валиден."}
+                elif response.status_code in (401, 403):
+                    return {"valid": False, "status_code": response.status_code, "message": "Ошибка авторизации: неверный API-токен или доступ запрещен."}
+                elif response.status_code == 302:
+                    return {"valid": False, "status_code": 302, "message": "Редирект Kaspi: проверьте статус аккаунта в кабинете Kaspi Pay."}
+                else:
+                    return {"valid": False, "status_code": response.status_code, "message": f"Kaspi API ответил кодом {response.status_code}"}
+            except Exception as e:
+                return {"valid": False, "status_code": 500, "message": f"Ошибка сети при проверке Kaspi API: {str(e)}"}
+
     async def get_orders(
         self,
         state: Optional[str] = None, # e.g. "NEW", "SIGN_REQUIRED", "PICKUP", "DELIVERY", "COMPLETED"

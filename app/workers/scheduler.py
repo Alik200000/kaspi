@@ -2,7 +2,11 @@ import asyncio
 import logging
 from datetime import datetime
 from typing import Dict, Any, Optional
-from app.workers.tasks import run_reprice_and_kaspi_sync_task, run_poll_kaspi_orders_task
+from app.workers.tasks import (
+    run_reprice_and_kaspi_sync_task,
+    run_poll_kaspi_orders_task,
+    run_sync_supplier_feeds_task
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +35,13 @@ class TaskScheduler:
                 "status": "IDLE",
                 "last_result": None,
                 "run_count": 0
+            },
+            "sync_supplier_feeds": {
+                "interval_seconds": 3600, # Every 1 hour
+                "last_run": None,
+                "status": "IDLE",
+                "last_result": None,
+                "run_count": 0
             }
         }
 
@@ -49,6 +60,8 @@ class TaskScheduler:
                 res = await run_reprice_and_kaspi_sync_task()
             elif task_name == "poll_kaspi_orders":
                 res = await run_poll_kaspi_orders_task()
+            elif task_name == "sync_supplier_feeds":
+                res = await run_sync_supplier_feeds_task()
             else:
                 res = {"status": "error", "message": "Unknown task handler"}
 

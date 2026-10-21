@@ -67,18 +67,18 @@
 </head>
 <body class="bg-[#f6f8fb] text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
 
-  <!-- Ambient Ambient Glow Background Blobs (Kaspi aesthetic) -->
+  <!-- Ambient Glow Background Blobs (Kaspi aesthetic) -->
   <div class="fixed top-0 left-1/4 w-[36rem] h-[36rem] bg-rose-400/10 rounded-full blur-[110px] pointer-events-none -z-10"></div>
   <div class="fixed top-40 right-10 w-[30rem] h-[30rem] bg-amber-400/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
   <div class="fixed bottom-10 left-10 w-[28rem] h-[28rem] bg-sky-300/15 rounded-full blur-[100px] pointer-events-none -z-10"></div>
 
   <!-- Header / Navigation (Glassmorphic) -->
   <header class="kaspi-glass sticky top-0 z-40 border-b border-white/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 py-3 flex flex-wrap items-center justify-between gap-4">
       
       <!-- Brand Logo & Name -->
       <div class="flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-2xl kaspi-gradient-btn flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-rose-500/25 tracking-wider">
+        <div class="w-11 h-11 rounded-2xl kaspi-gradient-btn flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-rose-500/25 tracking-wider shrink-0">
           K
         </div>
         <div>
@@ -87,31 +87,45 @@
               Kaspi & Supplier Hub
             </h1>
             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-[#f14635] border border-rose-200">
-              SaaS Core
+              Pro v2.0
             </span>
           </div>
           <p class="text-xs text-slate-500">Автоматизация прайсов, мульти-фиды и Kaspi Bot Repricer</p>
         </div>
       </div>
 
+      <!-- Center: Multi-Store Kaspi Switcher (Task 5) -->
+      <div class="flex items-center gap-2 bg-white/70 border border-slate-200/80 rounded-2xl px-3 py-1.5 shadow-xs">
+        <i data-lucide="store" class="w-4 h-4 text-[#f14635] shrink-0"></i>
+        <div class="text-left">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Магазин Kaspi:</div>
+          <select id="shop-selector" onchange="onShopChange()" class="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer pr-4">
+            <option value="">Загрузка магазинов...</option>
+          </select>
+        </div>
+        <button onclick="openNewShopModal()" title="Добавить еще один магазин Kaspi (ИП / ТОО)" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        </button>
+        <button onclick="openKaspiSettingsModal()" title="Настройки API токена и ссылки на XML-фид" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </button>
+      </div>
+
       <!-- Action Buttons -->
-      <div class="flex items-center space-x-2.5">
-        <a href="/api/v1/orders/export/excel" download class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-sm hover:shadow transition flex items-center gap-1.5 active:scale-95">
-          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Экспорт Excel
+      <div class="flex items-center space-x-2">
+        <a href="/api/v1/orders/export/excel" download class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm hover:shadow transition flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> Excel
         </a>
 
-        <button onclick="openUploadModal()" class="text-xs kaspi-gradient-btn text-white font-semibold px-4 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95">
-          <i data-lucide="upload" class="w-4 h-4"></i> Загрузить прайс
+        <button onclick="openUploadModal()" class="text-xs kaspi-gradient-btn text-white font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95 shadow-md shadow-rose-500/25">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i> Загрузить прайс
         </button>
 
-        <div class="h-6 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+        <button onclick="openDbGuideModal()" title="Статус базы данных и руководство по PostgreSQL" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-medium px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1.5">
+          <i data-lucide="database" class="w-3.5 h-3.5 text-sky-600"></i> БД
+        </button>
 
-        <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
-          Система онлайн
-        </span>
-
-        <a href="/docs" target="_blank" class="text-xs bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 px-3 py-2 rounded-xl border border-slate-200/70 transition flex items-center gap-1">
+        <a href="/docs" target="_blank" class="text-xs bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 px-2.5 py-2 rounded-xl border border-slate-200/70 transition flex items-center gap-1">
           <i data-lucide="code" class="w-3.5 h-3.5"></i> Swagger
         </a>
       </div>
@@ -194,25 +208,28 @@
         </p>
       </div>
 
-      <div class="flex items-center gap-3 shrink-0 z-10">
-        <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95">
+      <div class="flex items-center gap-2.5 shrink-0 z-10">
+        <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-rose-500/25">
           <i data-lucide="zap" class="w-4 h-4"></i>
           Запустить пересчет цен
         </button>
-        <a href="/api/v1/kaspi/feed/techtrade-almaty.xml" target="_blank" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
+        <button onclick="openKaspiSettingsModal()" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
           <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
           Kaspi XML фид
-        </a>
+        </button>
       </div>
     </div>
 
     <!-- Navigation Tabs (Glass Pills) -->
-    <div class="flex items-center gap-2 border-b border-slate-200/80 pb-3">
+    <div class="flex items-center gap-2 border-b border-slate-200/80 pb-3 flex-wrap">
       <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn active px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-[#f14635] text-white shadow-md shadow-rose-500/20">
         <i data-lucide="layers" class="w-4 h-4"></i> Каталог Master SKU (<span id="tab-catalog-badge">5</span>)
       </button>
       <button onclick="switchTab('review')" id="tab-btn-review" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="user-check" class="w-4 h-4"></i> Очередь модерации (<span id="tab-review-badge">0</span>)
+      </button>
+      <button onclick="switchTab('suppliers')" id="tab-btn-suppliers" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="link" class="w-4 h-4"></i> Поставщики & Авто-URL
       </button>
       <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="bell" class="w-4 h-4"></i> Уведомления и алерты
@@ -291,13 +308,32 @@
             </tr>
           </thead>
           <tbody id="review-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
-            <tr><td colspan="7" class="text-center py-8 text-slate-400">Нет предложений, ожидающих ручной проверки. Все сопоставлены автоматически!</td></tr>
+            <tr><td colspan="7" class="text-center py-8 text-slate-400">Загрузка очереди проверки...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- TAB 3: Alerts Section -->
+    <!-- TAB 3: Suppliers & Auto-URL Sync (Task 4) -->
+    <div id="tab-pane-suppliers" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
+            <i data-lucide="link" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Поставщики и авто-загрузка прайсов по ссылке (URL / Google Sheets)</h3>
+            <p class="text-[11px] text-slate-500">Система автоматически скачивает прайс по ссылке каждые 4 часа и сопоставляет SKU</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="suppliers-list">
+        <div class="text-xs text-slate-400">Загрузка поставщиков...</div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Alerts Section -->
     <div id="tab-pane-alerts" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
@@ -314,7 +350,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: Background Tasks Section -->
+    <!-- TAB 5: Background Tasks Section -->
     <div id="tab-pane-tasks" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
@@ -323,7 +359,7 @@
           </div>
           <div>
             <h3 class="font-bold text-sm text-slate-900">Фоновый планировщик задач (Cron Scheduler)</h3>
-            <p class="text-[11px] text-slate-500">Автоматический парсинг, пересчет маржи и синхронизация каждые N секунд</p>
+            <p class="text-[11px] text-slate-500">Автоматический парсинг, пересчет маржи и синхронизация</p>
           </div>
         </div>
         <span class="text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-xl border border-emerald-200">
@@ -338,7 +374,160 @@
 
   </main>
 
-  <!-- Upload Feed Modal (Glass Modal) -->
+  <!-- MODAL: Kaspi Shop Settings & XML Feed Links (Task 3) -->
+  <div id="kaspi-settings-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-5 transform transition-transform scale-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl kaspi-gradient-btn flex items-center justify-center text-white font-extrabold text-base shadow-sm">
+            K
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900" id="settings-shop-title">Настройки подключения Kaspi.kz</h3>
+            <p class="text-[11px] text-slate-500">Merchant API токен и XML-фиды для кабинета Kaspi Pay</p>
+          </div>
+        </div>
+        <button onclick="closeKaspiSettingsModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Название магазина в системе</label>
+          <input type="text" id="kaspi-shop-name-input" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-medium focus:bg-white focus:outline-none focus:border-[#f14635]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Merchant ID</label>
+            <input type="text" id="kaspi-merchant-id-input" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Склад по умолчанию</label>
+            <select id="kaspi-store-id-select" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-semibold focus:bg-white focus:outline-none focus:border-[#f14635]">
+              <option value="PP1">Алматы (PP1)</option>
+              <option value="PP2">Астана (PP2)</option>
+              <option value="PP3">Шымкент (PP3)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Kaspi Merchant API Токен (X-Auth-Token)</label>
+          <div class="flex gap-2">
+            <input type="password" id="kaspi-api-token-input" placeholder="Вставьте токен из кабинета Kaspi Pay..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+            <button onclick="testActiveShopConnection()" id="btn-test-token" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1.5 shrink-0">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i> Проверить токен
+            </button>
+          </div>
+          <div id="token-test-result" class="hidden mt-2 p-2.5 rounded-xl text-[11px]"></div>
+        </div>
+
+        <!-- XML Feed Links (Copy-ready for Kaspi) -->
+        <div class="bg-rose-50/50 border border-rose-100 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 flex items-center gap-1.5">
+              <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i> Ссылки на XML-фид для кабинета Kaspi:
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Скопируйте нужную ссылку ниже и вставьте в кабинете продавца: <strong>Настройки ➔ Загрузка прайс-листа ➔ Ссылка на XML</strong>:
+          </p>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between bg-white border border-rose-200/80 rounded-xl px-3 py-2 text-[11px]">
+              <div>
+                <span class="font-bold text-slate-800">Алматы (PP1):</span>
+                <span class="font-mono text-slate-500 ml-1.5" id="feed-url-almaty">...</span>
+              </div>
+              <button onclick="copyToClipboard('feed-url-almaty')" class="text-xs text-[#f14635] hover:text-[#e13b2b] font-bold px-2 py-0.5 rounded hover:bg-rose-50 transition">Копировать</button>
+            </div>
+            <div class="flex items-center justify-between bg-white border border-rose-200/80 rounded-xl px-3 py-2 text-[11px]">
+              <div>
+                <span class="font-bold text-slate-800">Астана (PP2):</span>
+                <span class="font-mono text-slate-500 ml-1.5" id="feed-url-astana">...</span>
+              </div>
+              <button onclick="copyToClipboard('feed-url-astana')" class="text-xs text-[#f14635] hover:text-[#e13b2b] font-bold px-2 py-0.5 rounded hover:bg-rose-50 transition">Копировать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2.5 pt-2">
+          <button onclick="closeKaspiSettingsModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition">
+            Закрыть
+          </button>
+          <button onclick="saveKaspiSettings()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition flex items-center gap-1.5 active:scale-95 shadow-md shadow-rose-500/25">
+            <i data-lucide="check" class="w-4 h-4"></i> Сохранить настройки
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Add New Kaspi Shop (Task 5) -->
+  <div id="new-shop-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Подключить новый магазин Kaspi</h3>
+            <p class="text-[11px] text-slate-500">Мульти-аккаунты (ИП, ТОО или второй магазин)</p>
+          </div>
+        </div>
+        <button onclick="closeNewShopModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Название магазина</label>
+          <input type="text" id="new-shop-name" placeholder="Например: ИП Ибрагимов Kaspi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-medium focus:bg-white focus:outline-none focus:border-[#f14635]">
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Merchant ID</label>
+          <input type="text" id="new-shop-merchant-id" placeholder="ID мерчанта из Kaspi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Kaspi API Токен</label>
+          <input type="password" id="new-shop-api-token" placeholder="X-Auth-Token..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Уникальный Slug фида</label>
+            <input type="text" id="new-shop-feed-slug" placeholder="shop-almaty" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Склад по умолчанию</label>
+            <select id="new-shop-city" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-semibold focus:bg-white focus:outline-none focus:border-[#f14635]">
+              <option value="PP1">Алматы (PP1)</option>
+              <option value="PP2">Астана (PP2)</option>
+              <option value="PP3">Шымкент (PP3)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2.5 pt-3">
+          <button onclick="closeNewShopModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition">
+            Отмена
+          </button>
+          <button onclick="submitNewKaspiShop()" class="px-5 py-2 rounded-xl kaspi-gradient-btn text-white font-bold transition flex items-center gap-1.5 shadow-md shadow-rose-500/25">
+            <i data-lucide="check" class="w-4 h-4"></i> Создать магазин
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Upload Feed with Dual Tab: File & URL (Task 4) -->
   <div id="upload-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200" id="upload-modal-content">
       
@@ -357,6 +546,16 @@
         </button>
       </div>
 
+      <!-- Mode Selector (File vs URL) -->
+      <div class="flex rounded-xl bg-slate-100 p-1 text-xs font-bold text-slate-600">
+        <button onclick="switchUploadMode('file')" id="btn-mode-file" class="flex-1 py-1.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1.5">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Файл с диска (CSV/XLSX)
+        </button>
+        <button onclick="switchUploadMode('url')" id="btn-mode-url" class="flex-1 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition flex items-center justify-center gap-1.5">
+          <i data-lucide="link" class="w-3.5 h-3.5"></i> По ссылке (Google Sheets / URL)
+        </button>
+      </div>
+
       <div class="space-y-4 text-xs">
         <div>
           <label class="block text-slate-700 font-semibold mb-1.5">Выберите поставщика</label>
@@ -365,16 +564,30 @@
           </select>
         </div>
 
-        <div>
+        <!-- Mode 1: File Drop Zone -->
+        <div id="upload-panel-file">
           <label class="block text-slate-700 font-semibold mb-1.5">Файл прайс-листа (.CSV или .XLSX Excel)</label>
           <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-[#f14635] rounded-2xl p-7 text-center cursor-pointer transition bg-slate-50/50 hover:bg-rose-50/30">
             <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex items-center justify-center text-[#f14635]">
               <i data-lucide="upload-cloud" class="w-6 h-6"></i>
             </div>
             <p class="text-slate-800 font-bold" id="file-name-label">Перетащите файл сюда или нажмите для выбора</p>
-            <p class="text-[11px] text-slate-500 mt-1">Автоматическая очистка валют (KZT, ₸, пробелы) и каскадный матчинг</p>
+            <p class="text-[11px] text-slate-500 mt-1">Авто-очистка валют (KZT, ₸, пробелы) и каскадный матчинг</p>
             <input type="file" id="feed-file-input" class="hidden" accept=".csv, .xlsx, .xls">
           </div>
+        </div>
+
+        <!-- Mode 2: URL / Google Sheets (Task 4) -->
+        <div id="upload-panel-url" class="hidden space-y-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1.5">Ссылка на прайс (URL или Google Таблицы)</label>
+            <input type="url" id="upload-feed-url-input" placeholder="https://docs.google.com/spreadsheets/d/... или http://site.kz/feed.csv" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:bg-white focus:outline-none focus:border-[#f14635]">
+            <p class="text-[11px] text-slate-500 mt-1">Ссылка на Google Таблицу автоматически преобразуется в прямой CSV экспорт.</p>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer text-slate-700 font-medium">
+            <input type="checkbox" id="upload-auto-sync-check" checked class="rounded text-[#f14635] focus:ring-[#f14635]">
+            <span>Автоматически скачивать по расписанию каждые 4 часа</span>
+          </label>
         </div>
 
         <div id="upload-progress-box" class="hidden space-y-2">
@@ -394,8 +607,57 @@
           <button onclick="closeUploadModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition">
             Отмена
           </button>
-          <button id="btn-submit-upload" onclick="submitFeedUpload()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition flex items-center gap-1.5 active:scale-95 shadow-lg shadow-rose-500/25">
-            <i data-lucide="check" class="w-4 h-4"></i> Импортировать прайс
+          <button id="btn-submit-upload" onclick="submitFeedUpload()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition flex items-center gap-1.5 active:scale-95 shadow-md shadow-rose-500/25">
+            <i data-lucide="check" class="w-4 h-4"></i> Импортировать
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Database Guide (Task 1) -->
+  <div id="db-guide-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+            <i data-lucide="database" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Постоянная база данных PostgreSQL</h3>
+            <p class="text-[11px] text-slate-500">Сохранение каталога, прайсов и заказов в облаке</p>
+          </div>
+        </div>
+        <button onclick="closeDbGuideModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-700 leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-100 flex items-start gap-2.5">
+          <i data-lucide="info" class="w-4 h-4 text-sky-600 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold text-sky-900">Текущий режим: </span>
+            <span id="db-mode-label" class="font-semibold text-slate-800">Авто-определение (Поддержка PostgreSQL + SQLite)</span>
+            <div class="text-[11px] text-sky-800 mt-0.5">При перезапуске контейнера Render данные будут сохраняться навсегда при подключении PostgreSQL.</div>
+          </div>
+        </div>
+
+        <h4 class="font-bold text-slate-900">Как подключить бесплатный PostgreSQL на Render:</h4>
+        <ol class="list-decimal list-inside space-y-2 text-slate-600 text-[11px]">
+          <li>В панели <strong>Render.com</strong> нажмите <strong>New + ➔ PostgreSQL</strong>.</li>
+          <li>Укажите любое имя (например: <code>kaspi-db</code>) и нажмите <strong>Create Database</strong>.</li>
+          <li>Скопируйте строку <strong>Internal Database URL</strong> (или External).</li>
+          <li>Откройте ваш Web Service <code>kaspi-ecommerce-saas</code> ➔ раздел <strong>Environment</strong> ➔ добавьте переменную:
+            <div class="font-mono bg-slate-100 p-2 rounded-xl mt-1 text-slate-800 select-all">DATABASE_URL = postgres://...</div>
+          </li>
+          <li>Сервис автоматически применит драйвер <code>postgresql+asyncpg</code> и создаст все таблицы!</li>
+        </ol>
+
+        <div class="flex justify-end pt-2">
+          <button onclick="closeDbGuideModal()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition">
+            Понятно
           </button>
         </div>
       </div>
@@ -447,6 +709,10 @@
     // Initialize Lucide Icons
     lucide.createIcons();
 
+    let allShops = [];
+    let currentShop = null;
+    let uploadMode = 'file'; // 'file' or 'url'
+
     // Tab switching logic
     function switchTab(tab) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
@@ -478,6 +744,340 @@
     function formatKZT(num) {
       if (num === null || num === undefined) return '—';
       return new Intl.NumberFormat('ru-RU').format(Math.round(num)) + ' ₸';
+    }
+
+    function copyToClipboard(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text);
+      showToast("Ссылка скопирована в буфер обмена!");
+    }
+
+    // Load Kaspi Shops (Multi-Account - Task 5)
+    async function loadKaspiShops() {
+      try {
+        const res = await fetch('/api/v1/kaspi/shops');
+        allShops = await res.json();
+        const selector = document.getElementById('shop-selector');
+        
+        if (allShops.length === 0) {
+          selector.innerHTML = '<option value="">Нет магазинов</option>';
+          return;
+        }
+
+        selector.innerHTML = allShops.map(s => `
+          <option value="${s.id}">${s.name} (${s.default_store_id})</option>
+        `).join('');
+
+        if (!currentShop && allShops.length > 0) {
+          currentShop = allShops[0];
+          selector.value = currentShop.id;
+        }
+        updateShopFeedLinksUI();
+      } catch (err) {
+        console.error("Failed to load Kaspi shops", err);
+      }
+    }
+
+    function onShopChange() {
+      const shopId = document.getElementById('shop-selector').value;
+      currentShop = allShops.find(s => s.id === shopId) || allShops[0];
+      updateShopFeedLinksUI();
+      showToast(`Выбран магазин: ${currentShop.name}`);
+    }
+
+    function updateShopFeedLinksUI() {
+      if (!currentShop) return;
+      const host = window.location.origin;
+      const slug = currentShop.feed_slug || 'techtrade-almaty';
+      document.getElementById('feed-url-almaty').innerText = `${host}/api/v1/kaspi/feed/${slug}.xml?city=PP1`;
+      document.getElementById('feed-url-astana').innerText = `${host}/api/v1/kaspi/feed/${slug}.xml?city=PP2`;
+    }
+
+    // Kaspi Settings Modal (Task 3)
+    function openKaspiSettingsModal() {
+      if (!currentShop && allShops.length > 0) currentShop = allShops[0];
+      if (currentShop) {
+        document.getElementById('settings-shop-title').innerText = `Настройки: ${currentShop.name}`;
+        document.getElementById('kaspi-shop-name-input').value = currentShop.name;
+        document.getElementById('kaspi-merchant-id-input').value = currentShop.merchant_id;
+        document.getElementById('kaspi-api-token-input').value = currentShop.api_token;
+        document.getElementById('kaspi-store-id-select').value = currentShop.default_store_id || 'PP1';
+      }
+      document.getElementById('token-test-result').classList.add('hidden');
+      updateShopFeedLinksUI();
+
+      const modal = document.getElementById('kaspi-settings-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
+      lucide.createIcons();
+    }
+
+    function closeKaspiSettingsModal() {
+      const modal = document.getElementById('kaspi-settings-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.add('scale-95');
+    }
+
+    async function testActiveShopConnection() {
+      if (!currentShop) return;
+      const btn = document.getElementById('btn-test-token');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Проверка...`;
+      lucide.createIcons();
+
+      const resBox = document.getElementById('token-test-result');
+      resBox.classList.remove('hidden');
+      resBox.className = "mt-2 p-2.5 rounded-xl text-[11px] bg-slate-100 text-slate-700";
+      resBox.innerText = "Подключение к Kaspi API...";
+
+      try {
+        const tokenVal = document.getElementById('kaspi-api-token-input').value;
+        const res = await fetch('/api/v1/kaspi/shops/test-credentials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_token: tokenVal })
+        });
+        const data = await res.json();
+        
+        if (data.valid) {
+          resBox.className = "mt-2 p-2.5 rounded-xl text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold";
+          resBox.innerHTML = `✓ ${data.message}`;
+          showToast("Токен Kaspi API валиден!");
+        } else {
+          resBox.className = "mt-2 p-2.5 rounded-xl text-[11px] bg-rose-50 text-rose-800 border border-rose-200 font-semibold";
+          resBox.innerHTML = `✗ ${data.message}`;
+        }
+      } catch (err) {
+        resBox.className = "mt-2 p-2.5 rounded-xl text-[11px] bg-rose-50 text-rose-800 border border-rose-200 font-semibold";
+        resBox.innerText = "Ошибка соединения с Kaspi API";
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i> Проверить токен`;
+        lucide.createIcons();
+      }
+    }
+
+    async function saveKaspiSettings() {
+      if (!currentShop) return;
+      const name = document.getElementById('kaspi-shop-name-input').value;
+      const merchantId = document.getElementById('kaspi-merchant-id-input').value;
+      const token = document.getElementById('kaspi-api-token-input').value;
+      const storeId = document.getElementById('kaspi-store-id-select').value;
+
+      try {
+        const res = await fetch(`/api/v1/kaspi/shops/${currentShop.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            merchant_id: merchantId,
+            api_token: token,
+            default_store_id: storeId
+          })
+        });
+        if (res.ok) {
+          showToast("Настройки Kaspi сохранены!");
+          closeKaspiSettingsModal();
+          await loadKaspiShops();
+        } else {
+          alert("Ошибка сохранения настроек");
+        }
+      } catch (e) {
+        alert("Ошибка сети");
+      }
+    }
+
+    // Add New Shop Modal (Task 5)
+    function openNewShopModal() {
+      const modal = document.getElementById('new-shop-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
+      lucide.createIcons();
+    }
+
+    function closeNewShopModal() {
+      const modal = document.getElementById('new-shop-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.add('scale-95');
+    }
+
+    async function submitNewKaspiShop() {
+      const name = document.getElementById('new-shop-name').value;
+      const merchantId = document.getElementById('new-shop-merchant-id').value;
+      const token = document.getElementById('new-shop-api-token').value;
+      const slug = document.getElementById('new-shop-feed-slug').value;
+      const city = document.getElementById('new-shop-city').value;
+
+      if (!name || !merchantId || !token || !slug) {
+        alert("Пожалуйста, заполните все поля");
+        return;
+      }
+
+      try {
+        const prodRes = await fetch('/api/v1/catalog/products');
+        const prods = await prodRes.json();
+        const orgId = prods[0]?.organization_id;
+
+        const res = await fetch(`/api/v1/kaspi/shops?organization_id=${orgId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            merchant_id: merchantId,
+            api_token: token,
+            feed_slug: slug,
+            default_store_id: city
+          })
+        });
+
+        if (res.ok) {
+          showToast(`Магазин ${name} успешно добавлен!`);
+          closeNewShopModal();
+          await loadKaspiShops();
+        } else {
+          alert("Ошибка создания магазина. Возможно такой slug уже занят.");
+        }
+      } catch (e) {
+        alert("Ошибка при создании магазина");
+      }
+    }
+
+    // Suppliers Tab & URL Auto-Sync (Task 4)
+    async function loadSuppliersList() {
+      try {
+        const prodRes = await fetch('/api/v1/catalog/products');
+        const prods = await prodRes.json();
+        const orgId = prods[0]?.organization_id;
+        if (!orgId) return;
+
+        const res = await fetch(`/api/v1/suppliers?organization_id=${orgId}`);
+        const sups = await res.json();
+        const container = document.getElementById('suppliers-list');
+        container.innerHTML = '';
+
+        sups.forEach(s => {
+          const cfg = s.feed_config || {};
+          const hasUrl = !!cfg.feed_url;
+          const autoSync = !!cfg.auto_sync_enabled;
+          const lastSync = cfg.last_synced_at ? new Date(cfg.last_synced_at).toLocaleString('ru-RU') : 'Никогда';
+
+          const card = document.createElement('div');
+          card.className = "p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-xs space-y-3";
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900">${s.name}</h4>
+                <div class="text-[11px] text-slate-500 font-mono">Код: ${s.code} • Доставка: ${s.delivery_days} дн.</div>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${autoSync ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'}">
+                ${autoSync ? 'Авто-синхронизация ВКЛ' : 'Вручную'}
+              </span>
+            </div>
+
+            <div class="space-y-1.5 text-xs">
+              <label class="block text-[11px] font-semibold text-slate-600">Ссылка на прайс (URL / Google Таблицы):</label>
+              <div class="flex gap-2">
+                <input type="text" id="sup-url-${s.id}" value="${cfg.feed_url || ''}" placeholder="https://..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:bg-white focus:outline-none focus:border-[#f14635]">
+                <button onclick="saveSupplierUrl('${s.id}')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
+                  Сохранить
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px]">
+              <span class="text-slate-400">Посл. авто-синхронизация: <strong class="text-slate-700">${lastSync}</strong></span>
+              <button onclick="syncSupplierUrlNow('${s.id}')" id="btn-sync-${s.id}" class="text-xs kaspi-gradient-btn text-white font-bold px-3 py-1.5 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1.5">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Скачать сейчас
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+        lucide.createIcons();
+      } catch (err) {
+        console.error("Failed to load suppliers list", err);
+      }
+    }
+
+    async function saveSupplierUrl(supId) {
+      const url = document.getElementById(`sup-url-${supId}`).value;
+      try {
+        const res = await fetch(`/api/v1/suppliers/${supId}/feed-config`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ feed_url: url, auto_sync_enabled: true })
+        });
+        if (res.ok) {
+          showToast("Ссылка поставщика сохранена!");
+          await loadSuppliersList();
+        } else {
+          alert("Ошибка сохранения");
+        }
+      } catch (e) {
+        alert("Ошибка сети");
+      }
+    }
+
+    async function syncSupplierUrlNow(supId) {
+      const btn = document.getElementById(`btn-sync-${supId}`);
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Скачивание...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch(`/api/v1/suppliers/${supId}/sync-url`, { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`✓ Прайс скачан! Обработано ${data.processed_offers} предложений.`);
+          await loadCatalog();
+          await loadReviewQueue();
+          await loadSuppliersList();
+        } else {
+          alert(data.detail || "Ошибка скачивания по ссылке");
+        }
+      } catch (e) {
+        alert("Не удалось скачать прайс по ссылке");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Скачать сейчас`;
+        lucide.createIcons();
+      }
+    }
+
+    // Database Guide Modal (Task 1)
+    function openDbGuideModal() {
+      const modal = document.getElementById('db-guide-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
+      lucide.createIcons();
+    }
+
+    function closeDbGuideModal() {
+      const modal = document.getElementById('db-guide-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.add('scale-95');
+    }
+
+    // Upload Feed Dual Mode
+    function switchUploadMode(mode) {
+      uploadMode = mode;
+      const btnFile = document.getElementById('btn-mode-file');
+      const btnUrl = document.getElementById('btn-mode-url');
+      const panelFile = document.getElementById('upload-panel-file');
+      const panelUrl = document.getElementById('upload-panel-url');
+
+      if (mode === 'file') {
+        btnFile.className = "flex-1 py-1.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1.5";
+        btnUrl.className = "flex-1 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition flex items-center justify-center gap-1.5";
+        panelFile.classList.remove('hidden');
+        panelUrl.classList.add('hidden');
+      } else {
+        btnUrl.className = "flex-1 py-1.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1.5";
+        btnFile.className = "flex-1 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition flex items-center justify-center gap-1.5";
+        panelUrl.classList.remove('hidden');
+        panelFile.classList.add('hidden');
+      }
+      lucide.createIcons();
     }
 
     // Fetch Dashboard Analytics
@@ -742,25 +1342,50 @@
         alert("Пожалуйста, выберите поставщика");
         return;
       }
-      if (!selectedFeedFile) {
-        alert("Пожалуйста, выберите файл прайс-листа (.csv или .xlsx)");
-        return;
-      }
 
       const btn = document.getElementById('btn-submit-upload');
       btn.disabled = true;
       document.getElementById('upload-progress-box').classList.remove('hidden');
       document.getElementById('upload-result-box').classList.add('hidden');
 
-      const formData = new FormData();
-      formData.append('file', selectedFeedFile);
-
       try {
-        const res = await fetch(`/api/v1/suppliers/${supplierId}/upload-feed`, {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
+        let res, data;
+        if (uploadMode === 'file') {
+          if (!selectedFeedFile) {
+            alert("Пожалуйста, выберите файл прайс-листа (.csv или .xlsx)");
+            btn.disabled = false;
+            document.getElementById('upload-progress-box').classList.add('hidden');
+            return;
+          }
+          const formData = new FormData();
+          formData.append('file', selectedFeedFile);
+          res = await fetch(`/api/v1/suppliers/${supplierId}/upload-feed`, {
+            method: 'POST',
+            body: formData
+          });
+          data = await res.json();
+        } else {
+          // URL mode (Task 4)
+          const urlInput = document.getElementById('upload-feed-url-input').value;
+          if (!urlInput) {
+            alert("Пожалуйста, введите ссылку на прайс");
+            btn.disabled = false;
+            document.getElementById('upload-progress-box').classList.add('hidden');
+            return;
+          }
+          const autoSync = document.getElementById('upload-auto-sync-check').checked;
+          // Update config first
+          await fetch(`/api/v1/suppliers/${supplierId}/feed-config`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ feed_url: urlInput, auto_sync_enabled: autoSync })
+          });
+          // Now trigger sync
+          res = await fetch(`/api/v1/suppliers/${supplierId}/sync-url?feed_url=${encodeURIComponent(urlInput)}`, {
+            method: 'POST'
+          });
+          data = await res.json();
+        }
 
         document.getElementById('upload-progress-box').classList.add('hidden');
         const resBox = document.getElementById('upload-result-box');
@@ -771,11 +1396,12 @@
           <div>Авто-сопоставлено SKU: <strong>${data.auto_confirmed_matches}</strong></div>
           <div>На ручной проверке: <strong>${data.pending_human_review}</strong></div>
         `;
-        showToast("Прайс-лист успешно загружен и обработан!");
+        showToast("Прайс-лист успешно обработан!");
         await loadCatalog();
         await loadReviewQueue();
+        await loadSuppliersList();
       } catch (e) {
-        alert("Ошибка при загрузке прайс-листа");
+        alert("Ошибка при обработке прайс-листа");
       } finally {
         btn.disabled = false;
       }
@@ -851,9 +1477,11 @@
     }
 
     // Initial Load
+    loadKaspiShops();
     loadAnalytics();
     loadCatalog();
     loadReviewQueue();
+    loadSuppliersList();
     loadTasks();
     loadAlerts();
   </script>

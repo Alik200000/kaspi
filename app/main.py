@@ -24,10 +24,9 @@ from app.workers.scheduler import scheduler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Auto-create tables for local development/testing
-    if settings.DEBUG:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+    # Auto-create tables on startup (both local SQLite and cloud PostgreSQL)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     
     # Start periodic background automation jobs
     scheduler.start()

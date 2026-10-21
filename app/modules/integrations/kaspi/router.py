@@ -25,6 +25,20 @@ class KaspiShopCreate(BaseModel):
     default_store_id: str = "PP1"
 
 
+class KaspiShopUpdate(BaseModel):
+    name: Optional[str] = None
+    merchant_id: Optional[str] = None
+    api_token: Optional[str] = None
+    feed_slug: Optional[str] = None
+    default_store_id: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+class KaspiTestCredentials(BaseModel):
+    api_token: str
+    base_url: Optional[str] = None
+
+
 class KaspiShopResponse(KaspiShopCreate):
     id: uuid.UUID
     organization_id: uuid.UUID
@@ -98,6 +112,102 @@ async def create_kaspi_shop(
     await db.commit()
     await db.refresh(shop)
     return shop
+
+
+@router.put("/shops/{shop_id}", response_model=KaspiShopResponse)
+async def update_kaspi_shop(
+    shop_id: uuid.UUID,
+    payload: KaspiShopUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Updates Kaspi store credentials, API token, merchant ID, or city settings.
+    """
+    shop_res = await db.execute(select(KaspiShop).where(KaspiShop.id == shop_id))
+    shop = shop_res.scalar_one_or_none()
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+
+    if payload.name is not None:
+        shop.name = payload.name
+    if payload.merchant_id is not None:
+        shop.merchant_id = payload.merchant_id
+    if payload.api_token is not None:
+        shop.api_token = payload.api_token
+    if payload.feed_slug is not None:
+        shop.feed_slug = payload.feed_slug
+    if payload.default_store_id is not None:
+        shop.default_store_id = payload.default_store_id
+    if payload.is_active is not None:
+        shop.is_active = payload.is_active
+
+    await db.commit()
+    await db.refresh(shop)
+    return shop
+
+
+@router.post("/shops/{shop_id}/test-connection")
+async def test_shop_connection(
+    shop_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Tests live connection to Kaspi Merchant API for the specified shop.
+    """
+    shop_res = await db.execute(select(KaspiShop).where(KaspiShop.id == shop_id))
+    shop = shop_res.scalar_one_or_none()
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+
+    client = KaspiClient(api_token=shop.api_token)
+    return await client.test_connection()
+
+
+@router.post("/shops/test-credentials")
+async def test_raw_credentials(
+    payload: KaspiTestCredentials
+):
+    """
+    Tests raw Kaspi API token before saving to database.
+    """
+    client = KaspiClient(api_token=payload.api_token, base_url=payload.base_url)
+    return await client.test_connection()
+
+
+@router.get("/shops/{shop_id}/feed-links")
+async def get_shop_feed_links(
+    shop_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Returns copy-paste ready XML feed URLs for each city point (PP1, PP2, PP3)
+    to insert into the Kaspi Merchant Cabinet.
+    """
+    shop_res = await db.execute(select(KaspiShop).where(KaspiShop.id == shop_id))
+    shop = shop_res.scalar_one_or_none()
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+
+    slug = shop.feed_slug
+    return {
+        "shop_id": str(shop.id),
+        "shop_name": shop.name,
+        "default_feed": f"/api/v1/kaspi/feed/{slug}.xml",
+        "city_feeds": {
+            "almaty_pp1": {
+                "city": "Алматы (PP1)",
+                "url": f"/api/v1/kaspi/feed/{slug}.xml?city=PP1"
+            },
+            "astana_pp2": {
+                "city": "Астана (PP2)",
+                "url": f"/api/v1/kaspi/feed/{slug}.xml?city=PP2"
+            },
+            "shymkent_pp3": {
+                "city": "Шымкент (PP3)",
+                "url": f"/api/v1/kaspi/feed/{slug}.xml?city=PP3"
+            }
+        }
+    }
 
 
 @router.post("/shops/{shop_id}/link-product")

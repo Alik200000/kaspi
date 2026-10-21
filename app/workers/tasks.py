@@ -190,3 +190,116 @@ async def run_poll_kaspi_orders_task() -> Dict[str, Any]:
         "synced_orders": synced_orders,
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+async def run_sync_supplier_feeds_task() -> Dict[str, Any]:
+    """
+    Background job:
+    Iterates over all suppliers with auto_sync_enabled=True and feed_url configured,
+    downloads recent price feeds and executes cascade matching.
+    """
+    logger.info("[TASK] Starting automated supplier URL feeds ingestion...")
+    import httpx
+    import io
+    from app.modules.suppliers.parser import SupplierFeedParser
+    from app.modules.catalog.matching import SKUMatchingEngine
+
+    synced_suppliers = 0
+    total_offers_processed = 0
+
+    async with AsyncSessionLocal() as db:
+        suppliers = (await db.execute(select(Supplier).where(Supplier.is_active == True))).scalars().all()
+        for sup in suppliers:
+            cfg = sup.feed_config or {}
+            target_url = cfg.get("feed_url")
+            auto_enabled = cfg.get("auto_sync_enabled", False)
+
+            if not target_url or not auto_enabled:
+                continue
+
+            if "docs.google.com/spreadsheets" in target_url and "/export" not in target_url:
+                target_url = target_url.split("/edit")[0] + "/export?format=csv"
+
+            try:
+                async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
+                    resp = await client.get(target_url)
+                    resp.raise_for_status()
+                    content = resp.content
+
+                is_excel = (
+                    target_url.lower().endswith(".xlsx")
+                    or target_url.lower().endswith(".xls")
+                    or resp.headers.get("content-type", "").find("spreadsheet") != -1
+                    or content[:4] == b"PK\x03\x04"
+                )
+
+                if is_excel:
+                    items_gen = SupplierFeedParser.parse_excel_stream(content)
+                else:
+                    items_gen = SupplierFeedParser.parse_csv_stream(io.StringIO(content.decode("utf-8", errors="ignore")))
+
+                # Candidate products
+                master_stmt = select(MasterProduct).where(MasterProduct.organization_id == sup.organization_id)
+                candidates = (await db.execute(master_stmt)).scalars().all()
+
+                for item in items_gen:
+                    sku = item["supplier_sku"]
+                    raw_title = item["raw_title"]
+                    barcode = item.get("barcode")
+                    brand = item.get("raw_brand")
+
+                    matched_prod, confidence, match_type, match_status = SKUMatchingEngine.match_offer(
+                        offer_title=raw_title,
+                        offer_barcode=barcode,
+                        offer_sku=sku,
+                        offer_brand=brand,
+                        candidates=candidates
+                    )
+
+                    offer_stmt = select(SupplierOffer).where(
+                        SupplierOffer.supplier_id == sup.id,
+                        SupplierOffer.supplier_sku == sku
+                    )
+                    existing_offer = (await db.execute(offer_stmt)).scalar_one_or_none()
+
+                    if existing_offer:
+                        existing_offer.cost_price = item["cost_price"]
+                        existing_offer.stock_quantity = item["stock_quantity"]
+                        existing_offer.raw_title = raw_title
+                        existing_offer.barcode = barcode
+                        if matched_prod and match_status == "confirmed":
+                            existing_offer.master_product_id = matched_prod.id
+                        existing_offer.match_confidence = confidence
+                        existing_offer.match_type = match_type
+                        existing_offer.match_status = match_status
+                    else:
+                        new_offer = SupplierOffer(
+                            supplier_id=sup.id,
+                            master_product_id=matched_prod.id if (matched_prod and match_status == "confirmed") else None,
+                            supplier_sku=sku,
+                            raw_title=raw_title,
+                            raw_brand=brand,
+                            barcode=barcode,
+                            cost_price=item["cost_price"],
+                            stock_quantity=item["stock_quantity"],
+                            match_confidence=confidence,
+                            match_type=match_type,
+                            match_status=match_status
+                        )
+                        db.add(new_offer)
+                    total_offers_processed += 1
+
+                cfg["last_synced_at"] = datetime.utcnow().isoformat()
+                sup.feed_config = dict(cfg)
+                synced_suppliers += 1
+            except Exception as e:
+                logger.error(f"[TASK] Failed to auto-sync supplier {sup.name} from URL: {str(e)}")
+
+        await db.commit()
+
+    return {
+        "status": "success",
+        "synced_suppliers": synced_suppliers,
+        "total_offers_processed": total_offers_processed,
+        "timestamp": datetime.utcnow().isoformat()
+    }
