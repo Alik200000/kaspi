@@ -3,287 +3,474 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaspi & Supplier SaaS Platform</title>
+  <title>Kaspi & Supplier SaaS Platform | Light Glass</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    /* Kaspi Glassmorphism Utility Classes */
+    .kaspi-glass {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 30px -5px rgba(225, 59, 43, 0.05), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+    }
+    
+    .kaspi-glass-subtle {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+
+    .kaspi-glass-hover {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kaspi-glass-hover:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px -4px rgba(225, 59, 43, 0.08), 0 6px 16px -2px rgba(0, 0, 0, 0.04);
+    }
+
+    .kaspi-gradient-btn {
+      background: linear-gradient(135deg, #f14635 0%, #ff5d47 100%);
+      box-shadow: 0 8px 20px -4px rgba(241, 70, 53, 0.35);
+    }
+    .kaspi-gradient-btn:hover {
+      background: linear-gradient(135deg, #e13b2b 0%, #f14635 100%);
+      box-shadow: 0 12px 24px -4px rgba(241, 70, 53, 0.45);
+    }
+
+    /* Custom light scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.6);
+    }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-[#f6f8fb] text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
 
-  <!-- Header / Navigation -->
-  <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center font-bold text-white shadow-lg shadow-rose-500/20">
+  <!-- Ambient Ambient Glow Background Blobs (Kaspi aesthetic) -->
+  <div class="fixed top-0 left-1/4 w-[36rem] h-[36rem] bg-rose-400/10 rounded-full blur-[110px] pointer-events-none -z-10"></div>
+  <div class="fixed top-40 right-10 w-[30rem] h-[30rem] bg-amber-400/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-10 left-10 w-[28rem] h-[28rem] bg-sky-300/15 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+
+  <!-- Header / Navigation (Glassmorphic) -->
+  <header class="kaspi-glass sticky top-0 z-40 border-b border-white/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between">
+      
+      <!-- Brand Logo & Name -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-2xl kaspi-gradient-btn flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-rose-500/25 tracking-wider">
           K
         </div>
         <div>
-          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-            Kaspi & Supplier SaaS Core
-          </h1>
-          <p class="text-xs text-slate-400">TechTrade Kazakhstan • Multi-Vendor Engine</p>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight text-slate-900">
+              Kaspi & Supplier Hub
+            </h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-[#f14635] border border-rose-200">
+              SaaS Core
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">Автоматизация прайсов, мульти-фиды и Kaspi Bot Repricer</p>
         </div>
       </div>
-      <div class="flex items-center space-x-3">
-        <a href="/api/v1/orders/export/excel" download class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5">
-          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i> Экспорт Excel
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2.5">
+        <a href="/api/v1/orders/export/excel" download class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-sm hover:shadow transition flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Экспорт Excel
         </a>
-        <button onclick="openUploadModal()" class="text-xs bg-rose-600 hover:bg-rose-500 text-white font-semibold px-3 py-1.5 rounded-lg border border-rose-500 transition flex items-center gap-1.5 shadow-md shadow-rose-600/20">
-          <i data-lucide="upload" class="w-3.5 h-3.5"></i> Загрузить прайс
+
+        <button onclick="openUploadModal()" class="text-xs kaspi-gradient-btn text-white font-semibold px-4 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="upload" class="w-4 h-4"></i> Загрузить прайс
         </button>
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
-          Система активна
+
+        <div class="h-6 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+
+        <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+          Система онлайн
         </span>
-        <a href="/docs" target="_blank" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5">
-          <i data-lucide="code" class="w-3.5 h-3.5"></i> Swagger API
+
+        <a href="/docs" target="_blank" class="text-xs bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 px-3 py-2 rounded-xl border border-slate-200/70 transition flex items-center gap-1">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> Swagger
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-7">
 
-    <!-- KPI / Financial Dashboard Cards -->
+    <!-- KPI / Financial Dashboard Cards (Glass Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
-      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
-          <span class="text-xs font-semibold uppercase tracking-wider">Оборот (Revenue)</span>
-          <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+      <!-- Revenue Card -->
+      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider">Оборот (Revenue)</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="trending-up" class="w-4 h-4"></i>
+          </div>
         </div>
-        <div id="kpi-revenue" class="text-2xl font-bold text-white">...</div>
-        <div class="text-xs text-slate-400 mt-1">Всего заказов: <span id="kpi-orders" class="font-medium text-slate-200">...</span></div>
+        <div id="kpi-revenue" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
+        <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+          <span class="font-semibold text-slate-700" id="kpi-orders">...</span> выполненных заказов
+        </div>
       </div>
 
-      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
-          <span class="text-xs font-semibold uppercase tracking-wider">Себестоимость (COGS)</span>
-          <i data-lucide="package" class="w-4 h-4 text-sky-400"></i>
+      <!-- COGS Card -->
+      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider">Себестоимость (COGS)</span>
+          <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4"></i>
+          </div>
         </div>
-        <div id="kpi-cogs" class="text-2xl font-bold text-white">...</div>
-        <div class="text-xs text-slate-400 mt-1">Закупка у поставщиков</div>
+        <div id="kpi-cogs" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
+        <div class="text-xs text-slate-500 mt-2">Оптимальная закупка у дистрибьюторов</div>
       </div>
 
-      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
-          <span class="text-xs font-semibold uppercase tracking-wider">Комиссия Kaspi (10%)</span>
-          <i data-lucide="percent" class="w-4 h-4 text-amber-400"></i>
+      <!-- Kaspi Commission Card -->
+      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider">Комиссия Kaspi (10%)</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="percent" class="w-4 h-4"></i>
+          </div>
         </div>
-        <div id="kpi-commission" class="text-2xl font-bold text-white">...</div>
-        <div class="text-xs text-slate-400 mt-1">Удержание маркетплейса</div>
+        <div id="kpi-commission" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
+        <div class="text-xs text-slate-500 mt-2">Удержание маркетплейса Kaspi.kz</div>
       </div>
 
-      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
-          <span class="text-xs font-semibold uppercase tracking-wider">Чистая прибыль (Profit)</span>
-          <i data-lucide="wallet" class="w-4 h-4 text-rose-400"></i>
+      <!-- Net Profit Card -->
+      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden border-rose-200/50 group">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#f14635]">Чистая прибыль (Profit)</span>
+          <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center shadow-sm">
+            <i data-lucide="wallet" class="w-4 h-4"></i>
+          </div>
         </div>
-        <div id="kpi-profit" class="text-2xl font-bold text-white">...</div>
-        <div class="text-xs text-slate-400 mt-1">Средняя маржа: <span id="kpi-margin" class="font-medium text-slate-200">...</span></div>
+        <div id="kpi-profit" class="text-2xl font-extrabold text-[#f14635] tracking-tight">...</div>
+        <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+          Средняя маржинальность: <span id="kpi-margin" class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">...</span>
+        </div>
       </div>
 
     </div>
 
-    <!-- Quick Actions Banner -->
-    <div class="bg-gradient-to-r from-rose-950/40 via-slate-800/60 to-slate-800/40 border border-rose-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div>
-        <h2 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="refresh-cw" class="w-5 h-5 text-rose-400"></i>
-          Автоматический выбор оптимального поставщика и Re-pricing
-        </h2>
-        <p class="text-xs text-slate-300 mt-1">
-          Сканирует остатки всех поставщиков, выбирает минимальную закупочную цену и мгновенно обновляет цены в XML-фиде Kaspi.
+    <!-- Quick Actions & Repricer Glass Banner -->
+    <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+      <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="space-y-1 z-10">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#f14635] animate-ping"></span>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            Kaspi Bot Repricer & Авто-выбор оптимального поставщика
+          </h2>
+        </div>
+        <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+          Сканирует остатки всех подключенных поставщиков, фильтрует нулевой остаток, выбирает минимальную себестоимость, рассчитывает Floor Price Guard (защита от торговли в минус) и удерживает 1-е место на Kaspi.
         </p>
       </div>
-      <div class="flex items-center gap-3">
-        <button id="btn-reprice" onclick="triggerReprice()" class="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-rose-500/20 text-xs flex items-center gap-2 transition active:scale-95">
+
+      <div class="flex items-center gap-3 shrink-0 z-10">
+        <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95">
           <i data-lucide="zap" class="w-4 h-4"></i>
           Запустить пересчет цен
         </button>
-        <a href="/api/v1/kaspi/feed/techtrade-almaty.xml" target="_blank" class="bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-200 font-medium px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition">
-          <i data-lucide="file-code" class="w-4 h-4 text-amber-400"></i>
-          Kaspi XML Feed
+        <a href="/api/v1/kaspi/feed/techtrade-almaty.xml" target="_blank" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
+          <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
+          Kaspi XML фид
         </a>
       </div>
     </div>
 
-    <!-- Master Catalog Table -->
-    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-700/60 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i data-lucide="layers" class="w-5 h-5 text-rose-400"></i>
-          <h3 class="font-bold text-sm text-white">Канонический каталог Master SKU</h3>
+    <!-- Navigation Tabs (Glass Pills) -->
+    <div class="flex items-center gap-2 border-b border-slate-200/80 pb-3">
+      <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn active px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-[#f14635] text-white shadow-md shadow-rose-500/20">
+        <i data-lucide="layers" class="w-4 h-4"></i> Каталог Master SKU (<span id="tab-catalog-badge">5</span>)
+      </button>
+      <button onclick="switchTab('review')" id="tab-btn-review" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="user-check" class="w-4 h-4"></i> Очередь модерации (<span id="tab-review-badge">0</span>)
+      </button>
+      <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="bell" class="w-4 h-4"></i> Уведомления и алерты
+      </button>
+      <button onclick="switchTab('tasks')" id="tab-btn-tasks" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4"></i> Фоновые задачи
+      </button>
+    </div>
+
+    <!-- TAB 1: Master Catalog Section -->
+    <div id="tab-pane-catalog" class="tab-pane kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4.5 border-b border-slate-100 flex items-center justify-between bg-white/40">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f14635] flex items-center justify-center">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Канонический каталог Master SKU</h3>
+            <p class="text-[11px] text-slate-500">Авто-синхронизация остатков, минимальных цен и Kaspi-розницы</p>
+          </div>
         </div>
-        <div class="text-xs text-slate-400" id="catalog-count">Всего: 5 товаров</div>
+        <div class="text-xs font-semibold text-slate-600 bg-white/80 px-3 py-1 rounded-xl border border-slate-200" id="catalog-count">
+          Всего: 5 товаров
+        </div>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse text-xs">
           <thead>
-            <tr class="bg-slate-800/70 border-b border-slate-700 text-slate-400 font-semibold uppercase tracking-wider">
-              <th class="py-3 px-6">Master SKU</th>
-              <th class="py-3 px-6">Товар</th>
-              <th class="py-3 px-6">Бренд</th>
-              <th class="py-3 px-6">Штрихкод</th>
-              <th class="py-3 px-6">Лучшая закупка</th>
-              <th class="py-3 px-6">Цена Kaspi</th>
-              <th class="py-3 px-6">Маржа</th>
-              <th class="py-3 px-6">Остаток</th>
+            <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-3.5 px-6">Master SKU</th>
+              <th class="py-3.5 px-6">Товар</th>
+              <th class="py-3.5 px-6">Бренд</th>
+              <th class="py-3.5 px-6">Штрихкод</th>
+              <th class="py-3.5 px-6">Себестоимость</th>
+              <th class="py-3.5 px-6">Цена Kaspi</th>
+              <th class="py-3.5 px-6">Маржа</th>
+              <th class="py-3.5 px-6">Остаток & Действия</th>
             </tr>
           </thead>
-          <tbody id="catalog-body" class="divide-y divide-slate-700/40 text-slate-200">
-            <tr><td colspan="8" class="text-center py-6 text-slate-500">Загрузка каталога...</td></tr>
+          <tbody id="catalog-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
+            <tr><td colspan="8" class="text-center py-8 text-slate-400">Загрузка каталога...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Two-column bottom section: Live Alerts & Background Automation -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-      <!-- Live Notification Alerts Feed -->
-      <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-2">
-            <i data-lucide="bell-ring" class="w-5 h-5 text-rose-400"></i>
-            <h3 class="font-bold text-sm text-white">Уведомления и алерты (Telegram Feed)</h3>
+    <!-- TAB 2: Human Review Queue Section -->
+    <div id="tab-pane-review" class="tab-pane hidden kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4.5 border-b border-slate-100 flex items-center justify-between bg-white/40">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
-          <span class="text-xs bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded border border-rose-500/20" id="alerts-count">0 событий</span>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Очередь ручной модерации сопоставления (Human Review)</h3>
+            <p class="text-[11px] text-slate-500">Товары с нечетким сходством (45-74%), требующие подтверждения менеджера</p>
+          </div>
         </div>
-        
-        <div class="space-y-2.5 max-h-64 overflow-y-auto pr-1" id="alerts-list">
-          <div class="text-xs text-slate-400">Новых критических событий нет.</div>
-        </div>
+        <button onclick="loadReviewQueue()" class="text-xs bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl text-slate-600 flex items-center gap-1.5 transition">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Обновить
+        </button>
       </div>
 
-      <!-- Background Tasks Status -->
-      <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-2">
-            <i data-lucide="clock" class="w-5 h-5 text-amber-400"></i>
-            <h3 class="font-bold text-sm text-white">Фоновый планировщик (Cron Scheduler)</h3>
-          </div>
-          <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">В работе</span>
-        </div>
-        
-        <div class="space-y-3" id="tasks-list">
-          <div class="text-xs text-slate-400">Загрузка статуса задач...</div>
-        </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-3.5 px-6">Поставщик</th>
+              <th class="py-3.5 px-6">Сырое название в прайсе</th>
+              <th class="py-3.5 px-6">Артикул</th>
+              <th class="py-3.5 px-6">Цена</th>
+              <th class="py-3.5 px-6">Предложенный Master SKU</th>
+              <th class="py-3.5 px-6">Сходство</th>
+              <th class="py-3.5 px-6">Решение</th>
+            </tr>
+          </thead>
+          <tbody id="review-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
+            <tr><td colspan="7" class="text-center py-8 text-slate-400">Нет предложений, ожидающих ручной проверки. Все сопоставлены автоматически!</td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
 
+    <!-- TAB 3: Alerts Section -->
+    <div id="tab-pane-alerts" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f14635] flex items-center justify-center">
+            <i data-lucide="bell-ring" class="w-4 h-4"></i>
+          </div>
+          <h3 class="font-bold text-sm text-slate-900">Уведомления и алерты (Telegram Live Feed)</h3>
+        </div>
+        <span class="text-xs bg-rose-50 text-[#f14635] font-semibold px-2.5 py-1 rounded-xl border border-rose-200" id="alerts-count">0 событий</span>
+      </div>
+      
+      <div class="space-y-3 max-h-96 overflow-y-auto pr-1" id="alerts-list">
+        <div class="text-xs text-slate-400">Новых критических событий нет.</div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Background Tasks Section -->
+    <div id="tab-pane-tasks" class="tab-pane hidden kaspi-glass rounded-3xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Фоновый планировщик задач (Cron Scheduler)</h3>
+            <p class="text-[11px] text-slate-500">Автоматический парсинг, пересчет маржи и синхронизация каждые N секунд</p>
+          </div>
+        </div>
+        <span class="text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-xl border border-emerald-200">
+          Активен
+        </span>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="tasks-list">
+        <div class="text-xs text-slate-400">Загрузка статуса задач...</div>
+      </div>
     </div>
 
   </main>
 
-  <!-- Upload Feed Modal -->
-  <div id="upload-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-        <div class="flex items-center gap-2">
-          <i data-lucide="file-up" class="w-5 h-5 text-rose-400"></i>
-          <h3 class="font-bold text-sm text-white">Импорт прайс-листа поставщика</h3>
+  <!-- Upload Feed Modal (Glass Modal) -->
+  <div id="upload-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200" id="upload-modal-content">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center">
+            <i data-lucide="file-up" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Импорт прайс-листа поставщика</h3>
+            <p class="text-[11px] text-slate-500">Потоковый парсинг без утечек памяти O(1)</p>
+          </div>
         </div>
-        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
       <div class="space-y-4 text-xs">
         <div>
-          <label class="block text-slate-300 font-medium mb-1.5">Выберите поставщика</label>
-          <select id="upload-supplier-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+          <label class="block text-slate-700 font-semibold mb-1.5">Выберите поставщика</label>
+          <select id="upload-supplier-select" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#f14635] focus:bg-white transition">
             <option value="">Загрузка поставщиков...</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-slate-300 font-medium mb-1.5">Файл прайс-листа (CSV или Excel XLSX)</label>
-          <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-rose-500/80 rounded-xl p-6 text-center cursor-pointer transition bg-slate-900/40">
-            <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-500 mb-2"></i>
-            <p class="text-slate-300 font-medium" id="file-name-label">Перетащите файл сюда или нажмите для выбора</p>
-            <p class="text-[11px] text-slate-500 mt-1">Поддерживаются форматы: .csv, .xlsx</p>
+          <label class="block text-slate-700 font-semibold mb-1.5">Файл прайс-листа (.CSV или .XLSX Excel)</label>
+          <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-[#f14635] rounded-2xl p-7 text-center cursor-pointer transition bg-slate-50/50 hover:bg-rose-50/30">
+            <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex items-center justify-center text-[#f14635]">
+              <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+            </div>
+            <p class="text-slate-800 font-bold" id="file-name-label">Перетащите файл сюда или нажмите для выбора</p>
+            <p class="text-[11px] text-slate-500 mt-1">Автоматическая очистка валют (KZT, ₸, пробелы) и каскадный матчинг</p>
             <input type="file" id="feed-file-input" class="hidden" accept=".csv, .xlsx, .xls">
           </div>
         </div>
 
         <div id="upload-progress-box" class="hidden space-y-2">
-          <div class="flex items-center justify-between text-[11px] text-slate-300">
-            <span>Обработка прайс-листа и каскадный матчинг SKU...</span>
-            <span class="animate-spin text-rose-400">⚙️</span>
+          <div class="flex items-center justify-between text-[11px] text-slate-600 bg-rose-50/70 p-3 rounded-xl border border-rose-100">
+            <span class="flex items-center gap-2">
+              <i data-lucide="loader-2" class="w-4 h-4 text-[#f14635] animate-spin"></i>
+              Потоковая обработка прайса и каскадный матчинг SKU...
+            </span>
           </div>
         </div>
 
-        <div id="upload-result-box" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">
+        <div id="upload-result-box" class="hidden p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs">
           <!-- Populated dynamically -->
         </div>
 
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeUploadModal()" class="px-4 py-2 rounded-xl bg-slate-700 text-slate-200 hover:bg-slate-600 transition">
+        <div class="flex justify-end gap-2.5 pt-2">
+          <button onclick="closeUploadModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition">
             Отмена
           </button>
-          <button id="btn-submit-upload" onclick="submitFeedUpload()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold shadow-lg shadow-rose-600/20 transition flex items-center gap-1.5">
-            <i data-lucide="check" class="w-4 h-4"></i> Импортировать
+          <button id="btn-submit-upload" onclick="submitFeedUpload()" class="px-5 py-2.5 rounded-xl kaspi-gradient-btn text-white font-bold transition flex items-center gap-1.5 active:scale-95 shadow-lg shadow-rose-500/25">
+            <i data-lucide="check" class="w-4 h-4"></i> Импортировать прайс
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Price History Modal -->
-  <div id="history-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+  <!-- Price History Modal (Glass Modal) -->
+  <div id="history-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/80 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 transform transition-transform scale-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
-          <h3 class="font-bold text-sm text-white" id="modal-product-title">История изменения цен</h3>
-          <p class="text-xs text-slate-400" id="modal-product-sku">SKU: ...</p>
+          <h3 class="font-bold text-sm text-slate-900" id="modal-product-title">История изменения цен</h3>
+          <p class="text-xs text-[#f14635] font-mono font-semibold" id="modal-product-sku">SKU: ...</p>
         </div>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="overflow-y-auto max-h-80">
+      <div class="overflow-y-auto max-h-80 rounded-xl border border-slate-100">
         <table class="w-full text-left border-collapse text-xs">
           <thead>
-            <tr class="bg-slate-900/60 border-b border-slate-700 text-slate-400">
+            <tr class="bg-slate-50 border-b border-slate-200/70 text-slate-500 font-bold">
               <th class="py-2.5 px-4">Время</th>
-              <th class="py-2.5 px-4">Закупка</th>
+              <th class="py-2.5 px-4">Себестоимость</th>
               <th class="py-2.5 px-4">Розница Kaspi</th>
               <th class="py-2.5 px-4">Остаток</th>
               <th class="py-2.5 px-4">Причина</th>
             </tr>
           </thead>
-          <tbody id="modal-history-body" class="divide-y divide-slate-700/50">
-            <tr><td colspan="5" class="py-4 text-center text-slate-500">Записей нет</td></tr>
+          <tbody id="modal-history-body" class="divide-y divide-slate-100">
+            <tr><td colspan="5" class="py-4 text-center text-slate-400">Записей нет</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- Notification Toast -->
-  <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
-    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
-    <span id="toast-text" class="text-xs font-medium">Готово</span>
+  <!-- Notification Toast (Glass Floating Pill) -->
+  <div id="toast" class="fixed bottom-6 right-6 kaspi-glass px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-50 translate-y-2 border border-slate-200/80">
+    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+      <i data-lucide="check" class="w-4 h-4"></i>
+    </div>
+    <span id="toast-text" class="text-xs font-bold text-slate-800">Готово</span>
   </div>
 
   <script>
     // Initialize Lucide Icons
     lucide.createIcons();
 
+    // Tab switching logic
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-[#f14635]', 'text-white', 'shadow-md', 'shadow-rose-500/20');
+        btn.classList.add('text-slate-600');
+      });
+
+      const pane = document.getElementById(`tab-pane-${tab}`);
+      const btn = document.getElementById(`tab-btn-${tab}`);
+      if (pane && btn) {
+        pane.classList.remove('hidden');
+        btn.classList.add('bg-[#f14635]', 'text-white', 'shadow-md', 'shadow-rose-500/20');
+        btn.classList.remove('text-slate-600');
+      }
+      lucide.createIcons();
+    }
+
     function showToast(text) {
       const toast = document.getElementById('toast');
       document.getElementById('toast-text').innerText = text;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
       setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
       }, 3500);
     }
 
@@ -315,6 +502,7 @@
         const res = await fetch('/api/v1/catalog/products');
         const prods = await res.json();
         document.getElementById('catalog-count').innerText = `Всего: ${prods.length} товаров`;
+        document.getElementById('tab-catalog-badge').innerText = prods.length;
         
         const tbody = document.getElementById('catalog-body');
         tbody.innerHTML = '';
@@ -326,21 +514,21 @@
           const marginPct = p.calculated_sale_price ? Math.round((margin / p.calculated_sale_price) * 100) : 0;
 
           const row = document.createElement('tr');
-          row.className = "hover:bg-slate-800/40 transition";
+          row.className = "hover:bg-rose-50/40 transition";
           row.innerHTML = `
-            <td class="py-3 px-6 font-mono font-medium text-rose-300">${p.sku_internal}</td>
-            <td class="py-3 px-6 font-medium text-white max-w-xs truncate">${p.title}</td>
-            <td class="py-3 px-6 text-slate-400">${p.brand || '—'}</td>
-            <td class="py-3 px-6 font-mono text-slate-400">${p.barcode || '—'}</td>
-            <td class="py-3 px-6 font-medium text-sky-300">${formatKZT(p.optimal_cost_price)}</td>
-            <td class="py-3 px-6 font-bold text-amber-300">${formatKZT(p.calculated_sale_price)}</td>
-            <td class="py-3 px-6 text-emerald-400 font-medium">${formatKZT(margin)} (${marginPct}%)</td>
-            <td class="py-3 px-6">
+            <td class="py-3.5 px-6 font-mono font-bold text-[#f14635]">${p.sku_internal}</td>
+            <td class="py-3.5 px-6 font-semibold text-slate-900 max-w-xs truncate">${p.title}</td>
+            <td class="py-3.5 px-6 text-slate-500 font-medium">${p.brand || '—'}</td>
+            <td class="py-3.5 px-6 font-mono text-slate-500">${p.barcode || '—'}</td>
+            <td class="py-3.5 px-6 font-semibold text-sky-700">${formatKZT(p.optimal_cost_price)}</td>
+            <td class="py-3.5 px-6 font-bold text-amber-700 bg-amber-50/50 rounded-lg">${formatKZT(p.calculated_sale_price)}</td>
+            <td class="py-3.5 px-6 text-emerald-700 font-bold">${formatKZT(margin)} <span class="text-[10px] font-normal text-emerald-600">(${marginPct}%)</span></td>
+            <td class="py-3.5 px-6">
               <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${p.total_stock > 0 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400'}">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${p.total_stock > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-600 border border-rose-200'}">
                   ${p.total_stock} шт.
                 </span>
-                <button onclick="openHistory('${p.id}', '${p.title.replace(/'/g, "\\'")}', '${p.sku_internal}')" class="text-[11px] text-slate-400 hover:text-white bg-slate-700/60 hover:bg-slate-700 px-2 py-0.5 rounded transition">
+                <button onclick="openHistory('${p.id}', '${p.title.replace(/'/g, "\\'")}', '${p.sku_internal}')" class="text-[11px] text-slate-600 hover:text-slate-900 font-semibold bg-white hover:bg-slate-100 border border-slate-200/80 px-2 py-1 rounded-lg transition shadow-xs">
                   История
                 </button>
               </div>
@@ -348,8 +536,68 @@
           `;
           tbody.appendChild(row);
         });
+        lucide.createIcons();
       } catch (err) {
         console.error("Failed to load catalog", err);
+      }
+    }
+
+    // Load Human Review Queue
+    async function loadReviewQueue() {
+      try {
+        const prodRes = await fetch('/api/v1/catalog/products');
+        const prods = await prodRes.json();
+        const orgId = prods[0]?.organization_id;
+        if (!orgId) return;
+
+        const res = await fetch(`/api/v1/suppliers/matching/pending-review?organization_id=${orgId}`);
+        const items = await res.json();
+        
+        document.getElementById('tab-review-badge').innerText = items.length;
+        const tbody = document.getElementById('review-body');
+        
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-slate-400">Нет предложений, ожидающих ручной проверки. Все сопоставлены автоматически!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        items.forEach(it => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-amber-50/40 transition";
+          row.innerHTML = `
+            <td class="py-3.5 px-6 font-semibold text-slate-800">${it.supplier_name}</td>
+            <td class="py-3.5 px-6 font-medium text-slate-900">${it.raw_title}</td>
+            <td class="py-3.5 px-6 font-mono text-slate-500">${it.supplier_sku}</td>
+            <td class="py-3.5 px-6 font-bold text-slate-800">${formatKZT(it.cost_price)}</td>
+            <td class="py-3.5 px-6 text-[#f14635] font-semibold">${it.suggested_master_title || '—'}</td>
+            <td class="py-3.5 px-6">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                ${Math.round(it.confidence_score * 100)}%
+              </span>
+            </td>
+            <td class="py-3.5 px-6">
+              <button onclick="confirmMatch('${it.offer_id}', '${it.suggested_master_id}')" class="text-xs kaspi-gradient-btn text-white font-bold px-3 py-1 rounded-xl shadow-xs transition active:scale-95">
+                Подтвердить
+              </button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load review queue", e);
+      }
+    }
+
+    async function confirmMatch(offerId, masterId) {
+      try {
+        await fetch(`/api/v1/suppliers/matching/${offerId}/confirm?master_product_id=${masterId}`, { method: 'POST' });
+        showToast("Сопоставление успешно подтверждено!");
+        await loadReviewQueue();
+        await loadCatalog();
+      } catch (e) {
+        alert("Ошибка подтверждения сопоставления");
       }
     }
 
@@ -369,14 +617,14 @@
         list.innerHTML = '';
         alerts.forEach(a => {
           const div = document.createElement('div');
-          div.className = "p-3 rounded-xl bg-slate-900/60 border border-slate-700/50 flex items-start justify-between text-xs";
+          div.className = "p-3.5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-xs flex items-start justify-between text-xs";
           const icon = a.event_type === 'OUT_OF_STOCK' ? '🔴' : (a.event_type === 'PRICE_SURGE' ? '🟡' : '🟢');
           div.innerHTML = `
             <div>
-              <div class="font-semibold text-white flex items-center gap-1.5">${icon} ${a.title}</div>
-              <div class="text-slate-300 text-[11px] mt-0.5">${a.message}</div>
+              <div class="font-bold text-slate-900 flex items-center gap-1.5">${icon} ${a.title}</div>
+              <div class="text-slate-600 text-[11px] mt-1">${a.message}</div>
             </div>
-            <span class="text-[10px] text-slate-500 font-mono ml-2 shrink-0">${a.timestamp}</span>
+            <span class="text-[10px] text-slate-400 font-mono ml-3 shrink-0">${a.timestamp}</span>
           `;
           list.appendChild(div);
         });
@@ -392,7 +640,9 @@
       const tbody = document.getElementById('modal-history-body');
       tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-400">Загрузка...</td></tr>';
       
-      document.getElementById('history-modal').classList.remove('opacity-0', 'pointer-events-none');
+      const modal = document.getElementById('history-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
       lucide.createIcons();
 
       try {
@@ -400,7 +650,7 @@
         const records = await res.json();
         
         if (records.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-500">История изменений пока пуста (цены стабильны)</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-400">История изменений пока пуста (цены стабильны)</td></tr>';
           return;
         }
 
@@ -408,37 +658,40 @@
         records.forEach(r => {
           const tr = document.createElement('tr');
           const time = new Date(r.created_at).toLocaleTimeString('ru-RU');
-          tr.className = "hover:bg-slate-900/40 text-[11px]";
+          tr.className = "hover:bg-slate-50 text-[11px]";
           tr.innerHTML = `
-            <td class="py-2 px-4 font-mono text-slate-400">${time}</td>
-            <td class="py-2 px-4 font-medium text-sky-300">${formatKZT(r.new_cost_price)}</td>
-            <td class="py-2 px-4 font-bold text-amber-300">${formatKZT(r.new_sale_price)}</td>
-            <td class="py-2 px-4 text-slate-300">${r.new_stock} шт.</td>
-            <td class="py-2 px-4 text-slate-400">${r.change_reason}</td>
+            <td class="py-2.5 px-4 font-mono text-slate-500">${time}</td>
+            <td class="py-2.5 px-4 font-bold text-sky-700">${formatKZT(r.new_cost_price)}</td>
+            <td class="py-2.5 px-4 font-bold text-amber-700">${formatKZT(r.new_sale_price)}</td>
+            <td class="py-2.5 px-4 text-slate-700 font-semibold">${r.new_stock} шт.</td>
+            <td class="py-2.5 px-4 text-slate-500">${r.change_reason}</td>
           `;
           tbody.appendChild(tr);
         });
       } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-rose-400">Ошибка загрузки истории</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-rose-500">Ошибка загрузки истории</td></tr>';
       }
     }
 
     function closeModal() {
-      document.getElementById('history-modal').classList.add('opacity-0', 'pointer-events-none');
+      const modal = document.getElementById('history-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.add('scale-95');
     }
 
     // Drag-and-drop & Upload Handlers
     let selectedFeedFile = null;
 
     async function openUploadModal() {
-      document.getElementById('upload-modal').classList.remove('opacity-0', 'pointer-events-none');
+      const modal = document.getElementById('upload-modal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('upload-modal-content').classList.remove('scale-95');
       document.getElementById('upload-result-box').classList.add('hidden');
       document.getElementById('upload-progress-box').classList.add('hidden');
       document.getElementById('file-name-label').innerText = "Перетащите файл сюда или нажмите для выбора";
       selectedFeedFile = null;
       lucide.createIcons();
 
-      // Load suppliers
       try {
         const orgRes = await fetch('/api/v1/catalog/products');
         const prods = await orgRes.json();
@@ -455,7 +708,9 @@
     }
 
     function closeUploadModal() {
-      document.getElementById('upload-modal').classList.add('opacity-0', 'pointer-events-none');
+      const modal = document.getElementById('upload-modal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('upload-modal-content').classList.add('scale-95');
     }
 
     // Setup drop zone
@@ -463,11 +718,11 @@
     const fileInput = document.getElementById('feed-file-input');
 
     dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-rose-500'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-rose-500'));
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-[#f14635]'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-[#f14635]'));
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
-      dropZone.classList.remove('border-rose-500');
+      dropZone.classList.remove('border-[#f14635]');
       if (e.dataTransfer.files.length > 0) {
         selectedFeedFile = e.dataTransfer.files[0];
         document.getElementById('file-name-label').innerText = `Выбран файл: ${selectedFeedFile.name} (${Math.round(selectedFeedFile.size / 1024)} KB)`;
@@ -511,13 +766,14 @@
         const resBox = document.getElementById('upload-result-box');
         resBox.classList.remove('hidden');
         resBox.innerHTML = `
-          <div class="font-bold">✓ Прайс-лист успешно импортирован!</div>
+          <div class="font-bold text-emerald-800">✓ Прайс-лист успешно импортирован!</div>
           <div class="mt-1">Обработано предложений: <strong>${data.processed_offers}</strong></div>
           <div>Авто-сопоставлено SKU: <strong>${data.auto_confirmed_matches}</strong></div>
           <div>На ручной проверке: <strong>${data.pending_human_review}</strong></div>
         `;
         showToast("Прайс-лист успешно загружен и обработан!");
         await loadCatalog();
+        await loadReviewQueue();
       } catch (e) {
         alert("Ошибка при загрузке прайс-листа");
       } finally {
@@ -535,19 +791,21 @@
 
         for (const [key, t] of Object.entries(data.tasks)) {
           const div = document.createElement('div');
-          div.className = "p-3 rounded-xl bg-slate-900/60 border border-slate-700/50 flex items-center justify-between text-xs";
+          div.className = "p-4 rounded-2xl bg-white/70 border border-slate-200/80 shadow-xs flex flex-col justify-between";
           const isSuccess = t.status === 'SUCCESS';
           div.innerHTML = `
             <div>
-              <div class="font-medium text-white">${key}</div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Интервал: ${t.interval_seconds} сек • Запусков: ${t.run_count}</div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-bold text-slate-900">${key}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isSuccess ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'}">
+                  ${t.status}
+                </span>
+              </div>
+              <div class="text-[11px] text-slate-500">Интервал: ${t.interval_seconds} сек • Запусков: ${t.run_count}</div>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${isSuccess ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-700 text-slate-300'}">
-                ${t.status}
-              </span>
-              <button onclick="triggerTask('${key}')" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-slate-200 transition">
-                Запустить
+            <div class="mt-4 pt-3 border-t border-slate-100 flex justify-end">
+              <button onclick="triggerTask('${key}')" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold transition active:scale-95">
+                Запустить сейчас
               </button>
             </div>
           `;
@@ -568,9 +826,10 @@
       try {
         const res = await fetch('/api/v1/tasks/run/reprice_and_kaspi_sync', { method: 'POST' });
         const data = await res.json();
-        showToast("✓ Цены успешно пересчитаны, фид Kaspi обновлен!");
+        showToast("✓ Цены пересчитаны, фид Kaspi обновлен!");
         await loadCatalog();
         await loadTasks();
+        await loadAnalytics();
       } catch (err) {
         alert("Ошибка при пересчете цен");
       } finally {
@@ -594,6 +853,7 @@
     // Initial Load
     loadAnalytics();
     loadCatalog();
+    loadReviewQueue();
     loadTasks();
     loadAlerts();
   </script>
