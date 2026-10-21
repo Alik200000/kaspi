@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaspi & Supplier SaaS Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Header / Navigation -->
+  <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center font-bold text-white shadow-lg shadow-rose-500/20">
+          K
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+            Kaspi & Supplier SaaS Core
+          </h1>
+          <p class="text-xs text-slate-400">TechTrade Kazakhstan • Multi-Vendor Engine</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <a href="/api/v1/orders/export/excel" download class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5">
+          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i> Экспорт Excel
+        </a>
+        <button onclick="openUploadModal()" class="text-xs bg-rose-600 hover:bg-rose-500 text-white font-semibold px-3 py-1.5 rounded-lg border border-rose-500 transition flex items-center gap-1.5 shadow-md shadow-rose-600/20">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i> Загрузить прайс
+        </button>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+          Система активна
+        </span>
+        <a href="/docs" target="_blank" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> Swagger API
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- KPI / Financial Dashboard Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Оборот (Revenue)</span>
+          <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <div id="kpi-revenue" class="text-2xl font-bold text-white">...</div>
+        <div class="text-xs text-slate-400 mt-1">Всего заказов: <span id="kpi-orders" class="font-medium text-slate-200">...</span></div>
+      </div>
+
+      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Себестоимость (COGS)</span>
+          <i data-lucide="package" class="w-4 h-4 text-sky-400"></i>
+        </div>
+        <div id="kpi-cogs" class="text-2xl font-bold text-white">...</div>
+        <div class="text-xs text-slate-400 mt-1">Закупка у поставщиков</div>
+      </div>
+
+      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Комиссия Kaspi (10%)</span>
+          <i data-lucide="percent" class="w-4 h-4 text-amber-400"></i>
+        </div>
+        <div id="kpi-commission" class="text-2xl font-bold text-white">...</div>
+        <div class="text-xs text-slate-400 mt-1">Удержание маркетплейса</div>
+      </div>
+
+      <div class="bg-slate-800/50 border border-slate-700/60 p-5 rounded-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Чистая прибыль (Profit)</span>
+          <i data-lucide="wallet" class="w-4 h-4 text-rose-400"></i>
+        </div>
+        <div id="kpi-profit" class="text-2xl font-bold text-white">...</div>
+        <div class="text-xs text-slate-400 mt-1">Средняя маржа: <span id="kpi-margin" class="font-medium text-slate-200">...</span></div>
+      </div>
+
+    </div>
+
+    <!-- Quick Actions Banner -->
+    <div class="bg-gradient-to-r from-rose-950/40 via-slate-800/60 to-slate-800/40 border border-rose-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-5 h-5 text-rose-400"></i>
+          Автоматический выбор оптимального поставщика и Re-pricing
+        </h2>
+        <p class="text-xs text-slate-300 mt-1">
+          Сканирует остатки всех поставщиков, выбирает минимальную закупочную цену и мгновенно обновляет цены в XML-фиде Kaspi.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="btn-reprice" onclick="triggerReprice()" class="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-rose-500/20 text-xs flex items-center gap-2 transition active:scale-95">
+          <i data-lucide="zap" class="w-4 h-4"></i>
+          Запустить пересчет цен
+        </button>
+        <a href="/api/v1/kaspi/feed/techtrade-almaty.xml" target="_blank" class="bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-200 font-medium px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition">
+          <i data-lucide="file-code" class="w-4 h-4 text-amber-400"></i>
+          Kaspi XML Feed
+        </a>
+      </div>
+    </div>
+
+    <!-- Master Catalog Table -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-700/60 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="w-5 h-5 text-rose-400"></i>
+          <h3 class="font-bold text-sm text-white">Канонический каталог Master SKU</h3>
+        </div>
+        <div class="text-xs text-slate-400" id="catalog-count">Всего: 5 товаров</div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-800/70 border-b border-slate-700 text-slate-400 font-semibold uppercase tracking-wider">
+              <th class="py-3 px-6">Master SKU</th>
+              <th class="py-3 px-6">Товар</th>
+              <th class="py-3 px-6">Бренд</th>
+              <th class="py-3 px-6">Штрихкод</th>
+              <th class="py-3 px-6">Лучшая закупка</th>
+              <th class="py-3 px-6">Цена Kaspi</th>
+              <th class="py-3 px-6">Маржа</th>
+              <th class="py-3 px-6">Остаток</th>
+            </tr>
+          </thead>
+          <tbody id="catalog-body" class="divide-y divide-slate-700/40 text-slate-200">
+            <tr><td colspan="8" class="text-center py-6 text-slate-500">Загрузка каталога...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Two-column bottom section: Live Alerts & Background Automation -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Live Notification Alerts Feed -->
+      <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bell-ring" class="w-5 h-5 text-rose-400"></i>
+            <h3 class="font-bold text-sm text-white">Уведомления и алерты (Telegram Feed)</h3>
+          </div>
+          <span class="text-xs bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded border border-rose-500/20" id="alerts-count">0 событий</span>
+        </div>
+        
+        <div class="space-y-2.5 max-h-64 overflow-y-auto pr-1" id="alerts-list">
+          <div class="text-xs text-slate-400">Новых критических событий нет.</div>
+        </div>
+      </div>
+
+      <!-- Background Tasks Status -->
+      <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="font-bold text-sm text-white">Фоновый планировщик (Cron Scheduler)</h3>
+          </div>
+          <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">В работе</span>
+        </div>
+        
+        <div class="space-y-3" id="tasks-list">
+          <div class="text-xs text-slate-400">Загрузка статуса задач...</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Upload Feed Modal -->
+  <div id="upload-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="file-up" class="w-5 h-5 text-rose-400"></i>
+          <h3 class="font-bold text-sm text-white">Импорт прайс-листа поставщика</h3>
+        </div>
+        <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1.5">Выберите поставщика</label>
+          <select id="upload-supplier-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+            <option value="">Загрузка поставщиков...</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-medium mb-1.5">Файл прайс-листа (CSV или Excel XLSX)</label>
+          <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-rose-500/80 rounded-xl p-6 text-center cursor-pointer transition bg-slate-900/40">
+            <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-500 mb-2"></i>
+            <p class="text-slate-300 font-medium" id="file-name-label">Перетащите файл сюда или нажмите для выбора</p>
+            <p class="text-[11px] text-slate-500 mt-1">Поддерживаются форматы: .csv, .xlsx</p>
+            <input type="file" id="feed-file-input" class="hidden" accept=".csv, .xlsx, .xls">
+          </div>
+        </div>
+
+        <div id="upload-progress-box" class="hidden space-y-2">
+          <div class="flex items-center justify-between text-[11px] text-slate-300">
+            <span>Обработка прайс-листа и каскадный матчинг SKU...</span>
+            <span class="animate-spin text-rose-400">⚙️</span>
+          </div>
+        </div>
+
+        <div id="upload-result-box" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="closeUploadModal()" class="px-4 py-2 rounded-xl bg-slate-700 text-slate-200 hover:bg-slate-600 transition">
+            Отмена
+          </button>
+          <button id="btn-submit-upload" onclick="submitFeedUpload()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold shadow-lg shadow-rose-600/20 transition flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i> Импортировать
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price History Modal -->
+  <div id="history-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+        <div>
+          <h3 class="font-bold text-sm text-white" id="modal-product-title">История изменения цен</h3>
+          <p class="text-xs text-slate-400" id="modal-product-sku">SKU: ...</p>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto max-h-80">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-900/60 border-b border-slate-700 text-slate-400">
+              <th class="py-2.5 px-4">Время</th>
+              <th class="py-2.5 px-4">Закупка</th>
+              <th class="py-2.5 px-4">Розница Kaspi</th>
+              <th class="py-2.5 px-4">Остаток</th>
+              <th class="py-2.5 px-4">Причина</th>
+            </tr>
+          </thead>
+          <tbody id="modal-history-body" class="divide-y divide-slate-700/50">
+            <tr><td colspan="5" class="py-4 text-center text-slate-500">Записей нет</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+    <span id="toast-text" class="text-xs font-medium">Готово</span>
+  </div>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').innerText = text;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // Format KZT currency
+    function formatKZT(num) {
+      if (num === null || num === undefined) return '—';
+      return new Intl.NumberFormat('ru-RU').format(Math.round(num)) + ' ₸';
+    }
+
+    // Fetch Dashboard Analytics
+    async function loadAnalytics() {
+      try {
+        const res = await fetch('/api/v1/orders/analytics/summary');
+        const data = await res.json();
+        document.getElementById('kpi-revenue').innerText = formatKZT(data.gross_revenue);
+        document.getElementById('kpi-orders').innerText = data.total_orders;
+        document.getElementById('kpi-cogs').innerText = formatKZT(data.total_cost_of_goods);
+        document.getElementById('kpi-commission').innerText = formatKZT(data.total_kaspi_commission);
+        document.getElementById('kpi-profit').innerText = formatKZT(data.net_profit);
+        document.getElementById('kpi-margin').innerText = data.average_margin_percent + '%';
+      } catch (err) {
+        console.error("Failed to load analytics", err);
+      }
+    }
+
+    // Fetch Master Catalog
+    async function loadCatalog() {
+      try {
+        const res = await fetch('/api/v1/catalog/products');
+        const prods = await res.json();
+        document.getElementById('catalog-count').innerText = `Всего: ${prods.length} товаров`;
+        
+        const tbody = document.getElementById('catalog-body');
+        tbody.innerHTML = '';
+
+        prods.forEach(p => {
+          const margin = (p.calculated_sale_price && p.optimal_cost_price) 
+            ? Math.round(p.calculated_sale_price - p.optimal_cost_price) 
+            : 0;
+          const marginPct = p.calculated_sale_price ? Math.round((margin / p.calculated_sale_price) * 100) : 0;
+
+          const row = document.createElement('tr');
+          row.className = "hover:bg-slate-800/40 transition";
+          row.innerHTML = `
+            <td class="py-3 px-6 font-mono font-medium text-rose-300">${p.sku_internal}</td>
+            <td class="py-3 px-6 font-medium text-white max-w-xs truncate">${p.title}</td>
+            <td class="py-3 px-6 text-slate-400">${p.brand || '—'}</td>
+            <td class="py-3 px-6 font-mono text-slate-400">${p.barcode || '—'}</td>
+            <td class="py-3 px-6 font-medium text-sky-300">${formatKZT(p.optimal_cost_price)}</td>
+            <td class="py-3 px-6 font-bold text-amber-300">${formatKZT(p.calculated_sale_price)}</td>
+            <td class="py-3 px-6 text-emerald-400 font-medium">${formatKZT(margin)} (${marginPct}%)</td>
+            <td class="py-3 px-6">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${p.total_stock > 0 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400'}">
+                  ${p.total_stock} шт.
+                </span>
+                <button onclick="openHistory('${p.id}', '${p.title.replace(/'/g, "\\'")}', '${p.sku_internal}')" class="text-[11px] text-slate-400 hover:text-white bg-slate-700/60 hover:bg-slate-700 px-2 py-0.5 rounded transition">
+                  История
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Failed to load catalog", err);
+      }
+    }
+
+    // Load Live Alerts Feed
+    async function loadAlerts() {
+      try {
+        const res = await fetch('/api/v1/notifications/recent');
+        const alerts = await res.json();
+        document.getElementById('alerts-count').innerText = `${alerts.length} событий`;
+        const list = document.getElementById('alerts-list');
+        
+        if (alerts.length === 0) {
+          list.innerHTML = '<div class="text-xs text-slate-400">Критических событий не зафиксировано.</div>';
+          return;
+        }
+
+        list.innerHTML = '';
+        alerts.forEach(a => {
+          const div = document.createElement('div');
+          div.className = "p-3 rounded-xl bg-slate-900/60 border border-slate-700/50 flex items-start justify-between text-xs";
+          const icon = a.event_type === 'OUT_OF_STOCK' ? '🔴' : (a.event_type === 'PRICE_SURGE' ? '🟡' : '🟢');
+          div.innerHTML = `
+            <div>
+              <div class="font-semibold text-white flex items-center gap-1.5">${icon} ${a.title}</div>
+              <div class="text-slate-300 text-[11px] mt-0.5">${a.message}</div>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono ml-2 shrink-0">${a.timestamp}</span>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Failed to load alerts", err);
+      }
+    }
+
+    // Open History Modal
+    async function openHistory(productId, title, sku) {
+      document.getElementById('modal-product-title').innerText = title;
+      document.getElementById('modal-product-sku').innerText = `SKU: ${sku}`;
+      const tbody = document.getElementById('modal-history-body');
+      tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-400">Загрузка...</td></tr>';
+      
+      document.getElementById('history-modal').classList.remove('opacity-0', 'pointer-events-none');
+      lucide.createIcons();
+
+      try {
+        const res = await fetch(`/api/v1/catalog/products/${productId}/history`);
+        const records = await res.json();
+        
+        if (records.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-500">История изменений пока пуста (цены стабильны)</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        records.forEach(r => {
+          const tr = document.createElement('tr');
+          const time = new Date(r.created_at).toLocaleTimeString('ru-RU');
+          tr.className = "hover:bg-slate-900/40 text-[11px]";
+          tr.innerHTML = `
+            <td class="py-2 px-4 font-mono text-slate-400">${time}</td>
+            <td class="py-2 px-4 font-medium text-sky-300">${formatKZT(r.new_cost_price)}</td>
+            <td class="py-2 px-4 font-bold text-amber-300">${formatKZT(r.new_sale_price)}</td>
+            <td class="py-2 px-4 text-slate-300">${r.new_stock} шт.</td>
+            <td class="py-2 px-4 text-slate-400">${r.change_reason}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-rose-400">Ошибка загрузки истории</td></tr>';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('history-modal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // Drag-and-drop & Upload Handlers
+    let selectedFeedFile = null;
+
+    async function openUploadModal() {
+      document.getElementById('upload-modal').classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('upload-result-box').classList.add('hidden');
+      document.getElementById('upload-progress-box').classList.add('hidden');
+      document.getElementById('file-name-label').innerText = "Перетащите файл сюда или нажмите для выбора";
+      selectedFeedFile = null;
+      lucide.createIcons();
+
+      // Load suppliers
+      try {
+        const orgRes = await fetch('/api/v1/catalog/products');
+        const prods = await orgRes.json();
+        const orgId = prods[0]?.organization_id;
+        if (orgId) {
+          const supRes = await fetch(`/api/v1/suppliers?organization_id=${orgId}`);
+          const sups = await supRes.json();
+          const select = document.getElementById('upload-supplier-select');
+          select.innerHTML = sups.map(s => `<option value="${s.id}">${s.name} (${s.code})</option>`).join('');
+        }
+      } catch (e) {
+        console.error("Failed to load suppliers", e);
+      }
+    }
+
+    function closeUploadModal() {
+      document.getElementById('upload-modal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // Setup drop zone
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('feed-file-input');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-rose-500'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-rose-500'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-rose-500');
+      if (e.dataTransfer.files.length > 0) {
+        selectedFeedFile = e.dataTransfer.files[0];
+        document.getElementById('file-name-label').innerText = `Выбран файл: ${selectedFeedFile.name} (${Math.round(selectedFeedFile.size / 1024)} KB)`;
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        selectedFeedFile = e.target.files[0];
+        document.getElementById('file-name-label').innerText = `Выбран файл: ${selectedFeedFile.name} (${Math.round(selectedFeedFile.size / 1024)} KB)`;
+      }
+    });
+
+    async function submitFeedUpload() {
+      const supplierId = document.getElementById('upload-supplier-select').value;
+      if (!supplierId) {
+        alert("Пожалуйста, выберите поставщика");
+        return;
+      }
+      if (!selectedFeedFile) {
+        alert("Пожалуйста, выберите файл прайс-листа (.csv или .xlsx)");
+        return;
+      }
+
+      const btn = document.getElementById('btn-submit-upload');
+      btn.disabled = true;
+      document.getElementById('upload-progress-box').classList.remove('hidden');
+      document.getElementById('upload-result-box').classList.add('hidden');
+
+      const formData = new FormData();
+      formData.append('file', selectedFeedFile);
+
+      try {
+        const res = await fetch(`/api/v1/suppliers/${supplierId}/upload-feed`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        document.getElementById('upload-progress-box').classList.add('hidden');
+        const resBox = document.getElementById('upload-result-box');
+        resBox.classList.remove('hidden');
+        resBox.innerHTML = `
+          <div class="font-bold">✓ Прайс-лист успешно импортирован!</div>
+          <div class="mt-1">Обработано предложений: <strong>${data.processed_offers}</strong></div>
+          <div>Авто-сопоставлено SKU: <strong>${data.auto_confirmed_matches}</strong></div>
+          <div>На ручной проверке: <strong>${data.pending_human_review}</strong></div>
+        `;
+        showToast("Прайс-лист успешно загружен и обработан!");
+        await loadCatalog();
+      } catch (e) {
+        alert("Ошибка при загрузке прайс-листа");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // Fetch Background Tasks
+    async function loadTasks() {
+      try {
+        const res = await fetch('/api/v1/tasks/status');
+        const data = await res.json();
+        const container = document.getElementById('tasks-list');
+        container.innerHTML = '';
+
+        for (const [key, t] of Object.entries(data.tasks)) {
+          const div = document.createElement('div');
+          div.className = "p-3 rounded-xl bg-slate-900/60 border border-slate-700/50 flex items-center justify-between text-xs";
+          const isSuccess = t.status === 'SUCCESS';
+          div.innerHTML = `
+            <div>
+              <div class="font-medium text-white">${key}</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Интервал: ${t.interval_seconds} сек • Запусков: ${t.run_count}</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${isSuccess ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-700 text-slate-300'}">
+                ${t.status}
+              </span>
+              <button onclick="triggerTask('${key}')" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-slate-200 transition">
+                Запустить
+              </button>
+            </div>
+          `;
+          container.appendChild(div);
+        }
+      } catch (err) {
+        console.error("Failed to load tasks", err);
+      }
+    }
+
+    // Trigger Manual Reprice
+    async function triggerReprice() {
+      const btn = document.getElementById('btn-reprice');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Считаем...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/tasks/run/reprice_and_kaspi_sync', { method: 'POST' });
+        const data = await res.json();
+        showToast("✓ Цены успешно пересчитаны, фид Kaspi обновлен!");
+        await loadCatalog();
+        await loadTasks();
+      } catch (err) {
+        alert("Ошибка при пересчете цен");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> Запустить пересчет цен`;
+        lucide.createIcons();
+      }
+    }
+
+    async function triggerTask(name) {
+      try {
+        await fetch(`/api/v1/tasks/run/${name}`, { method: 'POST' });
+        showToast(`Задача ${name} запущена`);
+        await loadTasks();
+        await loadCatalog();
+      } catch (e) {
+        alert("Ошибка запуска задачи");
+      }
+    }
+
+    // Initial Load
+    loadAnalytics();
+    loadCatalog();
+    loadTasks();
+    loadAlerts();
+  </script>
+</body>
+</html>
