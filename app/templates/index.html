@@ -65,227 +65,324 @@
     }
   </style>
 </head>
-<body class="bg-[#f6f8fb] text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex relative overflow-x-hidden selection:bg-rose-500 selection:text-white antialiased">
 
   <!-- Ambient Glow Background Blobs (Kaspi aesthetic) -->
-  <div class="fixed top-0 left-1/4 w-[36rem] h-[36rem] bg-rose-400/10 rounded-full blur-[110px] pointer-events-none -z-10"></div>
-  <div class="fixed top-40 right-10 w-[30rem] h-[30rem] bg-amber-400/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
-  <div class="fixed bottom-10 left-10 w-[28rem] h-[28rem] bg-sky-300/15 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+  <div class="fixed top-0 left-1/4 w-[36rem] h-[36rem] bg-rose-400/8 rounded-full blur-[110px] pointer-events-none -z-10"></div>
+  <div class="fixed top-40 right-10 w-[30rem] h-[30rem] bg-amber-400/8 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-10 left-10 w-[28rem] h-[28rem] bg-sky-300/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
 
-  <!-- Header / Navigation (Glassmorphic) -->
-  <header class="kaspi-glass sticky top-0 z-40 border-b border-white/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 py-3 flex flex-wrap items-center justify-between gap-4">
-      
-      <!-- Brand Logo & Name -->
-      <div class="flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-2xl kaspi-gradient-btn flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-rose-500/25 tracking-wider shrink-0">
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden hidden transition-opacity"></div>
+
+  <!-- MODERN ENTERPRISE LEFT SIDEBAR -->
+  <aside id="app-sidebar" class="fixed top-0 bottom-0 left-0 w-72 bg-white/95 backdrop-blur-xl border-r border-slate-200/80 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 shadow-xl lg:shadow-none">
+    
+    <!-- Sidebar Header -->
+    <div class="h-18 px-5 py-4 flex items-center justify-between border-b border-slate-100">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl kaspi-gradient-btn flex items-center justify-center font-black text-white text-lg shadow-md shadow-rose-500/30 shrink-0">
           K
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold tracking-tight text-slate-900">
-              Kaspi & Supplier Hub
-            </h1>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-[#f14635] border border-rose-200">
-              Enterprise
-            </span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold text-sm tracking-tight text-slate-900">Kaspi &amp; Supplier</span>
+            <span class="px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-[#f14635] border border-rose-200">PRO</span>
           </div>
-          <p class="text-xs text-slate-500">Авто-репрайсер, термоэтикетки и мульти-фиды</p>
+          <div class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 mt-0.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Kaspi Bot Online
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleMobileSidebar()" class="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Menu (Scrollable) -->
+    <div class="flex-1 overflow-y-auto px-3.5 py-4 space-y-5">
+      
+      <!-- Group 1: Каталог & Продажи -->
+      <div class="space-y-1">
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Каталог &amp; Продажи</div>
+        <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between bg-[#f14635] text-white shadow-sm shadow-rose-500/20">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
+            <span>Каталог Master SKU</span>
+          </div>
+          <span id="tab-catalog-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-white/20 text-white">5</span>
+        </button>
+        
+        <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="shopping-bag" class="w-4 h-4 shrink-0 text-slate-500"></i>
+            <span>Заказы &amp; Этикетки</span>
+          </div>
+          <span id="tab-orders-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">0</span>
+        </button>
+
+        <button onclick="switchTab('review')" id="tab-btn-review" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="user-check" class="w-4 h-4 shrink-0 text-slate-500"></i>
+            <span>Очередь модерации</span>
+          </div>
+          <span id="tab-review-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">0</span>
+        </button>
+
+        <button onclick="switchTab('suppliers')" id="tab-btn-suppliers" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="link" class="w-4 h-4 shrink-0 text-slate-500"></i>
+          <span>Поставщики &amp; URL</span>
+        </button>
+      </div>
+
+      <!-- Group 2: Склад & Логистика -->
+      <div class="space-y-1">
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Склад &amp; WMS</div>
+        <button onclick="switchTab('warehouse')" id="tab-btn-warehouse" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="boxes" class="w-4 h-4 shrink-0 text-slate-500"></i>
+          <span>1С &amp; МойСклад</span>
+        </button>
+
+        <button onclick="switchTab('scanner-tab')" id="tab-btn-scanner-tab" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="scan-barcode" class="w-4 h-4 shrink-0 text-indigo-500"></i>
+          <span>Сканер ТСД (WMS)</span>
+        </button>
+
+        <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="truck" class="w-4 h-4 shrink-0 text-amber-500"></i>
+          <span>Логистика &amp; SLA</span>
+        </button>
+
+        <button onclick="switchTab('multichannel')" id="tab-btn-multichannel" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="globe" class="w-4 h-4 shrink-0 text-sky-500"></i>
+          <span>Kaspi + WB + Ozon</span>
+        </button>
+      </div>
+
+      <!-- Group 3: ИИ & Маркетинг -->
+      <div class="space-y-1">
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">ИИ &amp; Клиенты</div>
+        <button onclick="switchTab('ai')" id="tab-btn-ai" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="sparkles" class="w-4 h-4 shrink-0 text-purple-600"></i>
+            <span>ИИ-Отзывы &amp; SEO</span>
+          </div>
+          <span id="tab-ai-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">0</span>
+        </button>
+
+        <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="message-circle" class="w-4 h-4 shrink-0 text-emerald-500"></i>
+          <span>WhatsApp &amp; Отзывы 5★</span>
+        </button>
+
+        <button onclick="switchTab('radar')" id="tab-btn-radar" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="crosshair" class="w-4 h-4 shrink-0 text-rose-500"></i>
+          <span>Радар конкурентов</span>
+        </button>
+
+        <button onclick="switchTab('restock')" id="tab-btn-restock" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="trending-up" class="w-4 h-4 shrink-0 text-emerald-500"></i>
+          <span>AI-Закупки &amp; ABC/XYZ</span>
+        </button>
+      </div>
+
+      <!-- Group 4: Финансы & Учет -->
+      <div class="space-y-1">
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Финансы &amp; Учет</div>
+        <button onclick="switchTab('finance')" id="tab-btn-finance" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="calculator" class="w-4 h-4 shrink-0 text-emerald-600"></i>
+          <span>Налоги РК (3%) &amp; P&amp;L</span>
+        </button>
+
+        <button onclick="switchTab('reconciliation')" id="tab-btn-reconciliation" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="landmark" class="w-4 h-4 shrink-0 text-sky-600"></i>
+          <span>Сверка Kaspi Pay</span>
+        </button>
+
+        <button onclick="switchTab('claims')" id="tab-btn-claims" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="file-warning" class="w-4 h-4 shrink-0 text-rose-500"></i>
+          <span>Претензии (RMA)</span>
+        </button>
+
+        <button onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="credit-card" class="w-4 h-4 shrink-0 text-amber-500"></i>
+          <span>Тарифы &amp; Биллинг</span>
+        </button>
+      </div>
+
+      <!-- Group 5: Система -->
+      <div class="space-y-1">
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Система</div>
+        <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="bell" class="w-4 h-4 shrink-0 text-slate-500"></i>
+          <span>Уведомления и алерты</span>
+        </button>
+
+        <button onclick="switchTab('tasks')" id="tab-btn-tasks" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="clock" class="w-4 h-4 shrink-0 text-slate-500"></i>
+          <span>Фоновые задачи</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-3 border-t border-slate-100 bg-slate-50/70 space-y-1">
+      <div class="flex items-center justify-between text-xs text-slate-500 px-2 py-1">
+        <button onclick="openDbGuideModal()" class="hover:text-slate-900 flex items-center gap-1.5 transition font-medium">
+          <i data-lucide="database" class="w-3.5 h-3.5 text-sky-500"></i> База данных
+        </button>
+        <a href="/docs" target="_blank" class="hover:text-slate-900 flex items-center gap-1.5 transition font-medium">
+          <i data-lucide="code" class="w-3.5 h-3.5 text-purple-500"></i> REST API
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN APP WRAPPER -->
+  <div class="flex-1 lg:pl-72 flex flex-col min-h-screen">
+    
+    <!-- Modern Sticky Topbar -->
+    <header class="sticky top-0 z-30 h-16 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between gap-4">
+      
+      <!-- Left: Mobile Toggle & Page Title -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-medium hidden sm:inline">Kaspi SaaS /</span>
+          <h1 id="current-page-title" class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+            Каталог Master SKU
+          </h1>
         </div>
       </div>
 
-      <!-- Center: Multi-Store Kaspi Switcher (Task 5) -->
-      <div class="flex items-center gap-2 bg-white/70 border border-slate-200/80 rounded-2xl px-3 py-1.5 shadow-xs">
+      <!-- Center: Multi-Store Kaspi Switcher -->
+      <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/90 rounded-2xl px-3 py-1.5 shadow-2xs">
         <i data-lucide="store" class="w-4 h-4 text-[#f14635] shrink-0"></i>
         <div class="text-left">
-          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Магазин Kaspi:</div>
-          <select id="shop-selector" onchange="onShopChange()" class="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer pr-4">
+          <div class="text-[9px] font-black uppercase tracking-wider text-slate-400">Магазин Kaspi:</div>
+          <select id="shop-selector" onchange="onShopChange()" class="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer pr-3">
             <option value="">Загрузка магазинов...</option>
           </select>
         </div>
-        <button onclick="openNewShopModal()" title="Добавить магазин Kaspi (ИП / ТОО)" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <button onclick="openNewShopModal()" title="Добавить магазин Kaspi (ИП / ТОО)" class="text-xs text-slate-400 hover:text-[#f14635] p-1 rounded-lg hover:bg-white transition">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
         </button>
-        <button onclick="openKaspiSettingsModal()" title="Настройки API токена и ссылки на XML-фид" class="text-xs text-slate-500 hover:text-[#f14635] p-1.5 rounded-xl hover:bg-slate-100 transition">
-          <i data-lucide="settings" class="w-4 h-4"></i>
+        <button onclick="openKaspiSettingsModal()" title="Настройки API токена и ссылки на XML-фид" class="text-xs text-slate-400 hover:text-[#f14635] p-1 rounded-lg hover:bg-white transition">
+          <i data-lucide="settings" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Right: Action Buttons -->
       <div class="flex items-center space-x-2">
-        <button onclick="openTelegramModal()" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1.5">
-          <i data-lucide="send" class="w-3.5 h-3.5 text-sky-500"></i> Telegram
+        <button onclick="openTelegramModal()" class="text-xs bg-white hover:bg-slate-50 text-slate-700 font-semibold px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 shadow-2xs transition flex items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5 text-sky-500"></i> <span class="hidden md:inline">Telegram</span>
         </button>
 
-        <a href="/api/v1/orders/export/excel" download class="text-xs bg-white/80 hover:bg-white text-slate-700 font-semibold px-3 py-2 rounded-xl border border-slate-200/80 shadow-sm hover:shadow transition flex items-center gap-1.5 active:scale-95">
-          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> Excel
+        <a href="/api/v1/orders/export/excel" download class="text-xs bg-white hover:bg-slate-50 text-slate-700 font-semibold px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 shadow-2xs transition flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> <span class="hidden md:inline">Excel</span>
         </a>
 
-        <button onclick="openUploadModal()" class="text-xs kaspi-gradient-btn text-white font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95 shadow-md shadow-rose-500/25">
-          <i data-lucide="upload" class="w-3.5 h-3.5"></i> Загрузить прайс
-        </button>
-
-        <button onclick="openDbGuideModal()" title="Статус базы данных и руководство по PostgreSQL" class="text-xs bg-white/80 hover:bg-white text-slate-700 font-medium px-2.5 py-2 rounded-xl border border-slate-200/80 shadow-sm transition flex items-center gap-1">
-          <i data-lucide="database" class="w-3.5 h-3.5 text-sky-600"></i> БД
-        </button>
-
-        <a href="/docs" target="_blank" class="text-xs bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 px-2.5 py-2 rounded-xl border border-slate-200/70 transition flex items-center gap-1">
-          <i data-lucide="code" class="w-3.5 h-3.5"></i> API
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-7">
-
-    <!-- KPI / Financial Dashboard Cards (Glass Cards) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
-      <!-- Revenue Card -->
-      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
-        <div class="flex items-center justify-between text-slate-500 mb-2">
-          <span class="text-xs font-bold uppercase tracking-wider">Оборот (Revenue)</span>
-          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <i data-lucide="trending-up" class="w-4 h-4"></i>
-          </div>
-        </div>
-        <div id="kpi-revenue" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
-        <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
-          <span class="font-semibold text-slate-700" id="kpi-orders">...</span> выполненных заказов
-        </div>
-      </div>
-
-      <!-- COGS Card -->
-      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
-        <div class="flex items-center justify-between text-slate-500 mb-2">
-          <span class="text-xs font-bold uppercase tracking-wider">Себестоимость (COGS)</span>
-          <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
-            <i data-lucide="package" class="w-4 h-4"></i>
-          </div>
-        </div>
-        <div id="kpi-cogs" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
-        <div class="text-xs text-slate-500 mt-2">Оптимальная закупка у дистрибьюторов</div>
-      </div>
-
-      <!-- Kaspi Commission Card -->
-      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden group">
-        <div class="flex items-center justify-between text-slate-500 mb-2">
-          <span class="text-xs font-bold uppercase tracking-wider">Комиссия Kaspi (10%)</span>
-          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-            <i data-lucide="percent" class="w-4 h-4"></i>
-          </div>
-        </div>
-        <div id="kpi-commission" class="text-2xl font-extrabold text-slate-900 tracking-tight">...</div>
-        <div class="text-xs text-slate-500 mt-2">Удержание маркетплейса Kaspi.kz</div>
-      </div>
-
-      <!-- Net Profit Card -->
-      <div class="kaspi-glass kaspi-glass-hover p-5 rounded-3xl relative overflow-hidden border-rose-200/50 group">
-        <div class="flex items-center justify-between text-slate-500 mb-2">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#f14635]">Чистая прибыль (Profit)</span>
-          <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center shadow-sm">
-            <i data-lucide="wallet" class="w-4 h-4"></i>
-          </div>
-        </div>
-        <div id="kpi-profit" class="text-2xl font-extrabold text-[#f14635] tracking-tight">...</div>
-        <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
-          Средняя маржа: <span id="kpi-margin" class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">...</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Quick Actions & Smart Repricer Glass Banner -->
-    <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-      <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
-
-      <div class="space-y-1 z-10">
-        <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#f14635] animate-ping"></span>
-          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            Kaspi Smart Repricer & Стратегии удержания 1-го места
-          </h2>
-        </div>
-        <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
-          Перебивает конкурентов на 10 ₸, защищен Floor Price Guard от демпинга в минус, автоматически подтягивает цены вверх при уходе конкурентов и поддерживает ночной режим максимизации маржи.
-        </p>
-        <div class="flex items-center gap-3 pt-1 text-[11px] text-slate-500">
-          <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Floor Guard: Активен</span>
-          <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Step-Up Recovery: Включен</span>
-          <span class="flex items-center gap-1 text-amber-700 font-semibold"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Ночной режим (+3%): 01:00-06:00</span>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2.5 shrink-0 z-10">
-        <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-rose-500/25">
-          <i data-lucide="zap" class="w-4 h-4"></i>
-          Пересчитать цены
-        </button>
-        <button onclick="openKaspiSettingsModal()" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
-          <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
-          Kaspi XML фид
+        <button onclick="openUploadModal()" class="text-xs kaspi-gradient-btn text-white font-semibold px-3 sm:px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95 shadow-sm shadow-rose-500/25">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Загрузить прайс</span>
         </button>
       </div>
-    </div>
+    </header>
 
-    <!-- Navigation Tabs (Glass Pills) -->
-    <div class="flex items-center gap-2 border-b border-slate-200/80 pb-3 flex-wrap">
-      <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn active px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-[#f14635] text-white shadow-md shadow-rose-500/20">
-        <i data-lucide="layers" class="w-4 h-4"></i> Каталог Master SKU (<span id="tab-catalog-badge">5</span>)
-      </button>
-      <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="shopping-bag" class="w-4 h-4"></i> Заказы & Этикетки (<span id="tab-orders-badge">0</span>)
-      </button>
-      <button onclick="switchTab('review')" id="tab-btn-review" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="user-check" class="w-4 h-4"></i> Очередь модерации (<span id="tab-review-badge">0</span>)
-      </button>
-      <button onclick="switchTab('suppliers')" id="tab-btn-suppliers" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="link" class="w-4 h-4"></i> Поставщики & Авто-URL
-      </button>
-      <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="bell" class="w-4 h-4"></i> Уведомления и алерты
-      </button>
-      <button onclick="switchTab('tasks')" id="tab-btn-tasks" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="clock" class="w-4 h-4"></i> Фоновые задачи
-      </button>
-      <button onclick="switchTab('warehouse')" id="tab-btn-warehouse" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="boxes" class="w-4 h-4"></i> 🏢 Склад (1С & МойСклад)
-      </button>
-      <button onclick="switchTab('ai')" id="tab-btn-ai" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i> 🤖 ИИ & Отзывы (<span id="tab-ai-badge">0</span>)
-      </button>
-      <button onclick="switchTab('restock')" id="tab-btn-restock" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i> 📊 AI-Закупки & ABC/XYZ
-      </button>
-      <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="truck" class="w-4 h-4 text-amber-600"></i> 🚚 Логистика & SLA
-      </button>
-      <button onclick="switchTab('multichannel')" id="tab-btn-multichannel" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="globe" class="w-4 h-4 text-sky-600"></i> 🌐 Kaspi + WB + Ozon
-      </button>
-      <button onclick="switchTab('radar')" id="tab-btn-radar" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="crosshair" class="w-4 h-4 text-rose-600"></i> 📡 Радар конкурентов
-      </button>
-      <button onclick="switchTab('finance')" id="tab-btn-finance" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="calculator" class="w-4 h-4 text-emerald-600"></i> 🧮 Налоги РК (3%) & P&L
-      </button>
-      <button onclick="switchTab('scanner-tab')" id="tab-btn-scanner-tab" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="scan-barcode" class="w-4 h-4 text-indigo-600"></i> 📱 Сканер WMS
-      </button>
-      <button onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="credit-card" class="w-4 h-4 text-amber-600"></i> 💳 Тарифы & Биллинг
-      </button>
-      <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i> 💬 WhatsApp & Отзывы 5★
-      </button>
-      <button onclick="switchTab('claims')" id="tab-btn-claims" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="file-warning" class="w-4 h-4 text-rose-600"></i> 🛡️ Претензии (RMA)
-      </button>
-      <button onclick="switchTab('reconciliation')" id="tab-btn-reconciliation" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
-        <i data-lucide="landmark" class="w-4 h-4 text-sky-600"></i> 🏦 Сверка Kaspi Pay
-      </button>
-    </div>
+    <!-- Main Container -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- KPI / Financial Dashboard Cards (High Contrast & Clean Grid) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Revenue Card -->
+        <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden group border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Оборот (Revenue)</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <i data-lucide="trending-up" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="kpi-revenue" class="text-2xl font-black text-slate-900 tracking-tight">...</div>
+          <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+            <span class="font-semibold text-slate-700" id="kpi-orders">...</span> выполненных заказов
+          </div>
+        </div>
+
+        <!-- COGS Card -->
+        <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden group border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Себестоимость (COGS)</span>
+            <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+              <i data-lucide="package" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="kpi-cogs" class="text-2xl font-black text-slate-900 tracking-tight">...</div>
+          <div class="text-xs text-slate-500 mt-2">Оптимальная закупка у дистрибьюторов</div>
+        </div>
+
+        <!-- Kaspi Commission Card -->
+        <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden group border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Комиссия Kaspi (10%)</span>
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="percent" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="kpi-commission" class="text-2xl font-black text-slate-900 tracking-tight">...</div>
+          <div class="text-xs text-slate-500 mt-2">Удержание маркетплейса Kaspi.kz</div>
+        </div>
+
+        <!-- Net Profit Card -->
+        <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden border border-rose-200/80 shadow-xs group bg-gradient-to-br from-white to-rose-50/30">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-black uppercase tracking-wider text-[#f14635]">Чистая прибыль (Profit)</span>
+            <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center shadow-xs">
+              <i data-lucide="wallet" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="kpi-profit" class="text-2xl font-black text-[#f14635] tracking-tight">...</div>
+          <div class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+            Средняя маржа: <span id="kpi-margin" class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200">...</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions & Smart Repricer Banner -->
+      <div class="kaspi-glass p-5 rounded-2xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden shadow-xs">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/8 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#f14635] animate-ping"></span>
+            <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              Kaspi Smart Repricer &amp; Стратегии удержания 1-го места
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Перебивает конкурентов на 10 ₸, защищен Floor Price Guard от демпинга в минус, автоматически подтягивает цены вверх и максимизирует ночную маржу.
+          </p>
+          <div class="flex flex-wrap items-center gap-3 pt-0.5 text-[11px] text-slate-500">
+            <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Floor Guard: Активен</span>
+            <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Step-Up Recovery: Включен</span>
+            <span class="flex items-center gap-1 text-amber-700 font-semibold"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Ночной режим (+3%): 01:00-06:00</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 z-10">
+          <button id="btn-reprice" onclick="triggerReprice()" class="kaspi-gradient-btn text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition active:scale-95 shadow-sm shadow-rose-500/25">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            Пересчитать цены
+          </button>
+          <button onclick="openKaspiSettingsModal()" class="bg-white hover:bg-slate-50 text-slate-700 font-semibold px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs text-xs flex items-center gap-1.5 transition">
+            <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
+            Kaspi XML
+          </button>
+        </div>
+      </div>
 
     <!-- TAB 1: Master Catalog Section -->
     <div id="tab-pane-catalog" class="tab-pane kaspi-glass rounded-3xl overflow-hidden shadow-sm">
@@ -1015,6 +1112,7 @@
     </div>
 
   </main>
+  </div> <!-- /main app wrapper -->
 
   <!-- MODAL: Telegram Bot Configuration -->
   <div id="telegram-modal" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
@@ -1386,7 +1484,7 @@
   </div>
 
   <!-- Notification Toast (Glass Floating Pill) -->
-  <div id="toast" class="fixed bottom-6 right-6 kaspi-glass px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-50 translate-y-2 border border-slate-200/80">
+  <div id="toast" class="fixed top-6 right-6 kaspi-glass px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-50 -translate-y-2 border border-slate-200/90">
     <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
       <i data-lucide="check" class="w-4 h-4"></i>
     </div>
@@ -1401,30 +1499,91 @@
     let currentShop = null;
     let uploadMode = 'file';
 
+    const tabTitles = {
+      'catalog': 'Каталог Master SKU',
+      'orders': 'Заказы & Этикетки',
+      'review': 'Очередь модерации',
+      'suppliers': 'Поставщики & Auto-URL',
+      'alerts': 'Уведомления и алерты',
+      'tasks': 'Фоновые задачи',
+      'warehouse': 'Склад (1С & МойСклад)',
+      'ai': 'ИИ-Отзывы & SEO',
+      'restock': 'AI-Закупки & ABC/XYZ',
+      'logistics': 'Логистика & SLA',
+      'multichannel': 'Kaspi + WB + Ozon',
+      'radar': 'Радар конкурентов',
+      'finance': 'Налоги РК (3%) & P&L',
+      'scanner-tab': 'Сканер ТСД (WMS)',
+      'billing': 'Тарифы & Биллинг',
+      'whatsapp': 'WhatsApp & Отзывы 5★',
+      'claims': 'Претензии (RMA)',
+      'reconciliation': 'Сверка Kaspi Pay'
+    };
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('app-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (sidebar && overlay) {
+        if (sidebar.classList.contains('-translate-x-full')) {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+        }
+      }
+    }
+
+    function closeMobileSidebar() {
+      const sidebar = document.getElementById('app-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (sidebar && overlay) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
     // Tab switching logic
     function switchTab(tab) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-[#f14635]', 'text-white', 'shadow-md', 'shadow-rose-500/20');
+        btn.classList.remove('bg-[#f14635]', 'text-white', 'shadow-sm', 'shadow-rose-500/20');
         btn.classList.add('text-slate-600');
+        const b = btn.querySelector('span[id$="-badge"]');
+        if (b) {
+          b.classList.remove('bg-white/20', 'text-white');
+          b.classList.add('bg-slate-100', 'text-slate-600', 'border', 'border-slate-200');
+        }
       });
 
       const pane = document.getElementById(`tab-pane-${tab}`);
       const btn = document.getElementById(`tab-btn-${tab}`);
       if (pane && btn) {
         pane.classList.remove('hidden');
-        btn.classList.add('bg-[#f14635]', 'text-white', 'shadow-md', 'shadow-rose-500/20');
+        btn.classList.add('bg-[#f14635]', 'text-white', 'shadow-sm', 'shadow-rose-500/20');
         btn.classList.remove('text-slate-600');
+        const b = btn.querySelector('span[id$="-badge"]');
+        if (b) {
+          b.classList.remove('bg-slate-100', 'text-slate-600', 'border', 'border-slate-200');
+          b.classList.add('bg-white/20', 'text-white');
+        }
       }
+
+      const titleEl = document.getElementById('current-page-title');
+      if (titleEl && tabTitles[tab]) {
+        titleEl.innerText = tabTitles[tab];
+      }
+
+      closeMobileSidebar();
       lucide.createIcons();
     }
 
     function showToast(text) {
       const toast = document.getElementById('toast');
       document.getElementById('toast-text').innerText = text;
-      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-2');
       setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+        toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-2');
       }, 3500);
     }
 
