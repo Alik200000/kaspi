@@ -21,3 +21,12 @@ async def get_tax_910_report(db: AsyncSession = Depends(get_db)):
     """
     summary = await KazakhstanFinanceTaxService.get_financial_summary(db)
     return summary["tax_910"]
+
+
+@router.get("/reconciliation")
+async def get_reconciliation_report(db: AsyncSession = Depends(get_db)):
+    """
+    Returns automated bank payout reconciliation against Kaspi Pay settlements.
+    """
+    from app.modules.finance.reconciliation import KaspiReconciliationService
+    return await KaspiReconciliationService.get_reconciliation_summary(db)

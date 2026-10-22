@@ -182,6 +182,22 @@ async def generate_seo_description(payload: GenerateSEOPayload):
     return result
 
 
+class CopilotChatPayload(BaseModel):
+    query: str
+
+
+@router.post("/copilot/chat")
+async def copilot_chat(
+    payload: CopilotChatPayload,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Interactive AI Sales Copilot & Director with live business context.
+    """
+    from app.modules.ai_assistant.copilot import AICopilotService
+    return await AICopilotService.chat(payload.query, db)
+
+
 async def seed_demo_reviews_internal(db: AsyncSession):
     demo_data = [
         {

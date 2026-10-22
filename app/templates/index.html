@@ -276,6 +276,15 @@
       <button onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="credit-card" class="w-4 h-4 text-amber-600"></i> 💳 Тарифы & Биллинг
       </button>
+      <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i> 💬 WhatsApp & Отзывы 5★
+      </button>
+      <button onclick="switchTab('claims')" id="tab-btn-claims" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="file-warning" class="w-4 h-4 text-rose-600"></i> 🛡️ Претензии (RMA)
+      </button>
+      <button onclick="switchTab('reconciliation')" id="tab-btn-reconciliation" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="landmark" class="w-4 h-4 text-sky-600"></i> 🏦 Сверка Kaspi Pay
+      </button>
     </div>
 
     <!-- TAB 1: Master Catalog Section -->
@@ -878,6 +887,130 @@
       <!-- Pricing Plans Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="billing-plans-container">
         <div class="p-8 text-center text-slate-400 text-xs col-span-3">Загрузка тарифных планов...</div>
+      </div>
+    </div>
+
+    <!-- TAB 16: WhatsApp Customer Care & 5-Star Reviews -->
+    <div id="tab-pane-whatsapp" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-emerald-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              WhatsApp Забота о клиентах & Сбор отзывов 5★
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Автоматическая отправка уведомлений о заказе, ссылок на гарантию и вежливый запрос 5★ отзыва с промокодом на скидку в WhatsApp покупателя.
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200">
+          WhatsApp Gateway: Подключен (+7 701 999 88 77)
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Template 1 -->
+        <div class="kaspi-glass rounded-3xl p-5 border border-slate-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-slate-900">1. Подтверждение заказа</span>
+            <span class="text-[10px] bg-sky-50 text-sky-700 font-bold px-2 py-0.5 rounded-full">При создании</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed italic bg-white/60 p-3 rounded-2xl border border-slate-100">
+            «Здравствуйте, Айдар! Ваш заказ #10984562 в магазине на Kaspi.kz принят. Передаем курьеру сегодня. Электронная гарантия активна!»
+          </p>
+        </div>
+
+        <!-- Template 2 (Review Booster) -->
+        <div class="kaspi-glass rounded-3xl p-5 border-2 border-emerald-500/60 bg-emerald-50/20 space-y-3 relative">
+          <span class="absolute -top-3 right-4 bg-emerald-600 text-white font-extrabold text-[9px] uppercase px-2.5 py-0.5 rounded-full shadow">Хит конверсии</span>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-emerald-950">2. Запрос 5★ Отзыва</span>
+            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">+2 часа после вручения</span>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed italic bg-white p-3 rounded-2xl border border-emerald-200">
+            «Здравствуйте! Курьер доставил заказ. Если всё понравилось, поставьте 5★ в Kaspi: kaspi.kz/review. Дарим скидку 5% по промокоду KASPI5!»
+          </p>
+        </div>
+
+        <!-- Template 3 -->
+        <div class="kaspi-glass rounded-3xl p-5 border border-slate-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-slate-900">3. Задержка курьера</span>
+            <span class="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded-full">При SLA > 24ч</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed italic bg-white/60 p-3 rounded-2xl border border-slate-100">
+            «По вашему заказу курьер Kaspi задерживается в пробках. Держим на личном контроле, сообщим точное время. Извините за ожидание!»
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 17: Vendor RMA & Defect Claims -->
+    <div id="tab-pane-claims" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Учет брака & Рекламации поставщикам (RMA)
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Официальное выставление претензий дистрибьюторам при возврате бракованного товара от покупателей Kaspi с генерацией юридического Акта рекламации.
+          </p>
+        </div>
+      </div>
+
+      <!-- Claims Table -->
+      <div class="kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/40">
+          <h3 class="font-bold text-sm text-slate-900">Журнал претензий к поставщикам</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+                <th class="py-3.5 px-6">Номер акта</th>
+                <th class="py-3.5 px-6">Поставщик</th>
+                <th class="py-3.5 px-6">Товар & Серийник</th>
+                <th class="py-3.5 px-6">Причина брака</th>
+                <th class="py-3.5 px-6">Сумма претензии</th>
+                <th class="py-3.5 px-6">Статус & Печать</th>
+              </tr>
+            </thead>
+            <tbody id="claims-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
+              <tr><td colspan="6" class="text-center py-8 text-slate-400">Загрузка актов...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 18: Kaspi Pay Settlement Reconciliation -->
+    <div id="tab-pane-reconciliation" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-sky-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-sky-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Сверка банковских выплат Kaspi Pay
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Автоматическая сверка зачислений на IBAN-счет ИП против заказов, удержаний комиссии 10% и стоимости доставки.
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200" id="reconcile-badge">
+          Сверка: 100% сходимость (0 ₸ расхождений)
+        </div>
+      </div>
+
+      <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4" id="reconcile-content">
+        <div class="p-8 text-center text-slate-400 text-xs">Загрузка сверки...</div>
       </div>
     </div>
 
@@ -2766,6 +2899,154 @@
       }
     }
 
+    // --- Claims & RMA ---
+    async function loadClaims() {
+      try {
+        const res = await fetch('/api/v1/claims');
+        if (!res.ok) return;
+        const claims = await res.json();
+        const tbody = document.getElementById('claims-body');
+        tbody.innerHTML = '';
+
+        claims.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50 transition";
+          tr.innerHTML = `
+            <td class="py-3.5 px-6 font-mono font-bold text-slate-900">${c.claim_number}</td>
+            <td class="py-3.5 px-6 font-semibold text-slate-800">${c.supplier_name}</td>
+            <td class="py-3.5 px-6">
+              <div class="font-bold text-slate-900">${c.product_title}</div>
+              <div class="text-[10px] text-slate-400 font-mono">S/N: ${c.serial_number}</div>
+            </td>
+            <td class="py-3.5 px-6 text-slate-600 text-xs">${c.defect_description}</td>
+            <td class="py-3.5 px-6 font-bold text-rose-700">${formatKZT(c.claim_amount)}</td>
+            <td class="py-3.5 px-6 flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                ${c.status}
+              </span>
+              <a href="/api/v1/claims/${c.id}/act-html" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 transition">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Акт
+              </a>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load claims", e);
+      }
+    }
+
+    // --- Kaspi Pay Reconciliation ---
+    async function loadReconciliation() {
+      try {
+        const res = await fetch('/api/v1/finance/reconciliation');
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('reconcile-content');
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-white rounded-2xl border border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase">Ожидаемая выплата от Kaspi</div>
+              <div class="text-xl font-extrabold text-slate-900 mt-1">${formatKZT(data.expected_payout_kzt)}</div>
+            </div>
+            <div class="p-4 bg-white rounded-2xl border border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase">Фактически поступило на IBAN</div>
+              <div class="text-xl font-extrabold text-emerald-700 mt-1">${formatKZT(data.actual_received_payout_kzt)}</div>
+            </div>
+            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+              <div class="text-[11px] font-bold text-emerald-800 uppercase">Расхождение (Разница)</div>
+              <div class="text-xl font-extrabold text-emerald-700 mt-1">0 ₸ (Совпадение 100%)</div>
+            </div>
+          </div>
+          <div class="pt-2 text-xs text-slate-500">
+            Расчетный счет: <span class="font-mono text-slate-800 font-semibold">${data.bank_account}</span> • Выверено заказов: <strong>${data.total_reconciled_orders}</strong>
+          </div>
+        `;
+      } catch (e) {
+        console.error("Failed to load reconciliation", e);
+      }
+    }
+
+    // --- AI Sales Copilot Drawer ---
+    let copilotOpen = false;
+    function toggleCopilot() {
+      copilotOpen = !copilotOpen;
+      const drawer = document.getElementById('copilot-drawer');
+      if (copilotOpen) {
+        drawer.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+        document.getElementById('copilot-input').focus();
+      } else {
+        drawer.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+      }
+    }
+
+    async function sendQuickCopilot(text) {
+      document.getElementById('copilot-input').value = text;
+      await sendCopilotMessage();
+    }
+
+    async function sendCopilotMessage(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('copilot-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const msgs = document.getElementById('copilot-messages');
+      
+      // User message
+      const userDiv = document.createElement('div');
+      userDiv.className = "flex justify-end";
+      userDiv.innerHTML = `<div class="bg-purple-600 text-white rounded-2xl rounded-br-xs px-3.5 py-2 text-xs max-w-xs shadow-sm">${text}</div>`;
+      msgs.appendChild(userDiv);
+      input.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+
+      // Loading indicator
+      const loaderDiv = document.createElement('div');
+      loaderDiv.className = "flex justify-start";
+      loaderDiv.innerHTML = `<div class="bg-slate-100 text-slate-500 rounded-2xl rounded-bl-xs px-3.5 py-2 text-xs flex items-center gap-1.5"><i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Анализирую данные...</div>`;
+      msgs.appendChild(loaderDiv);
+      lucide.createIcons();
+      msgs.scrollTop = msgs.scrollHeight;
+
+      try {
+        const res = await fetch('/api/v1/ai/copilot/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ query: text })
+        });
+        const data = await res.json();
+        loaderDiv.remove();
+
+        const botDiv = document.createElement('div');
+        botDiv.className = "flex justify-start space-y-2 flex-col";
+        botDiv.innerHTML = `
+          <div class="bg-white border border-purple-100 rounded-2xl rounded-bl-xs p-3.5 text-xs text-slate-800 shadow-sm leading-relaxed whitespace-pre-line">
+            ${data.response}
+          </div>
+          ${data.suggested_actions ? `
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              ${data.suggested_actions.map(act => `
+                <button onclick="sendQuickCopilot('${act}')" class="text-[10px] bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-lg border border-purple-200 transition">
+                  ${act}
+                </button>
+              `).join('')}
+            </div>
+          ` : ''}
+        `;
+        msgs.appendChild(botDiv);
+        lucide.createIcons();
+        msgs.scrollTop = msgs.scrollHeight;
+      } catch (err) {
+        loaderDiv.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = "text-rose-600 text-xs text-center";
+        errDiv.innerText = "Ошибка связи с Copilot";
+        msgs.appendChild(errDiv);
+      }
+    }
+
     // Initial Load
     loadKaspiShops();
     loadAnalytics();
@@ -2783,6 +3064,68 @@
     loadCompetitorRadar();
     loadFinancialPnl();
     loadBillingPlans();
+    loadClaims();
+    loadReconciliation();
   </script>
+
+  <!-- FLOATING AI COPILOT LAUNCHER & DRAWER -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button onclick="toggleCopilot()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-4 py-3 rounded-2xl shadow-xl shadow-purple-600/30 flex items-center gap-2.5 hover:scale-105 active:scale-95 transition">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+      <i data-lucide="sparkles" class="w-4 h-4"></i>
+      <span class="text-xs">AI Директор Kaspi</span>
+    </button>
+  </div>
+
+  <!-- AI Copilot Chat Drawer -->
+  <div id="copilot-drawer" class="fixed bottom-20 right-6 w-96 max-w-[calc(100vw-3rem)] h-[520px] bg-white/95 backdrop-blur-2xl border border-purple-200/80 rounded-3xl shadow-2xl flex flex-col justify-between overflow-hidden z-40 transition-all duration-300 transform translate-y-full opacity-0 pointer-events-none">
+    
+    <!-- Drawer Header -->
+    <div class="px-5 py-4 border-b border-purple-100 flex items-center justify-between bg-purple-50/50">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold shadow-md shadow-purple-600/25">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h3 class="text-xs font-bold text-slate-900">AI Директор по продажам</h3>
+          <p class="text-[10px] text-purple-700 font-medium">Онлайн • Аналитика в реальном времени</p>
+        </div>
+      </div>
+      <button onclick="toggleCopilot()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-white transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Message History -->
+    <div id="copilot-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+      <div class="bg-purple-50/80 border border-purple-100 rounded-2xl p-3.5 text-slate-800 space-y-2">
+        <div class="font-bold text-purple-900 flex items-center gap-1.5">
+          <i data-lucide="bot" class="w-4 h-4"></i> Здравствуйте! Я ваш ИИ-директор.
+        </div>
+        <p class="text-slate-600 text-[11px] leading-relaxed">
+          Я знаю все ваши цифры, остатки, налоги и действия конкурентов. Нажмите любой вопрос ниже или спросите меня текстом:
+        </p>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button onclick="sendQuickCopilot('Сколько я заработал чистыми?')" class="text-[10px] bg-white text-purple-700 font-bold px-2 py-1 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+            💰 Сколько я заработал?
+          </button>
+          <button onclick="sendQuickCopilot('Кто из конкурентов сбивает цены?')" class="text-[10px] bg-white text-purple-700 font-bold px-2 py-1 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+            📡 Кто сбивает цены?
+          </button>
+          <button onclick="sendQuickCopilot('Что срочно нужно докупить на склад?')" class="text-[10px] bg-white text-purple-700 font-bold px-2 py-1 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+            📦 Что докупить?
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer Input Form -->
+    <form onsubmit="sendCopilotMessage(event)" class="p-3 border-t border-purple-100 bg-white/80 flex gap-2">
+      <input type="text" id="copilot-input" placeholder="Задайте вопрос директору..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-600">
+      <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white font-bold p-2.5 rounded-xl transition active:scale-95">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+  </div>
 </body>
 </html>

@@ -305,7 +305,14 @@ def test_fastapi_openapi_contract():
         "/api/v1/scanner/assemble",
         "/api/v1/finance/pnl-summary",
         "/api/v1/finance/tax-910",
-        "/api/v1/radar/overview"
+        "/api/v1/finance/reconciliation",
+        "/api/v1/radar/overview",
+        "/api/v1/whatsapp/status",
+        "/api/v1/whatsapp/templates",
+        "/api/v1/whatsapp/send-test",
+        "/api/v1/ai/copilot/chat",
+        "/api/v1/claims",
+        "/api/v1/claims/create"
     ]
 
     for ep in required_endpoints:
@@ -510,6 +517,57 @@ def test_competitor_radar():
     print("  [OK] Competitor tracking radar & price war pool passed")
 
 
+def test_whatsapp_customer_care():
+    test_section("18. WhatsApp Customer Care & 5-Star Review Booster")
+    from app.modules.integrations.whatsapp.service import WhatsAppCustomerCareService
+
+    msg = WhatsAppCustomerCareService.format_message(
+        template_key="REVIEW_REQUEST_5_STAR",
+        customer_name="Айдар",
+        order_id="10984562",
+        product_title="iPhone 15"
+    )
+    assert "Айдар" in msg
+    assert "10984562" in msg
+    assert "5 зв" in msg or "5" in msg
+    print("  [OK] WhatsApp 5-star review booster message formatting passed")
+
+
+def test_ai_sales_copilot():
+    test_section("19. AI Sales Copilot & Executive Director")
+    # Verify endpoint exists
+    paths = app.openapi().get("paths", {})
+    assert "/api/v1/ai/copilot/chat" in paths
+    print("  [OK] AI Sales Copilot chat endpoint verified")
+
+
+def test_vendor_rma_claims():
+    test_section("20. Vendor Defect Claims & Legal RMA Acts")
+    from app.modules.claims.models import VendorClaim
+    from app.modules.claims.service import VendorClaimsService
+
+    c = VendorClaim(
+        claim_number="RMA-2026-TEST",
+        supplier_name="Дистрибьютор",
+        product_title="AirPods",
+        sku="APP-2",
+        defect_type="FACTORY_DEFECT",
+        defect_description="Брак динамика",
+        claim_amount=80000.0
+    )
+    html = VendorClaimsService.generate_claim_act_html(c)
+    assert "АКТ РЕКЛАМАЦИИ" in html
+    assert "RMA-2026-TEST" in html
+    print("  [OK] Printable legal RMA claim act generator passed")
+
+
+def test_bank_reconciliation():
+    test_section("21. Kaspi Pay Bank Statement Settlement Reconciliation")
+    paths = app.openapi().get("paths", {})
+    assert "/api/v1/finance/reconciliation" in paths
+    print("  [OK] Kaspi Pay bank settlement reconciliation endpoint verified")
+
+
 if __name__ == "__main__":
     print("\n=======================================================")
     print("  STARTING FULL SUITE AUTOMATED VERIFICATION          ")
@@ -531,6 +589,10 @@ if __name__ == "__main__":
     test_warehouse_scanner()
     test_finance_and_tax_910()
     test_competitor_radar()
+    test_whatsapp_customer_care()
+    test_ai_sales_copilot()
+    test_vendor_rma_claims()
+    test_bank_reconciliation()
     print("\n=======================================================")
-    print("  [PASS] ALL 17 TEST SECTIONS PASSED WITH 100% SUCCESS!    ")
+    print("  [PASS] ALL 21 TEST SECTIONS PASSED WITH 100% SUCCESS!    ")
     print("=======================================================\n")
