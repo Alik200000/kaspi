@@ -303,3 +303,58 @@ async def run_sync_supplier_feeds_task() -> Dict[str, Any]:
         "total_offers_processed": total_offers_processed,
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+async def run_sync_warehouse_stocks_task() -> Dict[str, Any]:
+    """
+    Background job:
+    Synchronizes stock balances from MoySklad ERP into canonical MasterProducts.
+    """
+    logger.info("[TASK] Starting warehouse inventory balance sync...")
+    from app.modules.integrations.warehouse.models import WarehouseIntegration
+    from app.modules.integrations.warehouse.moysklad_client import MoySkladClient
+
+    synced_items = 0
+    async with AsyncSessionLocal() as db:
+        stmt = select(WarehouseIntegration).where(
+            WarehouseIntegration.system_type == "moysklad",
+            WarehouseIntegration.is_active == True,
+            WarehouseIntegration.auto_sync_stock == True
+        )
+        integration = (await db.execute(stmt)).scalar_one_or_none()
+        if not integration or not integration.api_token:
+            return {"status": "skipped", "message": "MoySklad is not configured or token missing"}
+
+        client = MoySkladClient(api_token=integration.api_token)
+        try:
+            report = await client.get_stock_report(store_id=integration.warehouse_id)
+            prods = (await db.execute(select(MasterProduct))).scalars().all()
+            sku_map = {p.sku_internal.upper(): p for p in prods if p.sku_internal}
+            barcode_map = {p.barcode: p for p in prods if p.barcode}
+
+            for it in report:
+                art = (it.get("article") or it.get("code") or "").upper()
+                bc = it.get("barcode")
+                stock_val = int(it.get("available", 0))
+
+                target = sku_map.get(art) or barcode_map.get(bc)
+                if target:
+                    target.total_stock = stock_val
+                    synced_items += 1
+
+            integration.last_sync_at = datetime.utcnow()
+            integration.last_sync_status = "SUCCESS"
+            integration.last_sync_items_count = synced_items
+            await db.commit()
+        except Exception as e:
+            logger.error(f"[TASK] MoySklad sync failed: {str(e)}")
+            integration.last_sync_status = "ERROR"
+            integration.last_sync_message = str(e)
+            await db.commit()
+            return {"status": "error", "message": str(e)}
+
+    return {
+        "status": "success",
+        "synced_items": synced_items,
+        "timestamp": datetime.utcnow().isoformat()
+    }

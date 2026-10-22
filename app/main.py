@@ -10,6 +10,7 @@ import app.modules.suppliers.models
 import app.modules.pricing.models
 import app.modules.integrations.kaspi.models
 import app.modules.orders.models
+import app.modules.integrations.warehouse.models
 
 # Import routers
 from app.modules.auth.router import router as auth_router
@@ -19,6 +20,7 @@ from app.modules.integrations.kaspi.router import router as kaspi_router
 from app.modules.orders.router import router as orders_router
 from app.modules.tasks.router import router as tasks_router
 from app.modules.notifications.router import router as notifications_router
+from app.modules.integrations.warehouse.router import router as warehouse_router
 from app.workers.scheduler import scheduler
 
 
@@ -61,6 +63,7 @@ app.include_router(kaspi_router, prefix=api_prefix)
 app.include_router(orders_router, prefix=api_prefix)
 app.include_router(tasks_router, prefix=api_prefix)
 app.include_router(notifications_router, prefix=api_prefix)
+app.include_router(warehouse_router, prefix=api_prefix)
 
 
 from fastapi.responses import HTMLResponse, FileResponse

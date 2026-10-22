@@ -249,6 +249,9 @@
       <button onclick="switchTab('tasks')" id="tab-btn-tasks" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="clock" class="w-4 h-4"></i> Фоновые задачи
       </button>
+      <button onclick="switchTab('warehouse')" id="tab-btn-warehouse" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="boxes" class="w-4 h-4"></i> 🏢 Склад (1С & МойСклад)
+      </button>
     </div>
 
     <!-- TAB 1: Master Catalog Section -->
@@ -433,6 +436,168 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="tasks-list">
         <div class="text-xs text-slate-400">Загрузка статуса задач...</div>
       </div>
+    </div>
+
+    <!-- TAB 7: Warehouse Integration (МойСклад & 1С:Предприятие) -->
+    <div id="tab-pane-warehouse" class="tab-pane hidden space-y-6">
+      
+      <!-- Top Warehouse Glass Banner -->
+      <div class="kaspi-glass p-6 rounded-3xl border border-sky-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-sky-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Складской учет: МойСклад & 1С:Предприятие (CommerceML 2.0)
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Автоматическая двусторонняя синхронизация: реальные физические остатки со склада транслируются в фид Kaspi, а оформленные заказы мгновенно улетают в учетную систему для списания и сборки.
+          </p>
+          <div class="flex items-center gap-3 pt-1 text-[11px] text-slate-500">
+            <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> МойСклад API: v1.2 JSON</span>
+            <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="file-code" class="w-3.5 h-3.5"></i> 1C Протокол: CommerceML 2.08</span>
+            <span class="flex items-center gap-1 text-indigo-700 font-semibold"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Защита от оверселла</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0 z-10">
+          <button onclick="syncMoySkladStocks()" id="btn-sync-stocks" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-sky-600/25">
+            <i data-lucide="download-cloud" class="w-4 h-4"></i>
+            Синхронизировать остатки
+          </button>
+          <button onclick="exportOrdersToMoySklad()" id="btn-export-orders" class="bg-white/90 hover:bg-white text-slate-700 font-semibold px-4 py-2.5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow text-xs flex items-center gap-2 transition">
+            <i data-lucide="upload-cloud" class="w-4 h-4 text-sky-600"></i>
+            Выгрузить заказы
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- CARD 1: MoySklad Integration -->
+        <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between space-y-5">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">
+                  <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">МойСклад (REST API)</h3>
+                  <p class="text-[11px] text-slate-500">Прямое подключение через официальный API v1.2</p>
+                </div>
+              </div>
+              <span id="ms-status-badge" class="text-xs bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-xl">
+                Проверка...
+              </span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="block text-slate-700 font-semibold mb-1">API Токен доступа МойСклад</label>
+                <div class="flex gap-2">
+                  <input type="password" id="ms-token-input" placeholder="Вставьте токен из МойСклад (Настройки ➔ Токены)..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-mono text-xs focus:bg-white focus:outline-none focus:border-sky-500">
+                  <button onclick="testMoySkladConnection()" id="btn-ms-test" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1.5 shrink-0">
+                    <i data-lucide="key" class="w-3.5 h-3.5 text-sky-600"></i> Проверить
+                  </button>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-0.5">Получите токен в меню: <em>МойСклад ➔ Настройки ➔ Токены для доступа к API</em></p>
+              </div>
+
+              <div>
+                <label class="block text-slate-700 font-semibold mb-1">Название или ID склада</label>
+                <input type="text" id="ms-warehouse-input" placeholder="Основной склад" value="Основной склад" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 font-medium focus:bg-white focus:outline-none focus:border-sky-500">
+              </div>
+
+              <div class="space-y-2 pt-1">
+                <label class="flex items-center gap-2 cursor-pointer text-slate-700 font-medium">
+                  <input type="checkbox" id="ms-auto-stock-check" checked class="rounded text-sky-600 focus:ring-sky-500">
+                  <span>Автоматически обновлять остатки каждые 30 минут</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer text-slate-700 font-medium">
+                  <input type="checkbox" id="ms-auto-orders-check" checked class="rounded text-sky-600 focus:ring-sky-500">
+                  <span>Автоматически отправлять заказы Kaspi в МойСклад</span>
+                </label>
+              </div>
+
+              <div id="ms-test-result" class="hidden p-3 rounded-xl text-[11px]"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <span class="text-[11px] text-slate-400" id="ms-last-sync-text">Синхронизация: —</span>
+            <button onclick="saveMoySkladConfig()" id="btn-ms-save" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition flex items-center gap-1.5 text-xs shadow-md shadow-sky-600/25">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i> Сохранить настройки
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: 1С:Предприятие (CommerceML 2.0) -->
+        <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between space-y-5">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                  <i data-lucide="server" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">1С:Предприятие (CommerceML 2.0)</h3>
+                  <p class="text-[11px] text-slate-500">1С:УТ, 1С:УНФ, 1С:Розница, 1С:Бухгалтерия для Казахстана</p>
+                </div>
+              </div>
+              <span class="text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-xl border border-emerald-200">
+                Готово к обмену
+              </span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <!-- URL Box -->
+              <div class="bg-amber-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-2">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i data-lucide="link" class="w-4 h-4 text-amber-600"></i> Адрес для обмена в 1С (URL):
+                </span>
+                <div class="flex items-center justify-between bg-white border border-amber-200 rounded-xl px-3 py-2 text-[11px]">
+                  <span class="font-mono text-slate-700 truncate mr-2" id="cml-exchange-url">...</span>
+                  <button onclick="copyToClipboard('cml-exchange-url')" class="text-xs text-amber-700 hover:text-amber-800 font-bold px-2 py-0.5 rounded hover:bg-amber-50 transition shrink-0">
+                    Копировать
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Setup Guide -->
+              <div class="space-y-1.5 text-slate-600 text-[11px] leading-relaxed">
+                <div class="font-bold text-slate-800">Как подключить типовую 1С за 2 минуты:</div>
+                <div class="flex items-start gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                  <span>В 1С откройте <strong>НСИ и администрирование ➔ Обмен с сайтом</strong>.</span>
+                </div>
+                <div class="flex items-start gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                  <span>Создайте узел обмена, выберите режим <em>«Обмен через веб-сайт»</em> и вставьте скопированный URL.</span>
+                </div>
+                <div class="flex items-start gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                  <span>Укажите логин: <code>admin</code> (пароль любой) и нажмите <strong>«Проверить подключение»</strong>.</span>
+                </div>
+                <div class="flex items-start gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">4</span>
+                  <span>Включите <strong>«Выгрузка каталога и остатков»</strong> и <strong>«Обмен заказами»</strong>.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <span class="text-[11px] text-slate-400">Формат: XML CommerceML 2.08 (1С-Битрикс)</span>
+            <a href="/api/v1/warehouse/1c/exchange?mode=query&type=sale" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition text-xs flex items-center gap-1.5">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Посмотреть XML заказов
+            </a>
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
   </main>
@@ -1721,6 +1886,176 @@
       }
     }
 
+    // Warehouse (MoySklad & 1C) Functions
+    async function loadWarehouseStatus() {
+      try {
+        const exchangeUrlEl = document.getElementById('cml-exchange-url');
+        if (exchangeUrlEl) {
+          exchangeUrlEl.innerText = window.location.origin + '/api/v1/warehouse/1c/exchange';
+        }
+
+        const res = await fetch('/api/v1/warehouse/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        
+        const ms = data.moysklad || {};
+        const badge = document.getElementById('ms-status-badge');
+        const tokenInput = document.getElementById('ms-token-input');
+        const warehouseInput = document.getElementById('ms-warehouse-input');
+        const autoStock = document.getElementById('ms-auto-stock-check');
+        const autoOrders = document.getElementById('ms-auto-orders-check');
+        const lastSyncText = document.getElementById('ms-last-sync-text');
+
+        if (badge) {
+          if (ms.configured) {
+            badge.className = "text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-xl border border-emerald-200";
+            badge.innerText = "Подключен к API";
+          } else {
+            badge.className = "text-xs bg-amber-50 text-amber-700 font-semibold px-2.5 py-1 rounded-xl border border-amber-200";
+            badge.innerText = "Не настроен";
+          }
+        }
+
+        if (warehouseInput && ms.warehouse_name) warehouseInput.value = ms.warehouse_name;
+        if (autoStock && ms.auto_sync_stock !== undefined) autoStock.checked = ms.auto_sync_stock;
+        if (autoOrders && ms.auto_push_orders !== undefined) autoOrders.checked = ms.auto_push_orders;
+        
+        if (lastSyncText && ms.last_sync_at) {
+          const d = new Date(ms.last_sync_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+          lastSyncText.innerText = `Синхронизация: ${d} (${ms.last_sync_items_count} поз.)`;
+        }
+      } catch (err) {
+        console.error("Failed to load warehouse status", err);
+      }
+    }
+
+    async function testMoySkladConnection() {
+      const token = document.getElementById('ms-token-input').value.trim();
+      const resBox = document.getElementById('ms-test-result');
+      const btn = document.getElementById('btn-ms-test');
+
+      if (!token) {
+        resBox.className = "p-3 rounded-xl text-[11px] bg-rose-50 text-rose-700 border border-rose-200 block";
+        resBox.innerText = "Укажите токен доступа МойСклад";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Проверка...";
+      resBox.className = "hidden";
+
+      try {
+        const res = await fetch('/api/v1/warehouse/moysklad/test-connection', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ api_token: token })
+        });
+        const data = await res.json();
+        resBox.classList.remove('hidden');
+
+        if (data.status === 'success') {
+          resBox.className = "p-3 rounded-xl text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 block";
+          const whCount = (data.warehouses || []).length;
+          resBox.innerHTML = `<strong>✓ Подключение успешно!</strong> Найдено складов: ${whCount}`;
+        } else {
+          resBox.className = "p-3 rounded-xl text-[11px] bg-rose-50 text-rose-700 border border-rose-200 block";
+          resBox.innerText = `Ошибка подключения: ${data.detail || data.error || 'Неверный токен'}`;
+        }
+      } catch (err) {
+        resBox.className = "p-3 rounded-xl text-[11px] bg-rose-50 text-rose-700 border border-rose-200 block";
+        resBox.innerText = "Сетевая ошибка при проверке токена МойСклад";
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="key" class="w-3.5 h-3.5 text-sky-600"></i> Проверить`;
+        lucide.createIcons();
+      }
+    }
+
+    async function saveMoySkladConfig() {
+      const token = document.getElementById('ms-token-input').value.trim();
+      const warehouse = document.getElementById('ms-warehouse-input').value.trim();
+      const autoStock = document.getElementById('ms-auto-stock-check').checked;
+      const autoOrders = document.getElementById('ms-auto-orders-check').checked;
+      const btn = document.getElementById('btn-ms-save');
+
+      btn.disabled = true;
+      btn.innerText = "Сохранение...";
+
+      try {
+        const res = await fetch('/api/v1/warehouse/moysklad/config', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            api_token: token,
+            warehouse_name: warehouse,
+            auto_sync_stock: autoStock,
+            auto_push_orders: autoOrders
+          })
+        });
+
+        if (res.ok) {
+          showToast("✓ Настройки МойСклад успешно сохранены!");
+          await loadWarehouseStatus();
+        } else {
+          alert("Не удалось сохранить настройки МойСклад");
+        }
+      } catch (err) {
+        alert("Ошибка при сохранении настроек МойСклад");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Сохранить настройки`;
+        lucide.createIcons();
+      }
+    }
+
+    async function syncMoySkladStocks() {
+      const btn = document.getElementById('btn-sync-stocks');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Синхронизация...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/warehouse/moysklad/sync-stocks', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showToast(`✓ Остатки синхронизированы: обновлено ${data.updated_items} товаров!`);
+          await loadCatalog();
+          await loadWarehouseStatus();
+        } else {
+          showToast("Внимание: " + (data.message || 'Ошибка синхронизации'));
+        }
+      } catch (err) {
+        alert("Ошибка при синхронизации остатков");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="download-cloud" class="w-4 h-4"></i> Синхронизировать остатки`;
+        lucide.createIcons();
+      }
+    }
+
+    async function exportOrdersToMoySklad() {
+      const btn = document.getElementById('btn-export-orders');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sky-600"></i> Выгрузка...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/warehouse/moysklad/export-orders', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showToast(`✓ Заказы успешно выгружены (${data.exported_orders_count || 0} шт.)`);
+        } else {
+          showToast("Ошибка выгрузки заказов");
+        }
+      } catch (err) {
+        alert("Ошибка при выгрузке заказов в МойСклад");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="upload-cloud" class="w-4 h-4 text-sky-600"></i> Выгрузить заказы`;
+        lucide.createIcons();
+      }
+    }
+
     // Initial Load
     loadKaspiShops();
     loadAnalytics();
@@ -1730,6 +2065,7 @@
     loadSuppliersList();
     loadTasks();
     loadAlerts();
+    loadWarehouseStatus();
   </script>
 </body>
 </html>

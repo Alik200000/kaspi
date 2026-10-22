@@ -277,12 +277,61 @@ def test_fastapi_openapi_contract():
         "/api/v1/orders/export/excel",
         "/api/v1/tasks/status",
         "/api/v1/tasks/run/{task_name}",
-        "/api/v1/notifications/recent"
+        "/api/v1/notifications/recent",
+        "/api/v1/warehouse/status",
+        "/api/v1/warehouse/1c/exchange"
     ]
 
     for ep in required_endpoints:
         assert ep in paths, f"Missing endpoint: {ep}"
     print(f"  [OK] All {len(required_endpoints)} API endpoints verified in OpenAPI schema")
+
+
+def test_warehouse_moysklad_and_1c():
+    test_section("9. Warehouse ERP & Accounting (MoySklad & 1C CommerceML)")
+    from app.modules.integrations.warehouse.cml_service import OneCCommerceMLService
+    from app.modules.integrations.warehouse.moysklad_client import MoySkladClient
+    from app.modules.orders.models import Order
+
+    # 1. Test 1C CommerceML XML generation
+    demo_order = Order(
+        external_order_id="KASPI-9988",
+        status="NEW",
+        customer_name="Нурлан С.",
+        customer_phone="+77011234567",
+        total_sale_amount=150000.0,
+        items=[]
+    )
+    cml_xml = OneCCommerceMLService.generate_orders_cml([demo_order])
+    assert "<КоммерческаяИнформация" in cml_xml
+    assert "KASPI-9988" in cml_xml
+    assert "Нурлан С." in cml_xml
+    print("  [OK] 1C:Предприятие CommerceML 2.0 orders XML export passed")
+
+    # 2. Test 1C CommerceML catalog XML parser
+    sample_1c_catalog = """<?xml version="1.0" encoding="utf-8"?>
+    <КоммерческаяИнформация>
+      <Каталог>
+        <Товары>
+          <Товар>
+            <Артикул>APL-IPH15-BLK</Артикул>
+            <Наименование>iPhone 15 Black</Наименование>
+            <Количество>25</Количество>
+            <Штрихкод>0195949038234</Штрихкод>
+          </Товар>
+        </Товары>
+      </Каталог>
+    </КоммерческаяИнформация>"""
+    parsed_items = OneCCommerceMLService.parse_1c_catalog_xml(sample_1c_catalog)
+    assert len(parsed_items) == 1
+    assert parsed_items[0]["sku"] == "APL-IPH15-BLK"
+    assert parsed_items[0]["stock"] == 25
+    print("  [OK] 1C CommerceML catalog & stock XML parser passed")
+
+    # 3. Test MoySklad Client initialization & headers
+    ms_client = MoySkladClient(api_token="test_bearer_token_123")
+    assert ms_client.headers["Authorization"] == "Bearer test_bearer_token_123"
+    print("  [OK] MoySklad REST API 1.2 client configuration passed")
 
 
 if __name__ == "__main__":
@@ -297,6 +346,7 @@ if __name__ == "__main__":
     test_kaspi_multi_city_xml()
     test_notifications_service()
     test_fastapi_openapi_contract()
+    test_warehouse_moysklad_and_1c()
     print("\n=======================================================")
-    print("  [PASS] ALL 8 TEST SECTIONS PASSED WITH 100% SUCCESS!     ")
+    print("  [PASS] ALL 9 TEST SECTIONS PASSED WITH 100% SUCCESS!     ")
     print("=======================================================\n")
