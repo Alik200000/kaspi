@@ -13,6 +13,7 @@ import app.modules.orders.models
 import app.modules.integrations.warehouse.models
 import app.modules.ai_assistant.models
 import app.modules.analytics.models
+import app.modules.billing.models
 
 # Import routers
 from app.modules.auth.router import router as auth_router
@@ -28,6 +29,10 @@ from app.modules.analytics.router import router as analytics_router
 from app.modules.pricing.advanced_router import router as advanced_pricing_router
 from app.modules.logistics.router import router as logistics_router
 from app.modules.integrations.multichannel.router import router as multichannel_router
+from app.modules.billing.router import router as billing_router
+from app.modules.warehouse_scanner.router import router as scanner_router
+from app.modules.finance.router import router as finance_router
+from app.modules.competitor_radar.router import router as radar_router
 from app.workers.scheduler import scheduler
 
 
@@ -76,6 +81,10 @@ app.include_router(analytics_router, prefix=api_prefix)
 app.include_router(advanced_pricing_router, prefix=api_prefix)
 app.include_router(logistics_router, prefix=api_prefix)
 app.include_router(multichannel_router, prefix=api_prefix)
+app.include_router(billing_router, prefix=api_prefix)
+app.include_router(scanner_router, prefix=api_prefix)
+app.include_router(finance_router, prefix=api_prefix)
+app.include_router(radar_router, prefix=api_prefix)
 
 
 from fastapi.responses import HTMLResponse, FileResponse
@@ -92,6 +101,14 @@ async def dashboard_ui():
     if index_file.exists():
         return FileResponse(index_file)
     return HTMLResponse("<h1>Dashboard under construction</h1>")
+
+
+@app.get("/scanner", response_class=HTMLResponse, tags=["Mobile Scanner"])
+async def mobile_scanner_ui():
+    scanner_file = TEMPLATES_DIR / "scanner.html"
+    if scanner_file.exists():
+        return FileResponse(scanner_file)
+    return HTMLResponse("<h1>Scanner under construction</h1>")
 
 
 @app.get("/health", tags=["Health"])

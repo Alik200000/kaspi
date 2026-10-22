@@ -264,6 +264,18 @@
       <button onclick="switchTab('multichannel')" id="tab-btn-multichannel" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="globe" class="w-4 h-4 text-sky-600"></i> 🌐 Kaspi + WB + Ozon
       </button>
+      <button onclick="switchTab('radar')" id="tab-btn-radar" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="crosshair" class="w-4 h-4 text-rose-600"></i> 📡 Радар конкурентов
+      </button>
+      <button onclick="switchTab('finance')" id="tab-btn-finance" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="calculator" class="w-4 h-4 text-emerald-600"></i> 🧮 Налоги РК (3%) & P&L
+      </button>
+      <button onclick="switchTab('scanner-tab')" id="tab-btn-scanner-tab" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="scan-barcode" class="w-4 h-4 text-indigo-600"></i> 📱 Сканер WMS
+      </button>
+      <button onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="credit-card" class="w-4 h-4 text-amber-600"></i> 💳 Тарифы & Биллинг
+      </button>
     </div>
 
     <!-- TAB 1: Master Catalog Section -->
@@ -753,6 +765,119 @@
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="multichannel-grid">
         <div class="p-8 text-center text-slate-400 text-xs col-span-4">Загрузка каналов...</div>
+      </div>
+    </div>
+
+    <!-- TAB 12: Kaspi Live Competitor Radar -->
+    <div id="tab-pane-radar" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Радар конкурентов Kaspi: Мониторинг позиций & Война цен
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Отслеживание первого места на полке Kaspi в реальном времени. Система детектирует ботов конкурентов, вычисляет их цены и показывает историю ценовых колебаний.
+          </p>
+        </div>
+        <button onclick="loadCompetitorRadar()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-rose-500/25">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Сканировать полку Kaspi
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="radar-cards-container">
+        <div class="p-8 text-center text-slate-400 text-xs col-span-2">Загрузка данных радара...</div>
+      </div>
+    </div>
+
+    <!-- TAB 13: Kazakhstan 3% Tax & Financial P&L -->
+    <div id="tab-pane-finance" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-emerald-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Финансовый P&L и Налоговый калькулятор РК (Форма 910.00 • 3%)
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Автоматический расчет 3% налога по упрощенной декларации Республики Казахстан (1.5% ИПН + 1.5% Соцналог) и расчет реальных чистых денег на руки после вычета всех комиссий Kaspi, себестоимости и доставки.
+          </p>
+        </div>
+      </div>
+
+      <!-- Financial Metric Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="finance-kpis">
+        <div class="kaspi-glass p-5 rounded-3xl border border-slate-100">
+          <div class="text-[11px] font-bold text-slate-500 uppercase">Оборот Kaspi (Gross)</div>
+          <div class="text-xl font-extrabold text-slate-900 mt-1" id="fin-gross">...</div>
+          <div class="text-[10px] text-slate-400 mt-1">100% выручки от покупателей</div>
+        </div>
+        <div class="kaspi-glass p-5 rounded-3xl border border-slate-100">
+          <div class="text-[11px] font-bold text-slate-500 uppercase">Удержания Kaspi & COGS</div>
+          <div class="text-xl font-extrabold text-slate-700 mt-1" id="fin-cogs-comm">...</div>
+          <div class="text-[10px] text-slate-400 mt-1">Себестоимость + 10% комиссия</div>
+        </div>
+        <div class="kaspi-glass p-5 rounded-3xl border border-amber-200/60 bg-amber-50/20">
+          <div class="text-[11px] font-bold text-amber-700 uppercase">Налог РК (Форма 910.00)</div>
+          <div class="text-xl font-extrabold text-amber-700 mt-1" id="fin-tax-amount">...</div>
+          <div class="text-[10px] text-amber-600 mt-1">3% от оборота (1.5% ИПН + 1.5% СН)</div>
+        </div>
+        <div class="kaspi-glass p-5 rounded-3xl border border-emerald-200/80 bg-emerald-50/30">
+          <div class="text-[11px] font-bold text-emerald-800 uppercase">Чистые деньги на руки</div>
+          <div class="text-2xl font-extrabold text-emerald-700 mt-1" id="fin-net-cash">...</div>
+          <div class="text-[10px] text-emerald-700 font-bold mt-1" id="fin-net-margin">Чистая маржа: ...%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 14: Mobile Warehouse Scanner Info -->
+    <div id="tab-pane-scanner-tab" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-8 rounded-3xl border border-indigo-100 text-center space-y-5 max-w-2xl mx-auto">
+        <div class="w-20 h-20 rounded-3xl bg-indigo-50 text-indigo-600 mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i data-lucide="scan-barcode" class="w-10 h-10"></i>
+        </div>
+        <div class="space-y-2">
+          <h2 class="text-xl font-bold text-slate-900">Мобильный WMS-сканер для кладовщика</h2>
+          <p class="text-xs text-slate-600 leading-relaxed max-w-lg mx-auto">
+            Откройте мобильный веб-сканер на любом смартфоне (Android / iPhone). Наведите камеру на коробку — система моментально сверит штрихкод с активными заказами Kaspi, издаст звуковой сигнал и отправит термоэтикетку на печать.
+          </p>
+        </div>
+        <div class="pt-2 flex justify-center gap-3">
+          <a href="/scanner" target="_blank" class="px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition active:scale-95">
+            <i data-lucide="external-link" class="w-4 h-4"></i> Открыть мобильный сканер (/scanner)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 15: SaaS Billing & Pricing Plans -->
+    <div id="tab-pane-billing" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-amber-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Тарифные планы & Подписка SaaS
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Оплата подписки через Kaspi Pay QR, банковские карты или безналичный расчет для юрлиц (ИП / ТОО).
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200" id="current-sub-badge">
+          Тариф «Бизнес» • Активен (28 дней)
+        </div>
+      </div>
+
+      <!-- Pricing Plans Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="billing-plans-container">
+        <div class="p-8 text-center text-slate-400 text-xs col-span-3">Загрузка тарифных планов...</div>
       </div>
     </div>
 
@@ -2498,6 +2623,149 @@
       }
     }
 
+    // --- Competitor Radar ---
+    async function loadCompetitorRadar() {
+      try {
+        const res = await fetch('/api/v1/radar/overview');
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('radar-cards-container');
+        container.innerHTML = '';
+
+        data.radar_cards.forEach(c => {
+          const card = document.createElement('div');
+          card.className = "kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4";
+          card.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900">${c.title}</h4>
+                  <span class="text-[11px] text-slate-400 font-mono">SKU: ${c.sku} • Закуп: ${formatKZT(c.cost_price)}</span>
+                </div>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-${c.badge_color}-50 text-${c.badge_color}-700 border border-${c.badge_color}-200">
+                  ${c.status_label}
+                </span>
+              </div>
+              <div class="pt-3 space-y-2">
+                <div class="text-[11px] font-bold text-slate-500 uppercase">Полка продавцов Kaspi:</div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-medium">
+                    <span class="flex items-center gap-1.5 font-bold text-slate-800">
+                      <span class="w-4 h-4 rounded-full ${c.our_rank === 1 ? 'bg-emerald-500' : 'bg-slate-400'} text-white text-[10px] flex items-center justify-center font-bold">#${c.our_rank}</span>
+                      Ваш магазин (Наша цена)
+                    </span>
+                    <span class="font-bold font-mono ${c.our_rank === 1 ? 'text-emerald-700' : 'text-slate-800'}">${formatKZT(c.our_price)}</span>
+                  </div>
+                  ${c.top_competitors.map(comp => `
+                    <div class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-100 text-xs">
+                      <span class="flex items-center gap-1.5 text-slate-600">
+                        <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-600 text-[10px] flex items-center justify-center font-bold">#${comp.rank}</span>
+                        ${comp.merchant} ${comp.is_bot ? '<span class="text-[9px] bg-rose-50 text-rose-600 font-bold px-1 rounded">БОТ</span>' : ''}
+                      </span>
+                      <span class="font-mono font-bold text-slate-900">${formatKZT(comp.price)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400 text-[11px]">Динамика 7 дней: война цен за 1-е место</span>
+              <button onclick="triggerReprice()" class="text-rose-600 hover:text-rose-700 font-bold flex items-center gap-1 text-[11px]">
+                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Перебить цену
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load radar", e);
+      }
+    }
+
+    // --- Financial P&L & Tax 910 ---
+    async function loadFinancialPnl() {
+      try {
+        const res = await fetch('/api/v1/finance/pnl-summary');
+        if (!res.ok) return;
+        const data = await res.json();
+        document.getElementById('fin-gross').innerText = formatKZT(data.gross_turnover_kzt);
+        document.getElementById('fin-cogs-comm').innerText = formatKZT(data.cogs_kzt + data.kaspi_commissions_kzt);
+        document.getElementById('fin-tax-amount').innerText = formatKZT(data.tax_910.total_tax_kzt);
+        document.getElementById('fin-net-cash').innerText = formatKZT(data.net_cash_in_hand_kzt);
+        document.getElementById('fin-net-margin').innerText = `Чистая маржа: ${data.net_margin_percent}%`;
+      } catch (e) {
+        console.error("Failed to load finance", e);
+      }
+    }
+
+    // --- Billing & Subscriptions ---
+    async function loadBillingPlans() {
+      try {
+        const [plansRes, subRes] = await Promise.all([
+          fetch('/api/v1/billing/plans'),
+          fetch('/api/v1/billing/subscription')
+        ]);
+        if (!plansRes.ok || !subRes.ok) return;
+        const plans = await plansRes.json();
+        const sub = await subRes.json();
+
+        document.getElementById('current-sub-badge').innerText = `Тариф «${sub.plan_name}» • ${sub.status} (${sub.days_left} дн.)`;
+        const container = document.getElementById('billing-plans-container');
+        container.innerHTML = '';
+
+        plans.forEach(p => {
+          const isCurrent = sub.tier === p.tier;
+          const card = document.createElement('div');
+          card.className = `kaspi-glass rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-5 ${p.popular ? 'border-2 border-rose-500 relative' : 'border border-slate-100'}`;
+          card.innerHTML = `
+            <div class="space-y-4">
+              ${p.popular ? '<span class="absolute -top-3 right-6 bg-rose-600 text-white font-extrabold text-[10px] uppercase tracking-wider px-3 py-0.5 rounded-full shadow-md">Хит продаж</span>' : ''}
+              <div>
+                <h3 class="font-bold text-base text-slate-900">${p.name}</h3>
+                <div class="mt-2 flex items-baseline gap-1">
+                  <span class="text-3xl font-extrabold text-slate-900">${formatKZT(p.price_kzt)}</span>
+                  <span class="text-xs text-slate-500">/${p.period}</span>
+                </div>
+              </div>
+              <ul class="space-y-2 text-xs text-slate-600">
+                ${p.features.map(f => `
+                  <li class="flex items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                    <span>${f}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div class="pt-4 border-t border-slate-100">
+              <button onclick="activatePlan('${p.tier}')" class="w-full py-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 ${isCurrent ? 'bg-emerald-50 text-emerald-700 border border-emerald-300' : 'kaspi-gradient-btn text-white shadow-md shadow-rose-500/25'}">
+                ${isCurrent ? '✓ Текущий активный план' : '<i data-lucide="qr-code" class="w-4 h-4"></i> Оплатить через Kaspi Pay QR'}
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load billing", e);
+      }
+    }
+
+    async function activatePlan(tier) {
+      try {
+        const res = await fetch('/api/v1/billing/activate-plan', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ tier: tier, payment_method: "KASPI_PAY_QR" })
+        });
+        const data = await res.json();
+        showToast("✓ " + data.message);
+        await loadBillingPlans();
+      } catch (e) {
+        alert("Ошибка активации тарифа");
+      }
+    }
+
     // Initial Load
     loadKaspiShops();
     loadAnalytics();
@@ -2512,6 +2780,9 @@
     loadRestockForecast();
     loadLogisticsSLA();
     loadMultichannelStatus();
+    loadCompetitorRadar();
+    loadFinancialPnl();
+    loadBillingPlans();
   </script>
 </body>
 </html>
