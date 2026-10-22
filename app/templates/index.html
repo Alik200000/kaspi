@@ -252,6 +252,18 @@
       <button onclick="switchTab('warehouse')" id="tab-btn-warehouse" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
         <i data-lucide="boxes" class="w-4 h-4"></i> 🏢 Склад (1С & МойСклад)
       </button>
+      <button onclick="switchTab('ai')" id="tab-btn-ai" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i> 🤖 ИИ & Отзывы (<span id="tab-ai-badge">0</span>)
+      </button>
+      <button onclick="switchTab('restock')" id="tab-btn-restock" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i> 📊 AI-Закупки & ABC/XYZ
+      </button>
+      <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="truck" class="w-4 h-4 text-amber-600"></i> 🚚 Логистика & SLA
+      </button>
+      <button onclick="switchTab('multichannel')" id="tab-btn-multichannel" class="tab-btn px-4 py-2 rounded-2xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition flex items-center gap-2">
+        <i data-lucide="globe" class="w-4 h-4 text-sky-600"></i> 🌐 Kaspi + WB + Ozon
+      </button>
     </div>
 
     <!-- TAB 1: Master Catalog Section -->
@@ -598,6 +610,150 @@
 
       </div>
 
+    </div>
+
+    <!-- TAB 8: Kaspi AI Assistant & Reviews -->
+    <div id="tab-pane-ai" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-purple-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Kaspi AI: Автоответчик на отзывы & Защита рейтинга
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Нейросеть генерирует персональные, благодарные ответы на 5★ и 4★ отзывы, перехватывает негатив (1-2★) и мгновенно оповещает директора в Telegram для спасения рейтинга магазина.
+          </p>
+          <div class="flex items-center gap-3 pt-1 text-[11px] text-slate-500">
+            <span class="flex items-center gap-1 text-purple-700 font-semibold"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> GPT AI Модель</span>
+            <span class="flex items-center gap-1 text-rose-700 font-semibold"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> SOS-перехват 1★</span>
+            <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="star" class="w-3.5 h-3.5"></i> Рост рейтинга до 5.0</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0 z-10">
+          <button onclick="autoReplyAllReviews()" id="btn-ai-reply-all" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-purple-600/25">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            Ответить на все 4-5★ через ИИ
+          </button>
+        </div>
+      </div>
+
+      <!-- AI Reviews List -->
+      <div class="kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/40">
+          <h3 class="font-bold text-sm text-slate-900">Лента отзывов Kaspi и статус ответов</h3>
+          <div class="text-xs font-semibold text-purple-700 bg-purple-50 px-3 py-1 rounded-xl border border-purple-200" id="ai-reviews-summary">
+            Загрузка...
+          </div>
+        </div>
+        <div class="divide-y divide-slate-100 bg-white/30" id="ai-reviews-container">
+          <div class="p-8 text-center text-slate-400 text-xs">Загрузка отзывов...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 9: AI Smart Restock & ABC/XYZ -->
+    <div id="tab-pane-restock" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-emerald-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Умные закупки: Прогноз вымывания остатков & ABC/XYZ Матрица
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Система рассчитывает скорость продаж (Velocity), предупреждает о скором обнулении за 3–7 дней и формирует готовый бланк заказа поставщику в 1 клик.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0 z-10">
+          <button onclick="createOneClickPO()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-emerald-600/25">
+            <i data-lucide="file-plus" class="w-4 h-4"></i>
+            Заказ поставщику в 1 клик
+          </button>
+        </div>
+      </div>
+
+      <!-- Restock Table -->
+      <div class="kaspi-glass rounded-3xl overflow-hidden shadow-sm">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/40">
+          <h3 class="font-bold text-sm text-slate-900">Прогноз вымывания остатков и расчет дозаказа</h3>
+          <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200" id="restock-summary-badge">...</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+                <th class="py-3.5 px-6">Товар</th>
+                <th class="py-3.5 px-6">Остаток</th>
+                <th class="py-3.5 px-6">Скорость продаж</th>
+                <th class="py-3.5 px-6">Дней до нуля</th>
+                <th class="py-3.5 px-6">Рекомендованный заказ</th>
+                <th class="py-3.5 px-6">Сумма дозаказа</th>
+                <th class="py-3.5 px-6">Статус</th>
+              </tr>
+            </thead>
+            <tbody id="restock-body" class="divide-y divide-slate-100 text-slate-700 bg-white/30">
+              <tr><td colspan="7" class="text-center py-8 text-slate-400">Загрузка прогноза...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 10: Logistics & Delivery SLA -->
+    <div id="tab-pane-logistics" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-amber-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Контроль Kaspi Доставки & Обработка возвратов
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Отслеживание задержек забора заказов курьерами Kaspi (>24ч), контроль посылок в постоматах (>48ч) и авто-возврат товара на остаток склада при отмене.
+          </p>
+        </div>
+        <button onclick="loadLogisticsSLA()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-amber-600/25">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Проверить SLA
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="logistics-cards-container">
+        <div class="p-8 text-center text-slate-400 text-xs">Загрузка данных логистики...</div>
+      </div>
+    </div>
+
+    <!-- TAB 11: Multichannel Stock Sync -->
+    <div id="tab-pane-multichannel" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-sky-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-sky-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Единый остаток: Kaspi + Wildberries + Ozon + Halyk Market
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Синхронизация физического склада со всеми маркетплейсами. При продаже на Kaspi остаток моментально списывается на Wildberries и Ozon, исключая риск штрафов за оверселл.
+          </p>
+        </div>
+        <button onclick="syncMultichannel()" id="btn-multi-sync" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-md shadow-sky-600/25">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Синхронизировать все витрины
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="multichannel-grid">
+        <div class="p-8 text-center text-slate-400 text-xs col-span-4">Загрузка каналов...</div>
+      </div>
     </div>
 
   </main>
@@ -2056,6 +2212,292 @@
       }
     }
 
+    // --- AI Assistant & Reviews ---
+    async function loadAIReviews() {
+      try {
+        const res = await fetch('/api/v1/ai/reviews');
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('ai-reviews-container');
+        document.getElementById('tab-ai-badge').innerText = data.total;
+        document.getElementById('ai-reviews-summary').innerText = `Рейтинг: ${data.average_rating}★ • Всего: ${data.total} • SOS 1★: ${data.sos_incidents_count}`;
+
+        if (!data.reviews || data.reviews.length === 0) {
+          container.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Отзывов пока нет</div>';
+          return;
+        }
+
+        container.innerHTML = '';
+        data.reviews.forEach(r => {
+          const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+          const isSos = r.ai_sentiment === 'CRITICAL_SOS';
+          const isReplied = r.reply_status === 'REPLIED';
+
+          const item = document.createElement('div');
+          item.className = "p-5 hover:bg-slate-50/60 transition space-y-3";
+          item.innerHTML = `
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-900">${r.customer_name}</span>
+                <span class="text-amber-500 font-bold text-sm tracking-wider">${stars}</span>
+                <span class="text-[11px] text-slate-400 font-medium">• ${r.product_name}</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isSos ? 'bg-rose-100 text-rose-700 border border-rose-300' : (isReplied ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200')}">
+                ${isSos ? '🚨 SOS НЕГАТИВ' : (isReplied ? '✓ ОТВЕЧЕНО ИИ' : 'ОЖИДАЕТ')}
+              </span>
+            </div>
+            <p class="text-slate-700 text-xs leading-relaxed italic">«${r.review_text}»</p>
+            ${r.reply_text ? `
+              <div class="bg-purple-50/70 border border-purple-100 rounded-2xl p-3 text-xs text-purple-900 space-y-1">
+                <div class="font-bold text-[11px] text-purple-700 flex items-center gap-1.5">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ответ от магазина (сгенерирован ИИ):
+                </div>
+                <div class="text-[11px] leading-relaxed">${r.reply_text}</div>
+              </div>
+            ` : `
+              <div class="flex justify-end">
+                <button onclick="generateReviewReply('${r.id}')" class="px-3.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs flex items-center gap-1.5 transition border border-purple-200">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Сгенерировать ответ ИИ
+                </button>
+              </div>
+            `}
+          `;
+          container.appendChild(item);
+        });
+        lucide.createIcons();
+      } catch (err) {
+        console.error("Failed to load reviews", err);
+      }
+    }
+
+    async function autoReplyAllReviews() {
+      const btn = document.getElementById('btn-ai-reply-all');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Отвечаем...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/ai/reviews/auto-reply-all', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ min_rating: 4 })
+        });
+        const data = await res.json();
+        showToast(`✓ ИИ ответил на ${data.replied_count} отзывов!`);
+        await loadAIReviews();
+      } catch (e) {
+        alert("Ошибка пакетного ответа");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Ответить на все 4-5★ через ИИ`;
+        lucide.createIcons();
+      }
+    }
+
+    async function generateReviewReply(reviewId) {
+      try {
+        const res = await fetch('/api/v1/ai/reviews/generate-reply', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ review_id: reviewId })
+        });
+        const data = await res.json();
+        showToast("✓ Ответ успешно сгенерирован!");
+        await loadAIReviews();
+      } catch (e) {
+        alert("Ошибка генерации ответа");
+      }
+    }
+
+    // --- Smart Restock & PO ---
+    async function loadRestockForecast() {
+      try {
+        const res = await fetch('/api/v1/analytics/restock-forecast');
+        if (!res.ok) return;
+        const data = await res.json();
+        document.getElementById('restock-summary-badge').innerText = `Критично: ${data.critical_items_count} товаров • Реком. дозаказ: ${formatKZT(data.total_reorder_estimate)}`;
+
+        const tbody = document.getElementById('restock-body');
+        tbody.innerHTML = '';
+        data.forecast.forEach(f => {
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50 transition";
+          tr.innerHTML = `
+            <td class="py-3.5 px-6 font-semibold text-slate-800">${f.title}</td>
+            <td class="py-3.5 px-6 font-mono font-bold ${f.current_stock === 0 ? 'text-rose-600' : 'text-slate-900'}">${f.current_stock} шт.</td>
+            <td class="py-3.5 px-6 text-slate-600 font-mono text-[11px]">${f.daily_velocity} шт/день</td>
+            <td class="py-3.5 px-6 font-mono font-bold text-amber-700">${f.days_until_out} дн.</td>
+            <td class="py-3.5 px-6 font-bold text-emerald-700">+${f.recommended_reorder_qty} шт.</td>
+            <td class="py-3.5 px-6 font-bold text-slate-900">${formatKZT(f.estimated_reorder_cost)}</td>
+            <td class="py-3.5 px-6">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-${f.badge_color}-50 text-${f.badge_color}-700 border border-${f.badge_color}-200">
+                ${f.urgency_label}
+              </span>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Failed to load restock", err);
+      }
+    }
+
+    async function createOneClickPO() {
+      try {
+        const res = await fetch('/api/v1/analytics/restock-forecast');
+        const data = await res.json();
+        const itemsToOrder = data.forecast
+          .filter(f => f.recommended_reorder_qty > 0)
+          .map(f => ({
+            sku: f.sku,
+            title: f.title,
+            quantity: f.recommended_reorder_qty,
+            unit_cost: f.unit_cost
+          }));
+
+        if (itemsToOrder.length === 0) {
+          showToast("Все складские остатки в норме, дозаказ не требуется!");
+          return;
+        }
+
+        const poRes = await fetch('/api/v1/analytics/purchase-orders', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            supplier_name: "Официальный Дистрибьютор Алматы",
+            items: itemsToOrder,
+            notes: "Авто-заказ по прогнозу вымывания остатков AI Smart Restock"
+          })
+        });
+        const poData = await poRes.json();
+        showToast(`✓ Заказ ${poData.order_number} сформирован на сумму ${formatKZT(poData.total_amount)}!`);
+      } catch (e) {
+        alert("Ошибка создания заказа поставщику");
+      }
+    }
+
+    // --- Logistics & Delivery SLA ---
+    async function loadLogisticsSLA() {
+      try {
+        const res = await fetch('/api/v1/logistics/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('logistics-cards-container');
+        container.innerHTML = `
+          <!-- Courier SLA Delays -->
+          <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-600"></i>
+                <h4 class="font-bold text-sm text-slate-900">Задержки забора курьерами Kaspi (>24ч)</h4>
+              </div>
+              <span class="text-xs bg-rose-50 text-rose-700 font-bold px-2.5 py-1 rounded-xl border border-rose-200">
+                ${data.courier_sla_breaches_count} инцидентов
+              </span>
+            </div>
+            ${data.courier_delays.length === 0 ? '<div class="text-xs text-slate-400">Задержек нет, курьеры забирают вовремя</div>' : `
+              <div class="space-y-3">
+                ${data.courier_delays.map(d => `
+                  <div class="p-3 bg-rose-50/60 border border-rose-200 rounded-2xl text-xs space-y-1">
+                    <div class="flex justify-between font-bold text-slate-900">
+                      <span>Заказ #${d.external_order_id}</span>
+                      <span class="text-rose-600">${d.hours_since_assembly} ч. ожидания</span>
+                    </div>
+                    <div class="text-[11px] text-slate-600">${d.action_required}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+
+          <!-- Postomat Stuck Parcels -->
+          <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <i data-lucide="package-x" class="w-5 h-5 text-amber-600"></i>
+                <h4 class="font-bold text-sm text-slate-900">Зависшие посылки в Почтоматах (>48ч)</h4>
+              </div>
+              <span class="text-xs bg-amber-50 text-amber-700 font-bold px-2.5 py-1 rounded-xl border border-amber-200">
+                ${data.postomat_stuck_count} посылок
+              </span>
+            </div>
+            ${data.postomat_stuck.length === 0 ? '<div class="text-xs text-slate-400">Все посылки забираются покупателями вовремя</div>' : `
+              <div class="space-y-3">
+                ${data.postomat_stuck.map(p => `
+                  <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-2xl text-xs space-y-1">
+                    <div class="flex justify-between font-bold text-slate-900">
+                      <span>Заказ #${p.external_order_id} (${p.customer_name})</span>
+                      <span class="text-amber-700">${p.hours_in_postomat} ч. в ячейке</span>
+                    </div>
+                    <div class="text-[11px] text-slate-600">${p.action_required}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        `;
+        lucide.createIcons();
+      } catch (err) {
+        console.error("Failed to load logistics SLA", err);
+      }
+    }
+
+    // --- Multichannel ---
+    async function loadMultichannelStatus() {
+      try {
+        const res = await fetch('/api/v1/multichannel/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        const grid = document.getElementById('multichannel-grid');
+        grid.innerHTML = '';
+
+        data.channels.forEach(ch => {
+          const card = document.createElement('div');
+          card.className = "kaspi-glass rounded-3xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between space-y-3";
+          card.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-slate-900 text-sm">${ch.name}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${ch.status === 'CONNECTED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-sky-50 text-sky-700 border border-sky-200'}">
+                  ${ch.status}
+                </span>
+              </div>
+              <div class="text-[11px] text-slate-500">${ch.protocol}</div>
+              <div class="text-[10px] text-slate-400 mt-1">Задержка синхронизации: ${ch.latency}</div>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-600 font-semibold">Остаток: ${data.total_warehouse_stock} шт.</span>
+              <span class="text-emerald-600 font-bold flex items-center gap-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Активен</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+        lucide.createIcons();
+      } catch (err) {
+        console.error("Failed to load multichannel status", err);
+      }
+    }
+
+    async function syncMultichannel() {
+      const btn = document.getElementById('btn-multi-sync');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Синхронизация...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/v1/multichannel/sync-all', { method: 'POST' });
+        const data = await res.json();
+        showToast("✓ " + data.message);
+        await loadMultichannelStatus();
+      } catch (e) {
+        alert("Ошибка синхронизации мультиканальных остатков");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Синхронизировать все витрины`;
+        lucide.createIcons();
+      }
+    }
+
     // Initial Load
     loadKaspiShops();
     loadAnalytics();
@@ -2066,6 +2508,10 @@
     loadTasks();
     loadAlerts();
     loadWarehouseStatus();
+    loadAIReviews();
+    loadRestockForecast();
+    loadLogisticsSLA();
+    loadMultichannelStatus();
   </script>
 </body>
 </html>

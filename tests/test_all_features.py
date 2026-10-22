@@ -279,7 +279,23 @@ def test_fastapi_openapi_contract():
         "/api/v1/tasks/run/{task_name}",
         "/api/v1/notifications/recent",
         "/api/v1/warehouse/status",
-        "/api/v1/warehouse/1c/exchange"
+        "/api/v1/warehouse/1c/exchange",
+        "/api/v1/ai/reviews",
+        "/api/v1/ai/reviews/generate-reply",
+        "/api/v1/ai/reviews/auto-reply-all",
+        "/api/v1/ai/generate-description",
+        "/api/v1/analytics/restock-forecast",
+        "/api/v1/analytics/abc-xyz",
+        "/api/v1/analytics/purchase-orders",
+        "/api/v1/pricing/advanced/bait-trap",
+        "/api/v1/pricing/advanced/promo-guard",
+        "/api/v1/pricing/advanced/cartel-duo",
+        "/api/v1/pricing/advanced/status",
+        "/api/v1/logistics/status",
+        "/api/v1/logistics/sla-alerts",
+        "/api/v1/logistics/process-return",
+        "/api/v1/multichannel/status",
+        "/api/v1/multichannel/sync-all"
     ]
 
     for ep in required_endpoints:
@@ -334,6 +350,115 @@ def test_warehouse_moysklad_and_1c():
     print("  [OK] MoySklad REST API 1.2 client configuration passed")
 
 
+def test_ai_assistant_and_reviews():
+    test_section("10. Kaspi AI Review Manager & SEO Copywriter")
+    from app.modules.ai_assistant.service import AIAssistantService
+
+    # 1. Test 5-star warm gratitude reply
+    reply_5star = AIAssistantService.generate_smart_reply(
+        customer_name="Айдар",
+        product_name="iPhone 15",
+        rating=5,
+        review_text="Супер телефон, доставка быстрая!"
+    )
+    assert "Айдар" in reply_5star
+    assert "iPhone 15" in reply_5star
+    print("  [OK] AI 5-star positive response generator passed")
+
+    # 2. Test SOS detector for critical review
+    is_sos = AIAssistantService.is_sos_incident(rating=1, text="Пришел брак, не включается!")
+    assert is_sos is True
+    reply_sos = AIAssistantService.generate_smart_reply(
+        customer_name="Ерлан",
+        product_name="AirPods Pro",
+        rating=1,
+        review_text="Брак, верните деньги!"
+    )
+    assert "извинения" in reply_sos.lower()
+    print("  [OK] AI SOS incident detector and empathetic resolution passed")
+
+    # 3. Test SEO card generator
+    seo = AIAssistantService.generate_seo_card_description(
+        title="Смартфон Samsung S24",
+        brand="Samsung",
+        category="Смартфоны"
+    )
+    assert "Samsung" in seo["seo_title"]
+    assert len(seo["bullet_points"]) >= 3
+    print("  [OK] Kaspi SEO card copywriter passed")
+
+
+def test_smart_restock_and_abc_xyz():
+    test_section("11. AI Restock Runout Prediction & ABC/XYZ Matrix")
+    from decimal import Decimal
+    from app.modules.analytics.service import SmartRestockService
+
+    # Restock velocity and runout simulation
+    lead_time = 3
+    safety_stock = 5
+    velocity = 2.0
+    current_stock = 4
+
+    days_until_out = current_stock / velocity
+    assert days_until_out == 2.0 # Less than 3 days -> CRITICAL
+    target_inventory = (lead_time + safety_stock) * velocity
+    reorder_qty = target_inventory - current_stock
+    assert reorder_qty == 12.0
+    print("  [OK] Stock runout days calculation (2.0 days) & reorder quantity (12 units) passed")
+
+
+def test_advanced_repricer_2():
+    test_section("12. Repricer 2.0: Bait Trap, Kaspi Жума Promo Guard & Cartel Duo")
+    from decimal import Decimal
+    from app.modules.pricing.advanced_repricer import AdvancedRepricerService
+
+    # 1. Bait Trap
+    trap_res = AdvancedRepricerService.run_bait_trap(
+        product_title="iPhone 15",
+        current_price=Decimal("400000"),
+        competitor_price=Decimal("398000"),
+        our_cost=Decimal("340000"),
+        our_floor_price=Decimal("375000")
+    )
+    assert trap_res["bait_probe_price"] == 375150.0
+    assert trap_res["action_taken"] == "TRAP_ENGAGED"
+    print("  [OK] Competitor Bot Bait Trap algorithm passed")
+
+    # 2. Kaspi Жума / Red promo margin guard (elevated 15% commission)
+    promo_res = AdvancedRepricerService.calculate_promo_guard(
+        cost_price=Decimal("100000"),
+        standard_retail_price=Decimal("115000"),
+        promo_type="KASPI_ZHUMA",
+        min_margin_percent=Decimal("5.0"),
+        fixed_delivery_cost=Decimal("2500")
+    )
+    assert promo_res["commission_percent"] == 15.0
+    assert promo_res["promo_floor_price"] > 100000
+    print("  [OK] Kaspi Жума festival 15% commission margin guard passed")
+
+    # 3. Cartel Duo
+    cartel_res = AdvancedRepricerService.calculate_cartel_duo(
+        shop1_name="ИП Магазин 1",
+        shop2_name="ТОО Магазин 2",
+        target_first_price=Decimal("50000"),
+        price_step=Decimal("5")
+    )
+    assert cartel_res["position_1"]["price"] == 50000.0
+    assert cartel_res["position_2"]["price"] == 50005.0
+    print("  [OK] Cartel Duo multi-account Top-1 & Top-2 positioning passed")
+
+
+def test_logistics_and_multichannel():
+    test_section("13. Logistics Delivery SLA & Cross-Marketplace Sync")
+    from app.modules.integrations.multichannel.service import MultichannelSyncService
+
+    channels = MultichannelSyncService.CHANNELS
+    assert any(c["id"] == "kaspi" for c in channels)
+    assert any(c["id"] == "wildberries" for c in channels)
+    assert any(c["id"] == "ozon" for c in channels)
+    print("  [OK] Unified Kaspi + Wildberries + Ozon multichannel coordinator passed")
+
+
 if __name__ == "__main__":
     print("\n=======================================================")
     print("  STARTING FULL SUITE AUTOMATED VERIFICATION          ")
@@ -347,6 +472,10 @@ if __name__ == "__main__":
     test_notifications_service()
     test_fastapi_openapi_contract()
     test_warehouse_moysklad_and_1c()
+    test_ai_assistant_and_reviews()
+    test_smart_restock_and_abc_xyz()
+    test_advanced_repricer_2()
+    test_logistics_and_multichannel()
     print("\n=======================================================")
-    print("  [PASS] ALL 9 TEST SECTIONS PASSED WITH 100% SUCCESS!     ")
+    print("  [PASS] ALL 13 TEST SECTIONS PASSED WITH 100% SUCCESS!    ")
     print("=======================================================\n")

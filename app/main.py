@@ -11,6 +11,8 @@ import app.modules.pricing.models
 import app.modules.integrations.kaspi.models
 import app.modules.orders.models
 import app.modules.integrations.warehouse.models
+import app.modules.ai_assistant.models
+import app.modules.analytics.models
 
 # Import routers
 from app.modules.auth.router import router as auth_router
@@ -21,6 +23,11 @@ from app.modules.orders.router import router as orders_router
 from app.modules.tasks.router import router as tasks_router
 from app.modules.notifications.router import router as notifications_router
 from app.modules.integrations.warehouse.router import router as warehouse_router
+from app.modules.ai_assistant.router import router as ai_router
+from app.modules.analytics.router import router as analytics_router
+from app.modules.pricing.advanced_router import router as advanced_pricing_router
+from app.modules.logistics.router import router as logistics_router
+from app.modules.integrations.multichannel.router import router as multichannel_router
 from app.workers.scheduler import scheduler
 
 
@@ -64,6 +71,11 @@ app.include_router(orders_router, prefix=api_prefix)
 app.include_router(tasks_router, prefix=api_prefix)
 app.include_router(notifications_router, prefix=api_prefix)
 app.include_router(warehouse_router, prefix=api_prefix)
+app.include_router(ai_router, prefix=api_prefix)
+app.include_router(analytics_router, prefix=api_prefix)
+app.include_router(advanced_pricing_router, prefix=api_prefix)
+app.include_router(logistics_router, prefix=api_prefix)
+app.include_router(multichannel_router, prefix=api_prefix)
 
 
 from fastapi.responses import HTMLResponse, FileResponse
