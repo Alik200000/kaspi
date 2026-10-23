@@ -87,10 +87,10 @@
         <div>
           <div class="flex items-center gap-1.5">
             <span class="font-extrabold text-base tracking-tight text-slate-900">Kaspi</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-[#f14635] border border-rose-200">PRO</span>
+            <span class="px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-50 text-[#f14635] border border-rose-200">ПРО</span>
           </div>
           <div class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 mt-0.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Kaspi Bot Online
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Бот онлайн
           </div>
         </div>
       </div>
@@ -102,13 +102,13 @@
     <!-- Navigation Menu (Scrollable) -->
     <div class="flex-1 overflow-y-auto px-3.5 py-4 space-y-5">
       
-      <!-- Group 1: Каталог & Продажи -->
+      <!-- Group 1: Каталог и Продажи -->
       <div class="space-y-1">
-        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Каталог &amp; Продажи</div>
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Каталог и Продажи</div>
         <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between bg-[#f14635] text-white shadow-sm shadow-rose-500/20">
           <div class="flex items-center gap-2.5">
             <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
-            <span>Каталог Master SKU</span>
+            <span>Каталог товаров</span>
           </div>
           <span id="tab-catalog-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-white/20 text-white">5</span>
         </button>
@@ -116,7 +116,7 @@
         <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <i data-lucide="shopping-bag" class="w-4 h-4 shrink-0 text-slate-500"></i>
-            <span>Заказы &amp; Этикетки</span>
+            <span>Заказы и этикетки</span>
           </div>
           <span id="tab-orders-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">0</span>
         </button>
@@ -131,7 +131,7 @@
 
         <button onclick="switchTab('suppliers')" id="tab-btn-suppliers" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="link" class="w-4 h-4 shrink-0 text-slate-500"></i>
-          <span>Поставщики &amp; URL</span>
+          <span>Поставщики и прайсы</span>
         </button>
 
         <button onclick="switchTab('circuit')" id="tab-btn-circuit" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -140,22 +140,22 @@
         </button>
       </div>
 
-      <!-- Group 2: Склад & Логистика -->
+      <!-- Group 2: Склад и Логистика -->
       <div class="space-y-1">
-        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Склад &amp; WMS</div>
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Склад и остатки</div>
         <button onclick="switchTab('warehouse')" id="tab-btn-warehouse" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="boxes" class="w-4 h-4 shrink-0 text-slate-500"></i>
-          <span>1С &amp; МойСклад</span>
+          <span>1С и МойСклад</span>
         </button>
 
         <button onclick="switchTab('scanner-tab')" id="tab-btn-scanner-tab" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="scan-barcode" class="w-4 h-4 shrink-0 text-indigo-500"></i>
-          <span>Сканер ТСД (WMS)</span>
+          <span>Сканер ТСД (Штрихкоды)</span>
         </button>
 
         <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="truck" class="w-4 h-4 shrink-0 text-amber-500"></i>
-          <span>Логистика &amp; SLA</span>
+          <span>Логистика и доставка</span>
         </button>
 
         <button onclick="switchTab('manifest')" id="tab-btn-manifest" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -169,25 +169,25 @@
         </button>
       </div>
 
-      <!-- Group 3: ИИ & Маркетинг -->
+      <!-- Group 3: ИИ и Маркетинг -->
       <div class="space-y-1">
-        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">ИИ &amp; Клиенты</div>
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">ИИ и Клиенты</div>
         <button onclick="switchTab('ai')" id="tab-btn-ai" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <i data-lucide="sparkles" class="w-4 h-4 shrink-0 text-purple-600"></i>
-            <span>ИИ-Отзывы &amp; SEO</span>
+            <span>ИИ-Отзывы и SEO</span>
           </div>
           <span id="tab-ai-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">0</span>
         </button>
 
         <button onclick="switchTab('ads')" id="tab-btn-ads" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="megaphone" class="w-4 h-4 shrink-0 text-amber-500"></i>
-          <span>Kaspi Ads &amp; Автобиддер</span>
+          <span>Реклама Kaspi и Автобиддер</span>
         </button>
 
         <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="message-circle" class="w-4 h-4 shrink-0 text-emerald-500"></i>
-          <span>WhatsApp &amp; Отзывы 5★</span>
+          <span>WhatsApp и Отзывы 5★</span>
         </button>
 
         <button onclick="switchTab('radar')" id="tab-btn-radar" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -197,16 +197,16 @@
 
         <button onclick="switchTab('restock')" id="tab-btn-restock" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="trending-up" class="w-4 h-4 shrink-0 text-emerald-500"></i>
-          <span>AI-Закупки &amp; ABC/XYZ</span>
+          <span>Умные закупки и ABC-анализ</span>
         </button>
       </div>
 
-      <!-- Group 4: Финансы & Учет -->
+      <!-- Group 4: Финансы и Учет -->
       <div class="space-y-1">
-        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Финансы &amp; Учет</div>
+        <div class="px-2.5 text-[10px] font-black uppercase tracking-wider text-slate-400">Финансы и Учет</div>
         <button onclick="switchTab('finance')" id="tab-btn-finance" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="calculator" class="w-4 h-4 shrink-0 text-emerald-600"></i>
-          <span>Налоги РК (3%) &amp; P&amp;L</span>
+          <span>Налоги РК (3%) и прибыль</span>
         </button>
 
         <button onclick="switchTab('reconciliation')" id="tab-btn-reconciliation" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -221,12 +221,12 @@
 
         <button onclick="switchTab('claims')" id="tab-btn-claims" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="file-warning" class="w-4 h-4 shrink-0 text-rose-500"></i>
-          <span>Претензии (RMA)</span>
+          <span>Претензии поставщикам (Брак)</span>
         </button>
 
         <button onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="credit-card" class="w-4 h-4 shrink-0 text-amber-500"></i>
-          <span>Тарифы &amp; Биллинг</span>
+          <span>Тарифы и подписка</span>
         </button>
       </div>
 
@@ -253,7 +253,7 @@
           <i data-lucide="database" class="w-3.5 h-3.5 text-sky-500"></i> База данных
         </button>
         <a href="/docs" target="_blank" class="hover:text-slate-900 flex items-center gap-1.5 transition font-medium">
-          <i data-lucide="code" class="w-3.5 h-3.5 text-purple-500"></i> REST API
+          <i data-lucide="code" class="w-3.5 h-3.5 text-purple-500"></i> API документация
         </a>
       </div>
     </div>
@@ -273,7 +273,7 @@
         <div class="flex items-center gap-2">
           <span class="text-xs text-slate-400 font-medium hidden sm:inline">Kaspi /</span>
           <h1 id="current-page-title" class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-            Каталог Master SKU
+            Каталог товаров
           </h1>
         </div>
       </div>
@@ -320,7 +320,7 @@
         <!-- Revenue Card -->
         <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden group border border-slate-200/80 shadow-xs">
           <div class="flex items-center justify-between text-slate-500 mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Оборот (Revenue)</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Оборот (Выручка)</span>
             <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
               <i data-lucide="trending-up" class="w-4 h-4"></i>
             </div>
@@ -334,7 +334,7 @@
         <!-- COGS Card -->
         <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden group border border-slate-200/80 shadow-xs">
           <div class="flex items-center justify-between text-slate-500 mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Себестоимость (COGS)</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Себестоимость (Закупка)</span>
             <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
               <i data-lucide="package" class="w-4 h-4"></i>
             </div>
@@ -358,7 +358,7 @@
         <!-- Net Profit Card -->
         <div class="kaspi-glass kaspi-glass-hover p-5 rounded-2xl relative overflow-hidden border border-rose-200/80 shadow-xs group bg-gradient-to-br from-white to-rose-50/30">
           <div class="flex items-center justify-between text-slate-500 mb-2">
-            <span class="text-xs font-black uppercase tracking-wider text-[#f14635]">Чистая прибыль (Profit)</span>
+            <span class="text-xs font-black uppercase tracking-wider text-[#f14635]">Чистая прибыль</span>
             <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f14635] flex items-center justify-center shadow-xs">
               <i data-lucide="wallet" class="w-4 h-4"></i>
             </div>
@@ -379,15 +379,15 @@
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-[#f14635] animate-ping"></span>
             <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-              Kaspi Smart Repricer &amp; Стратегии удержания 1-го места
+              Умный Авто-Репрайсер и стратегии удержания 1-го места
             </h2>
           </div>
           <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
-            Перебивает конкурентов на 10 ₸, защищен Floor Price Guard от демпинга в минус, автоматически подтягивает цены вверх и максимизирует ночную маржу.
+            Перебивает конкурентов на 10 ₸, защищен от демпинга в минус, автоматически подтягивает цены вверх и максимизирует ночную маржу.
           </p>
           <div class="flex flex-wrap items-center gap-3 pt-0.5 text-[11px] text-slate-500">
-            <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Floor Guard: Активен</span>
-            <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Step-Up Recovery: Включен</span>
+            <span class="flex items-center gap-1 text-emerald-700 font-semibold"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Защита от демпинга: Активна</span>
+            <span class="flex items-center gap-1 text-sky-700 font-semibold"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Подтяжка цены вверх: Включена</span>
             <span class="flex items-center gap-1 text-amber-700 font-semibold"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Ночной режим (+3%): 01:00-06:00</span>
           </div>
         </div>
@@ -399,7 +399,7 @@
           </button>
           <button onclick="openKaspiSettingsModal()" class="bg-white hover:bg-slate-50 text-slate-700 font-semibold px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs text-xs flex items-center gap-1.5 transition">
             <i data-lucide="file-code" class="w-4 h-4 text-[#f14635]"></i>
-            Kaspi XML
+            XML фид
           </button>
         </div>
       </div>
@@ -412,7 +412,7 @@
             <i data-lucide="layers" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-slate-900">Канонический каталог Master SKU</h3>
+            <h3 class="font-bold text-sm text-slate-900">Канонический каталог товаров</h3>
             <p class="text-[11px] text-slate-500">Авто-синхронизация остатков, минимальных цен и Kaspi-розницы</p>
           </div>
         </div>
@@ -425,7 +425,7 @@
         <table class="w-full text-left border-collapse text-xs">
           <thead>
             <tr class="bg-slate-50/70 border-b border-slate-200/70 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
-              <th class="py-3.5 px-6">Master SKU</th>
+              <th class="py-3.5 px-6">Артикул (SKU)</th>
               <th class="py-3.5 px-6">Товар</th>
               <th class="py-3.5 px-6">Бренд</th>
               <th class="py-3.5 px-6">Штрихкод</th>
@@ -493,7 +493,7 @@
             <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-slate-900">Очередь ручной модерации сопоставления (Human Review)</h3>
+            <h3 class="font-bold text-sm text-slate-900">Очередь ручной модерации сопоставления (Проверка)</h3>
             <p class="text-[11px] text-slate-500">Товары с нечетким сходством (45-74%), требующие подтверждения менеджера</p>
           </div>
         </div>
@@ -510,7 +510,7 @@
               <th class="py-3.5 px-6">Сырое название в прайсе</th>
               <th class="py-3.5 px-6">Артикул</th>
               <th class="py-3.5 px-6">Цена</th>
-              <th class="py-3.5 px-6">Предложенный Master SKU</th>
+              <th class="py-3.5 px-6">Предложенный артикул</th>
               <th class="py-3.5 px-6">Сходство</th>
               <th class="py-3.5 px-6">Решение</th>
             </tr>
@@ -530,8 +530,8 @@
             <i data-lucide="link" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-slate-900">Поставщики и авто-загрузка прайсов по ссылке (URL / Google Sheets)</h3>
-            <p class="text-[11px] text-slate-500">Система автоматически скачивает прайс по ссылке каждые 4 часа и сопоставляет SKU</p>
+            <h3 class="font-bold text-sm text-slate-900">Поставщики и авто-загрузка прайсов по ссылке (Google Таблицы)</h3>
+            <p class="text-[11px] text-slate-500">Система автоматически скачивает прайс по ссылке каждые 4 часа и сопоставляет артикулы</p>
           </div>
         </div>
       </div>
@@ -549,8 +549,8 @@
             <i data-lucide="bell-ring" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-slate-900">Уведомления и алерты (Telegram Live Feed)</h3>
-            <p class="text-[11px] text-slate-500">Критические события: Out-of-Stock, скачки цен закупки и новые заказы</p>
+            <h3 class="font-bold text-sm text-slate-900">Уведомления и оповещения (Telegram)</h3>
+            <p class="text-[11px] text-slate-500">Критические события: закончился товар, скачки цен закупки и новые заказы</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -574,7 +574,7 @@
             <i data-lucide="clock" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-slate-900">Фоновый планировщик задач (Cron Scheduler)</h3>
+            <h3 class="font-bold text-sm text-slate-900">Фоновый планировщик задач (Расписание)</h3>
             <p class="text-[11px] text-slate-500">Автоматический парсинг, пересчет маржи и синхронизация</p>
           </div>
         </div>
@@ -939,12 +939,12 @@
       <!-- Financial Metric Grid -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="finance-kpis">
         <div class="kaspi-glass p-5 rounded-3xl border border-slate-100">
-          <div class="text-[11px] font-bold text-slate-500 uppercase">Оборот Kaspi (Gross)</div>
+          <div class="text-[11px] font-bold text-slate-500 uppercase">Оборот Kaspi (Выручка)</div>
           <div class="text-xl font-extrabold text-slate-900 mt-1" id="fin-gross">...</div>
           <div class="text-[10px] text-slate-400 mt-1">100% выручки от покупателей</div>
         </div>
         <div class="kaspi-glass p-5 rounded-3xl border border-slate-100">
-          <div class="text-[11px] font-bold text-slate-500 uppercase">Удержания Kaspi & COGS</div>
+          <div class="text-[11px] font-bold text-slate-500 uppercase">Удержания Kaspi и себестоимость</div>
           <div class="text-xl font-extrabold text-slate-700 mt-1" id="fin-cogs-comm">...</div>
           <div class="text-[10px] text-slate-400 mt-1">Себестоимость + 10% комиссия</div>
         </div>
@@ -968,7 +968,7 @@
           <i data-lucide="scan-barcode" class="w-10 h-10"></i>
         </div>
         <div class="space-y-2">
-          <h2 class="text-xl font-bold text-slate-900">Мобильный WMS-сканер для кладовщика</h2>
+          <h2 class="text-xl font-bold text-slate-900">Мобильный сканер штрихкодов для кладовщика</h2>
           <p class="text-xs text-slate-600 leading-relaxed max-w-lg mx-auto">
             Откройте мобильный веб-сканер на любом смартфоне (Android / iPhone). Наведите камеру на коробку — система моментально сверит штрихкод с активными заказами Kaspi, издаст звуковой сигнал и отправит термоэтикетку на печать.
           </p>
@@ -1055,7 +1055,7 @@
         <div class="kaspi-glass rounded-3xl p-5 border border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <span class="font-bold text-sm text-slate-900">3. Задержка курьера</span>
-            <span class="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded-full">При SLA > 24ч</span>
+            <span class="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded-full">При задержке > 24ч</span>
           </div>
           <p class="text-xs text-slate-600 leading-relaxed italic bg-white/60 p-3 rounded-2xl border border-slate-100">
             «По вашему заказу курьер Kaspi задерживается в пробках. Держим на личном контроле, сообщим точное время. Извините за ожидание!»
@@ -1072,7 +1072,7 @@
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              Учет брака & Рекламации поставщикам (RMA)
+              Учет брака и рекламации поставщикам (Возвраты)
             </h2>
           </div>
           <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
@@ -1139,7 +1139,7 @@
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              Предохранитель от резкого роста цен поставщиков (Circuit Breaker)
+              Предохранитель от резкого роста цен поставщиков
             </h2>
           </div>
           <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
@@ -1202,7 +1202,7 @@
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              Kaspi Ads: Автобиддер CPC &amp; Оптимизатор ДРР
+              Реклама Kaspi: Автобиддер ставок и оптимизатор ДРР
             </h2>
           </div>
           <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
@@ -1211,7 +1211,7 @@
         </div>
         <div class="flex items-center gap-2">
           <button onclick="runAdsOptimization()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-sm">
-            <i data-lucide="zap" class="w-4 h-4"></i> Оптимизировать CPC сейчас
+            <i data-lucide="zap" class="w-4 h-4"></i> Оптимизировать ставки сейчас
           </button>
         </div>
       </div>
@@ -1254,7 +1254,7 @@
 
       <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="font-bold text-sm text-slate-900">График движения денежных средств (T+1 / T+2 Kaspi Settlements)</h3>
+          <h3 class="font-bold text-sm text-slate-900">График движения денежных средств (Выплаты Kaspi)</h3>
         </div>
         <div id="cashflow-table-container" class="overflow-x-auto">
           <div class="p-8 text-center text-slate-400 text-xs">Загрузка календаря...</div>
@@ -1276,7 +1276,7 @@
           </div>
           <div>
             <h3 class="font-bold text-sm text-slate-900">Подключение Telegram-бота</h3>
-            <p class="text-[11px] text-slate-500">Мгновенные push-уведомления на ваш смартфон</p>
+            <p class="text-[11px] text-slate-500">Мгновенные уведомления на ваш смартфон</p>
           </div>
         </div>
         <button onclick="closeTelegramModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition">
@@ -1651,27 +1651,27 @@
     let uploadMode = 'file';
 
     const tabTitles = {
-      'catalog': 'Каталог Master SKU',
-      'orders': 'Заказы & Этикетки',
+      'catalog': 'Каталог товаров',
+      'orders': 'Заказы и этикетки',
       'review': 'Очередь модерации',
-      'suppliers': 'Поставщики & Auto-URL',
+      'suppliers': 'Поставщики и прайсы',
       'alerts': 'Уведомления и алерты',
       'tasks': 'Фоновые задачи',
-      'warehouse': 'Склад (1С & МойСклад)',
-      'ai': 'ИИ-Отзывы & SEO',
-      'restock': 'AI-Закупки & ABC/XYZ',
-      'logistics': 'Логистика & SLA',
+      'warehouse': 'Склад и остатки (1С и МойСклад)',
+      'ai': 'ИИ-Отзывы и SEO',
+      'restock': 'Умные закупки и ABC-анализ',
+      'logistics': 'Логистика и доставка',
       'multichannel': 'Kaspi + WB + Ozon',
       'radar': 'Радар конкурентов',
-      'finance': 'Налоги РК (3%) & P&L',
-      'scanner-tab': 'Сканер ТСД (WMS)',
-      'billing': 'Тарифы & Биллинг',
-      'whatsapp': 'WhatsApp & Отзывы 5★',
-      'claims': 'Претензии (RMA)',
+      'finance': 'Налоги РК (3%) и прибыль',
+      'scanner-tab': 'Сканер ТСД (Штрихкоды)',
+      'billing': 'Тарифы и подписка',
+      'whatsapp': 'WhatsApp и Отзывы 5★',
+      'claims': 'Претензии поставщикам (Брак)',
       'reconciliation': 'Сверка Kaspi Pay',
       'circuit': 'Предохранитель цен поставщиков',
       'manifest': 'Экспедиторский реестр Kaspi Доставки',
-      'ads': 'Kaspi Ads & Автобиддер ДРР',
+      'ads': 'Реклама Kaspi и Автобиддер',
       'cashflow': 'Календарь выплат и кассовых разрывов'
     };
 
@@ -3650,7 +3650,7 @@
         loaderDiv.remove();
         const errDiv = document.createElement('div');
         errDiv.className = "text-rose-600 text-xs text-center";
-        errDiv.innerText = "Ошибка связи с Copilot";
+        errDiv.innerText = "Ошибка связи с ИИ-помощником";
         msgs.appendChild(errDiv);
       }
     }
@@ -3685,7 +3685,7 @@
     <button onclick="toggleCopilot()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-4 py-3 rounded-2xl shadow-xl shadow-purple-600/30 flex items-center gap-2.5 hover:scale-105 active:scale-95 transition">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
       <i data-lucide="sparkles" class="w-4 h-4"></i>
-      <span class="text-xs">AI Директор Kaspi</span>
+      <span class="text-xs">ИИ-Директор Kaspi</span>
     </button>
   </div>
 
@@ -3699,7 +3699,7 @@
           <i data-lucide="sparkles" class="w-4 h-4"></i>
         </div>
         <div>
-          <h3 class="text-xs font-bold text-slate-900">AI Директор по продажам</h3>
+          <h3 class="text-xs font-bold text-slate-900">ИИ-Директор по продажам</h3>
           <p class="text-[10px] text-purple-700 font-medium">Онлайн • Аналитика в реальном времени</p>
         </div>
       </div>
