@@ -133,6 +133,11 @@
           <i data-lucide="link" class="w-4 h-4 shrink-0 text-slate-500"></i>
           <span>Поставщики &amp; URL</span>
         </button>
+
+        <button onclick="switchTab('circuit')" id="tab-btn-circuit" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="shield-alert" class="w-4 h-4 shrink-0 text-rose-500"></i>
+          <span>Защита от скачков цен</span>
+        </button>
       </div>
 
       <!-- Group 2: Склад & Логистика -->
@@ -153,6 +158,11 @@
           <span>Логистика &amp; SLA</span>
         </button>
 
+        <button onclick="switchTab('manifest')" id="tab-btn-manifest" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="file-check" class="w-4 h-4 shrink-0 text-sky-500"></i>
+          <span>Манифест курьера (Kaspi)</span>
+        </button>
+
         <button onclick="switchTab('multichannel')" id="tab-btn-multichannel" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="globe" class="w-4 h-4 shrink-0 text-sky-500"></i>
           <span>Kaspi + WB + Ozon</span>
@@ -168,6 +178,11 @@
             <span>ИИ-Отзывы &amp; SEO</span>
           </div>
           <span id="tab-ai-badge" class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">0</span>
+        </button>
+
+        <button onclick="switchTab('ads')" id="tab-btn-ads" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="megaphone" class="w-4 h-4 shrink-0 text-amber-500"></i>
+          <span>Kaspi Ads &amp; Автобиддер</span>
         </button>
 
         <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -197,6 +212,11 @@
         <button onclick="switchTab('reconciliation')" id="tab-btn-reconciliation" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
           <i data-lucide="landmark" class="w-4 h-4 shrink-0 text-sky-600"></i>
           <span>Сверка Kaspi Pay</span>
+        </button>
+
+        <button onclick="switchTab('cashflow')" id="tab-btn-cashflow" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
+          <i data-lucide="calendar" class="w-4 h-4 shrink-0 text-indigo-500"></i>
+          <span>Календарь выплат Kaspi</span>
         </button>
 
         <button onclick="switchTab('claims')" id="tab-btn-claims" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition flex items-center gap-2.5">
@@ -1111,6 +1131,137 @@
       </div>
     </div>
 
+    <!-- TAB 19: Supplier Price Surge Circuit Breaker -->
+    <div id="tab-pane-circuit" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Предохранитель от резкого роста цен поставщиков (Circuit Breaker)
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Если дистрибьютор ночью повысил цену закупки более чем на 15%, бот мгновенно ставит товар на паузу в Kaspi (остаток 0), предотвращая торговлю в гигантский убыток.
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-4 py-2 rounded-2xl bg-rose-50 text-rose-700 border border-rose-200" id="circuit-summary-badge">
+          Предотвращено убытков: 125 000 ₸
+        </div>
+      </div>
+
+      <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-sm text-slate-900">Заблокированные товары (требуют подтверждения цены)</h3>
+          <button onclick="loadCircuitBreaker()" class="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Обновить
+          </button>
+        </div>
+        <div id="circuit-table-container" class="overflow-x-auto">
+          <div class="p-8 text-center text-slate-400 text-xs">Загрузка данных предохранителя...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 20: Courier Handover Manifest -->
+    <div id="tab-pane-manifest" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-sky-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-sky-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Экспедиторский реестр передачи заказов Kaspi Доставки
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Формирование партий передачи курьерам и постоматам. Печать официального акта приёма-передачи со штрихкодами, исключающего утерю коробок курьерами.
+          </p>
+        </div>
+        <button onclick="createQuickManifest()" class="kaspi-gradient-btn text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-sm">
+          <i data-lucide="file-plus" class="w-4 h-4"></i> Сформировать манифест курьеру
+        </button>
+      </div>
+
+      <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-sm text-slate-900">Журнал переданных реестров и актов</h3>
+        </div>
+        <div id="manifest-table-container" class="overflow-x-auto">
+          <div class="p-8 text-center text-slate-400 text-xs">Загрузка реестров...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 21: Kaspi Ads & Marketing Auto-Bidder -->
+    <div id="tab-pane-ads" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-amber-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Kaspi Ads: Автобиддер CPC &amp; Оптимизатор ДРР
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Удерживает целевую долю рекламных расходов (ДРР ≤ 7%), отключает рекламу при остатке ≤ 1 шт или марже &lt; 10% и автоматически поднимает ставки в прайм-тайм (18:00 - 23:00).
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="runAdsOptimization()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition active:scale-95 shadow-sm">
+            <i data-lucide="zap" class="w-4 h-4"></i> Оптимизировать CPC сейчас
+          </button>
+        </div>
+      </div>
+
+      <!-- Ads KPI row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="ads-summary-cards">
+        <!-- Rendered via JS -->
+      </div>
+
+      <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-sm text-slate-900">Управляемые кампании Kaspi Маркетинг</h3>
+          <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Автобиддер активен</span>
+        </div>
+        <div id="ads-table-container" class="overflow-x-auto">
+          <div class="p-8 text-center text-slate-400 text-xs">Загрузка кампаний...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 22: Cash Flow Forecast & Settlement Calendar -->
+    <div id="tab-pane-cashflow" class="tab-pane hidden space-y-6">
+      <div class="kaspi-glass p-6 rounded-3xl border border-indigo-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-indigo-400/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-1 z-10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              Календарь выплат Kaspi Pay &amp; Предотвращение кассовых разрывов
+            </h2>
+          </div>
+          <p class="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            Прогноз зачислений на счет IBAN на 14 дней вперед с учетом выходных и праздников против графиков оплат поставщикам.
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-4 py-2 rounded-2xl bg-indigo-50 text-indigo-700 border border-indigo-200" id="cashflow-status-pill">
+          Прогноз ликвидности: Анализ...
+        </div>
+      </div>
+
+      <div class="kaspi-glass rounded-3xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-sm text-slate-900">График движения денежных средств (T+1 / T+2 Kaspi Settlements)</h3>
+        </div>
+        <div id="cashflow-table-container" class="overflow-x-auto">
+          <div class="p-8 text-center text-slate-400 text-xs">Загрузка календаря...</div>
+        </div>
+      </div>
+    </div>
+
   </main>
   </div> <!-- /main app wrapper -->
 
@@ -1517,7 +1668,11 @@
       'billing': 'Тарифы & Биллинг',
       'whatsapp': 'WhatsApp & Отзывы 5★',
       'claims': 'Претензии (RMA)',
-      'reconciliation': 'Сверка Kaspi Pay'
+      'reconciliation': 'Сверка Kaspi Pay',
+      'circuit': 'Предохранитель цен поставщиков',
+      'manifest': 'Экспедиторский реестр Kaspi Доставки',
+      'ads': 'Kaspi Ads & Автобиддер ДРР',
+      'cashflow': 'Календарь выплат и кассовых разрывов'
     };
 
     function toggleMobileSidebar() {
@@ -3127,6 +3282,300 @@
       }
     }
 
+    // --- 19. Circuit Breaker ---
+    async function loadCircuitBreaker() {
+      try {
+        const res = await fetch('/api/v1/pricing/advanced/circuit-breaker/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        document.getElementById('circuit-summary-badge').innerText = `Предотвращено убытков: ${formatKZT(data.total_prevented_losses_kzt)}`;
+        const container = document.getElementById('circuit-table-container');
+        if (!data.blocked_items || data.blocked_items.length === 0) {
+          container.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Все цены поставщиков стабильны. Нет заблокированных позиций.</div>';
+          return;
+        }
+        container.innerHTML = `
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200/70 text-slate-500 font-bold uppercase text-[11px]">
+                <th class="py-3 px-4">SKU / Товар</th>
+                <th class="py-3 px-4">Поставщик</th>
+                <th class="py-3 px-4">Старая закупка</th>
+                <th class="py-3 px-4">Новая закупка</th>
+                <th class="py-3 px-4">Скачок %</th>
+                <th class="py-3 px-4">Защита в Kaspi</th>
+                <th class="py-3 px-4">Действие</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${data.blocked_items.map(i => `
+                <tr class="hover:bg-slate-50/60 transition">
+                  <td class="py-3 px-4">
+                    <div class="font-bold text-slate-900">${i.product_title}</div>
+                    <div class="text-[10px] text-slate-400 font-mono">${i.sku}</div>
+                  </td>
+                  <td class="py-3 px-4 text-slate-600">${i.supplier_name}</td>
+                  <td class="py-3 px-4 text-slate-500">${formatKZT(i.old_cost_kzt)}</td>
+                  <td class="py-3 px-4 font-bold text-rose-600">${formatKZT(i.new_cost_kzt)}</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">+${i.surge_percent}%</span>
+                  </td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700">Остаток 0 (Пауза)</span>
+                  </td>
+                  <td class="py-3 px-4">
+                    <button onclick="unlockCircuitBreakerSku('${i.sku}')" class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg text-[11px] transition">
+                      Принять цену
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (e) {
+        console.error("Failed to load circuit breaker", e);
+      }
+    }
+
+    async function unlockCircuitBreakerSku(sku) {
+      if (!confirm(`Разблокировать товар ${sku} и обновить цену в Kaspi?`)) return;
+      try {
+        const res = await fetch(`/api/v1/pricing/advanced/circuit-breaker/${sku}/unlock`, { method: 'POST' });
+        if (res.ok) {
+          showToast(`Товар ${sku} разблокирован!`);
+          loadCircuitBreaker();
+        }
+      } catch (e) {
+        showToast("Ошибка при разблокировке");
+      }
+    }
+
+    // --- 20. Courier Manifest ---
+    async function loadCourierManifests() {
+      try {
+        const res = await fetch('/api/v1/logistics/manifests');
+        if (!res.ok) return;
+        const list = await res.json();
+        const container = document.getElementById('manifest-table-container');
+        if (!list || list.length === 0) {
+          container.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Нет сформированных манифестов.</div>';
+          return;
+        }
+        container.innerHTML = `
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200/70 text-slate-500 font-bold uppercase text-[11px]">
+                <th class="py-3 px-4">Номер реестра</th>
+                <th class="py-3 px-4">Дата</th>
+                <th class="py-3 px-4">Курьерская служба</th>
+                <th class="py-3 px-4">Курьер / Авто</th>
+                <th class="py-3 px-4">Посылок</th>
+                <th class="py-3 px-4">Объявл. ценность</th>
+                <th class="py-3 px-4">Статус</th>
+                <th class="py-3 px-4">Акт</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${list.map(m => `
+                <tr class="hover:bg-slate-50/60 transition">
+                  <td class="py-3 px-4 font-mono font-bold text-sky-700">${m.id}</td>
+                  <td class="py-3 px-4 text-slate-500">${m.date}</td>
+                  <td class="py-3 px-4 font-semibold text-slate-800">${m.courier_service}</td>
+                  <td class="py-3 px-4 text-slate-600">${m.courier_name} (${m.vehicle_number})</td>
+                  <td class="py-3 px-4 font-bold text-slate-800">${m.packages_count} шт (${m.total_weight_kg} кг)</td>
+                  <td class="py-3 px-4 font-bold text-slate-900">${formatKZT(m.declared_value_kzt)}</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">Передано курьеру</span>
+                  </td>
+                  <td class="py-3 px-4">
+                    <a href="/api/v1/logistics/manifests/${m.id}/act-html" target="_blank" class="px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-bold text-[11px] inline-flex items-center gap-1">
+                      <i data-lucide="printer" class="w-3 h-3 text-slate-500"></i> Печать
+                    </a>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to load manifests", e);
+      }
+    }
+
+    async function createQuickManifest() {
+      try {
+        const res = await fetch('/api/v1/logistics/manifests/create', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            courier_service: "Kaspi Доставка",
+            courier_name: "Курьер Kaspi Logistics",
+            vehicle_number: "777 ABC 02",
+            order_ids: ["KSP-1094890", "KSP-1094891", "KSP-1094892", "KSP-1094893"]
+          })
+        });
+        const data = await res.json();
+        showToast("Манифест курьеру успешно сформирован!");
+        loadCourierManifests();
+        window.open(data.print_url, '_blank');
+      } catch (e) {
+        showToast("Ошибка создания манифеста");
+      }
+    }
+
+    // --- 21. Kaspi Ads & Auto-Bidder ---
+    async function loadAdsCampaigns() {
+      try {
+        const res = await fetch('/api/v1/marketing/campaigns');
+        if (!res.ok) return;
+        const data = await res.json();
+        const sm = data.summary;
+        const cards = document.getElementById('ads-summary-cards');
+        cards.innerHTML = `
+          <div class="kaspi-glass p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Бюджет сегодня</div>
+            <div class="text-xl font-black text-slate-900 mt-1">${formatKZT(sm.total_spent_today)}</div>
+            <div class="text-[11px] text-slate-500 mt-1">Кликов: <b>${sm.total_clicks}</b></div>
+          </div>
+          <div class="kaspi-glass p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Выручка с рекламы</div>
+            <div class="text-xl font-black text-emerald-600 mt-1">${formatKZT(sm.total_ad_revenue)}</div>
+            <div class="text-[11px] text-slate-500 mt-1">Заказов: <b>${sm.total_orders}</b></div>
+          </div>
+          <div class="kaspi-glass p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Текущий ДРР (Ad Spend)</div>
+            <div class="text-xl font-black text-amber-600 mt-1">${sm.overall_drr_pct}%</div>
+            <div class="text-[11px] text-slate-500 mt-1">Цель: ≤ 7.0%</div>
+          </div>
+          <div class="kaspi-glass p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Экономия автобиддера</div>
+            <div class="text-xl font-black text-purple-600 mt-1">${formatKZT(sm.estimated_savings_kzt)}</div>
+            <div class="text-[11px] text-slate-500 mt-1">Остановлено пустых кликов</div>
+          </div>
+        `;
+
+        const container = document.getElementById('ads-table-container');
+        container.innerHTML = `
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200/70 text-slate-500 font-bold uppercase text-[11px]">
+                <th class="py-3 px-4">Кампания / Товар</th>
+                <th class="py-3 px-4">Текущий CPC</th>
+                <th class="py-3 px-4">ДРР %</th>
+                <th class="py-3 px-4">Остаток</th>
+                <th class="py-3 px-4">Маржа %</th>
+                <th class="py-3 px-4">Расход / Продажи</th>
+                <th class="py-3 px-4">Статус</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${data.campaigns.map(c => `
+                <tr class="hover:bg-slate-50/60 transition">
+                  <td class="py-3 px-4">
+                    <div class="font-bold text-slate-900">${c.name}</div>
+                    <div class="text-[10px] text-slate-400 font-mono">${c.master_sku}</div>
+                  </td>
+                  <td class="py-3 px-4 font-bold text-slate-900">${c.cpc} ₸ <span class="text-[10px] text-slate-400">max ${c.max_cpc}</span></td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${c.current_drr_pct <= c.target_drr_pct ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
+                      ${c.current_drr_pct}% (цель ${c.target_drr_pct}%)
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 font-bold ${c.stock_units <= 1 ? 'text-rose-600' : 'text-slate-700'}">${c.stock_units} шт</td>
+                  <td class="py-3 px-4 font-semibold text-emerald-700">${c.margin_pct}%</td>
+                  <td class="py-3 px-4 text-slate-600">${formatKZT(c.spent_today)} / <b class="text-slate-900">${formatKZT(c.ad_revenue)}</b></td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${c.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
+                      ${c.status === 'ACTIVE' ? 'Активна' : 'Стоп (Защита)'}
+                    </span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (e) {
+        console.error("Failed to load ads campaigns", e);
+      }
+    }
+
+    async function runAdsOptimization() {
+      try {
+        const res = await fetch('/api/v1/marketing/auto-bidder/run', { method: 'POST' });
+        const data = await res.json();
+        showToast(`Автобиддер отработал! Действий: ${data.actions_count}`);
+        loadAdsCampaigns();
+      } catch (e) {
+        showToast("Ошибка оптимизации");
+      }
+    }
+
+    // --- 22. Cash Flow Forecast ---
+    async function loadCashflowCalendar() {
+      try {
+        const res = await fetch('/api/v1/finance/cashflow/calendar?days_ahead=14');
+        if (!res.ok) return;
+        const data = await res.json();
+        
+        const pill = document.getElementById('cashflow-status-pill');
+        if (data.cash_gap_risk === 'HIGH') {
+          pill.className = "text-xs font-semibold px-4 py-2 rounded-2xl bg-rose-50 text-rose-700 border border-rose-200";
+          pill.innerText = `⚠️ Риск кассового разрыва: ${data.cash_gap_count} дн.`;
+        } else {
+          pill.className = "text-xs font-semibold px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200";
+          pill.innerText = `✅ Ликвидность в норме (Профицит)`;
+        }
+
+        const container = document.getElementById('cashflow-table-container');
+        container.innerHTML = `
+          <div class="mb-3 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-center justify-between">
+            <div>${data.recommendation}</div>
+            <div class="font-bold text-slate-900">Итоговый прогноз: ${formatKZT(data.projected_net_cash_kzt)}</div>
+          </div>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200/70 text-slate-500 font-bold uppercase text-[11px]">
+                <th class="py-3 px-4">Дата / День</th>
+                <th class="py-3 px-4">Приход Kaspi Pay</th>
+                <th class="py-3 px-4">Платежи поставщикам</th>
+                <th class="py-3 px-4">Остаток на конец дня</th>
+                <th class="py-3 px-4">Статус</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${data.daily_projection.map(d => `
+                <tr class="hover:bg-slate-50/60 transition ${d.has_cash_gap ? 'bg-rose-50/50' : ''}">
+                  <td class="py-3 px-4">
+                    <span class="font-bold text-slate-900">${d.date}</span>
+                    <span class="ml-1 text-[11px] font-semibold text-slate-400">(${d.day_name})</span>
+                  </td>
+                  <td class="py-3 px-4 font-bold text-emerald-600">
+                    ${d.kaspi_inflow_kzt > 0 ? `+${formatKZT(d.kaspi_inflow_kzt)}` : '<span class="text-slate-400 font-normal">Выходной</span>'}
+                  </td>
+                  <td class="py-3 px-4 font-bold ${d.supplier_outflow_kzt > 0 ? 'text-rose-600' : 'text-slate-400 font-normal'}">
+                    ${d.supplier_outflow_kzt > 0 ? `-${formatKZT(d.supplier_outflow_kzt)}` : '—'}
+                    <div class="text-[10px] text-slate-400 font-normal">${d.supplier_note}</div>
+                  </td>
+                  <td class="py-3 px-4 font-mono font-bold text-sm ${d.end_of_day_balance_kzt < 0 ? 'text-rose-600' : 'text-slate-900'}">
+                    ${formatKZT(d.end_of_day_balance_kzt)}
+                  </td>
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${d.has_cash_gap ? 'bg-rose-100 text-rose-800' : 'bg-emerald-50 text-emerald-700'}">
+                      ${d.has_cash_gap ? 'РАЗРЫВ ЛИКВИДНОСТИ' : 'В НОРМЕ'}
+                    </span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (e) {
+        console.error("Failed to load cashflow", e);
+      }
+    }
+
     // --- AI Sales Copilot Drawer ---
     let copilotOpen = false;
     function toggleCopilot() {
@@ -3225,6 +3674,10 @@
     loadBillingPlans();
     loadClaims();
     loadReconciliation();
+    loadCircuitBreaker();
+    loadCourierManifests();
+    loadAdsCampaigns();
+    loadCashflowCalendar();
   </script>
 
   <!-- FLOATING AI COPILOT LAUNCHER & DRAWER -->

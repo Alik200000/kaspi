@@ -79,3 +79,51 @@ async def calculate_cartel_duo(payload: CartelDuoPayload):
         price_step=Decimal(str(payload.price_step))
     )
     return result
+
+
+class CheckPriceSurgePayload(BaseModel):
+    sku: str
+    product_title: str
+    supplier_name: str
+    old_cost: float
+    new_cost: float
+    threshold_pct: float = 15.0
+
+
+@router.get("/circuit-breaker/status")
+async def get_circuit_breaker_status():
+    """
+    Returns live status of the Supplier Price Surge Circuit Breaker.
+    """
+    from app.modules.pricing.circuit_breaker import SupplierPriceSurgeCircuitBreaker
+    return SupplierPriceSurgeCircuitBreaker.get_status()
+
+
+@router.post("/circuit-breaker/check")
+async def evaluate_price_surge(payload: CheckPriceSurgePayload):
+    """
+    Checks incoming supplier cost change and auto-blocks SKU if surge exceeds threshold.
+    """
+    from app.modules.pricing.circuit_breaker import SupplierPriceSurgeCircuitBreaker
+    return SupplierPriceSurgeCircuitBreaker.evaluate_price_change(
+        sku=payload.sku,
+        product_title=payload.product_title,
+        supplier_name=payload.supplier_name,
+        old_cost=payload.old_cost,
+        new_cost=payload.new_cost,
+        threshold_pct=payload.threshold_pct
+    )
+
+
+@router.post("/circuit-breaker/{sku}/unlock")
+async def unlock_circuit_breaker_sku(sku: str):
+    """
+    Unlocks a paused SKU after seller confirms new supplier pricing.
+    """
+    from app.modules.pricing.circuit_breaker import SupplierPriceSurgeCircuitBreaker
+    res = SupplierPriceSurgeCircuitBreaker.unlock_sku(sku)
+    if not res:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="SKU не найден в списке заблокированных")
+    return res
+

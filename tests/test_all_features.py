@@ -312,7 +312,15 @@ def test_fastapi_openapi_contract():
         "/api/v1/whatsapp/send-test",
         "/api/v1/ai/copilot/chat",
         "/api/v1/claims",
-        "/api/v1/claims/create"
+        "/api/v1/claims/create",
+        "/api/v1/marketing/campaigns",
+        "/api/v1/marketing/campaigns/create",
+        "/api/v1/marketing/auto-bidder/run",
+        "/api/v1/logistics/manifests",
+        "/api/v1/logistics/manifests/create",
+        "/api/v1/pricing/advanced/circuit-breaker/status",
+        "/api/v1/pricing/advanced/circuit-breaker/check",
+        "/api/v1/finance/cashflow/calendar"
     ]
 
     for ep in required_endpoints:
@@ -568,6 +576,58 @@ def test_bank_reconciliation():
     print("  [OK] Kaspi Pay bank settlement reconciliation endpoint verified")
 
 
+def test_kaspi_ads_auto_bidder():
+    test_section("22. Kaspi Ads & Marketing Auto-Bidder (Target DRR & Dayparting)")
+    from app.modules.marketing.service import KaspiAdsAutoBidderService
+
+    summary = KaspiAdsAutoBidderService.get_summary()
+    assert summary["total_campaigns"] >= 3
+    assert summary["overall_drr_pct"] > 0
+
+    opt_result = KaspiAdsAutoBidderService.optimize_bids()
+    assert opt_result["status"] == "success"
+    print("  [OK] Kaspi Ads Auto-Bidder DRR optimization cycle passed")
+
+
+def test_courier_handover_manifest():
+    test_section("23. Kaspi Delivery Courier Handover Manifest & Act")
+    from app.modules.logistics.service import LogisticsTrackerService
+
+    html = LogisticsTrackerService.generate_manifest_act_html("MNF-20261023-01")
+    assert "РЕЕСТР ПРИЁМА-ПЕРЕДАЧИ ЗАКАЗОВ KASPI ДОСТАВКИ" in html
+    assert "MNF-20261023-01" in html
+    print("  [OK] Courier handover manifest & printable dispatch act generator passed")
+
+
+def test_price_surge_circuit_breaker():
+    test_section("24. Supplier Price Surge Circuit Breaker (Anti-Loss Guard)")
+    from app.modules.pricing.circuit_breaker import SupplierPriceSurgeCircuitBreaker
+
+    # Surge of +25% exceeds 15% threshold -> breaker trips
+    res = SupplierPriceSurgeCircuitBreaker.evaluate_price_change(
+        sku="TEST-SURGE-SKU",
+        product_title="Test Laptop",
+        supplier_name="Test Dist",
+        old_cost=100000.0,
+        new_cost=125000.0,
+        threshold_pct=15.0
+    )
+    assert res["tripped"] is True
+    assert res["action"] == "AUTO_BLOCKED_IN_KASPI"
+    print("  [OK] Price surge circuit breaker tripped and auto-blocked SKU from selling in minus passed")
+
+
+def test_cashflow_calendar():
+    test_section("25. Kaspi Pay Cash Flow Forecast & Cash Gap Calendar")
+    from app.modules.finance.cashflow import KaspiCashFlowForecastService
+
+    cf = KaspiCashFlowForecastService.get_cashflow_calendar(14)
+    assert cf["forecast_days"] == 14
+    assert len(cf["daily_projection"]) == 14
+    assert cf["starting_balance_kzt"] > 0
+    print("  [OK] 14-day Kaspi Pay cash flow calendar & cash gap detection passed")
+
+
 if __name__ == "__main__":
     print("\n=======================================================")
     print("  STARTING FULL SUITE AUTOMATED VERIFICATION          ")
@@ -593,6 +653,11 @@ if __name__ == "__main__":
     test_ai_sales_copilot()
     test_vendor_rma_claims()
     test_bank_reconciliation()
+    test_kaspi_ads_auto_bidder()
+    test_courier_handover_manifest()
+    test_price_surge_circuit_breaker()
+    test_cashflow_calendar()
     print("\n=======================================================")
-    print("  [PASS] ALL 21 TEST SECTIONS PASSED WITH 100% SUCCESS!    ")
+    print("  [PASS] ALL 25 TEST SECTIONS PASSED WITH 100% SUCCESS!    ")
     print("=======================================================\n")
+

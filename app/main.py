@@ -36,6 +36,7 @@ from app.modules.finance.router import router as finance_router
 from app.modules.competitor_radar.router import router as radar_router
 from app.modules.integrations.whatsapp.router import router as whatsapp_router
 from app.modules.claims.router import router as claims_router
+from app.modules.marketing.router import router as marketing_router
 from app.workers.scheduler import scheduler
 
 
@@ -90,6 +91,7 @@ app.include_router(finance_router, prefix=api_prefix)
 app.include_router(radar_router, prefix=api_prefix)
 app.include_router(whatsapp_router, prefix=api_prefix)
 app.include_router(claims_router, prefix=api_prefix)
+app.include_router(marketing_router, prefix=api_prefix)
 
 
 from fastapi.responses import HTMLResponse, FileResponse

@@ -30,3 +30,13 @@ async def get_reconciliation_report(db: AsyncSession = Depends(get_db)):
     """
     from app.modules.finance.reconciliation import KaspiReconciliationService
     return await KaspiReconciliationService.get_reconciliation_summary(db)
+
+
+@router.get("/cashflow/calendar")
+async def get_cashflow_calendar(days_ahead: int = 14):
+    """
+    Returns 14-day cash flow forecast, Kaspi Pay payout schedule, and cash gap warnings.
+    """
+    from app.modules.finance.cashflow import KaspiCashFlowForecastService
+    return KaspiCashFlowForecastService.get_cashflow_calendar(days_ahead=days_ahead)
+

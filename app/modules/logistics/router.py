@@ -47,3 +47,51 @@ async def process_return(
         return result
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+class CreateManifestPayload(BaseModel):
+    courier_service: str = "Kaspi Доставка"
+    courier_name: str = "Касымов Арман"
+    vehicle_number: str = "777 ABC 02"
+    order_ids: List[str] = ["KSP-1094821", "KSP-1094822", "KSP-1094825"]
+
+
+@router.get("/manifests")
+async def list_manifests(db: AsyncSession = Depends(get_db)):
+    """
+    Returns list of courier handover manifests and dispatch registers.
+    """
+    return await LogisticsTrackerService.get_manifests(db)
+
+
+@router.post("/manifests/create")
+async def create_manifest(
+    payload: CreateManifestPayload,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Creates a new courier handover manifest with order items and barcodes.
+    """
+    mnf = await LogisticsTrackerService.create_manifest(
+        courier_service=payload.courier_service,
+        courier_name=payload.courier_name,
+        vehicle_number=payload.vehicle_number,
+        order_ids=payload.order_ids,
+        db=db
+    )
+    return {
+        "status": "success",
+        "manifest": mnf,
+        "print_url": f"/api/v1/logistics/manifests/{mnf['id']}/act-html"
+    }
+
+
+@router.get("/manifests/{manifest_id}/act-html")
+async def get_manifest_act_html(manifest_id: str):
+    """
+    Generates printable legal courier handover act with signatures and package checklist.
+    """
+    from fastapi.responses import HTMLResponse
+    html = LogisticsTrackerService.generate_manifest_act_html(manifest_id)
+    return HTMLResponse(content=html)
+
