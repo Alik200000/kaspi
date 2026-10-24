@@ -19,7 +19,7 @@ class SupplierPriceSurgeCircuitBreaker:
     _blocked_items = [
         {
             "sku": "SKU-IPHONE15PM-BLK",
-            "product_title": "Apple iPhone 15 Pro Max 256GB Black",
+            "product_title": "Apple iPhone 15 Pro Max 256GB Черный",
             "supplier_name": "Дистрибьютор Alser / Marvel",
             "old_cost_kzt": 520000.0,
             "new_cost_kzt": 645000.0,

@@ -13,7 +13,7 @@ class KaspiAdsAutoBidderService:
     _campaigns = [
         {
             "id": "ad-cmp-001",
-            "name": "Apple iPhone 15 Pro Max 256GB Black - Top Search",
+            "name": "Apple iPhone 15 Pro Max 256GB Черный — Топ Поиск",
             "master_sku": "SKU-IPHONE15PM-BLK",
             "status": "ACTIVE",
             "daily_budget": 15000.0,
@@ -34,7 +34,7 @@ class KaspiAdsAutoBidderService:
         },
         {
             "id": "ad-cmp-002",
-            "name": "Samsung Galaxy S24 Ultra 512GB Grey - Category Sponsor",
+            "name": "Samsung Galaxy S24 Ultra 512GB Серый — Главная категория",
             "master_sku": "SKU-SAMS24U-GRY",
             "status": "ACTIVE",
             "daily_budget": 12000.0,
@@ -55,7 +55,7 @@ class KaspiAdsAutoBidderService:
         },
         {
             "id": "ad-cmp-003",
-            "name": "Dyson V15 Detect Absolute - Smart Push",
+            "name": "Dyson V15 Detect Absolute — Авто-продвижение",
             "master_sku": "SKU-DYSONV15-ABS",
             "status": "PAUSED_STOCKOUT_RISK",
             "daily_budget": 8000.0,
